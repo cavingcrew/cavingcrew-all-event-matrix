@@ -125,6 +125,33 @@ function getIP() {
   Logger.log(json);
 }
 
+function makeReport(stmt, reportConfig) {
+  let cell = setupCell("Dashboard", "B49");
+  let sheet = setupSheet(reportConfig.sheetName);
+  
+  var results = stmt.executeQuery(reportConfig.query.replace('${cell}', cell));
+  
+  appendToSheet(sheet, results);
+  
+  if (reportConfig.formatting) {
+    reportConfig.formatting.forEach(format => {
+      if (format.type === 'color') {
+        setColoursFormat(sheet, format.column, format.search, format.color);
+      } else if (format.type === 'text') {
+        setTextFormat(sheet, format.column, format.search, format.color);
+      } else if (format.type === 'wrap') {
+        setWrapped(sheet, format.column);
+      } else if (format.type === 'numberFormat') {
+        setNumberFormat(sheet, format.column, format.format);
+      } else if (format.type === 'colorLessThanOrEqual') {
+        setColoursFormatLessThanOrEqualTo(sheet, format.column, format.value, format.color);
+      }
+    });
+  }
+  
+  results.close();
+}
+
 function getOrderIdFromActiveCell() {
   const sheet = SpreadsheetApp.getActiveSheet();
   const activeCell = sheet.getActiveCell();
