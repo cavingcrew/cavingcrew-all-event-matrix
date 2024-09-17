@@ -25,19 +25,35 @@ function readVolunteering(stmt) {
 
   appendToSheet(sheet, results);
 
-  setNumberFormat(sheet, "T2:T1000", "0");
-  setColoursFormatLessThanOrEqualTo(sheet, "T2:T1000", "10", "#ff75d8");
-  setColoursFormatLessThanOrEqualTo(sheet, "T2:T1000", "20", "#ffd898");
-  setColoursFormatLessThanOrEqualTo(sheet, "T2:T1000", "30", "#fad02c");
-  setColoursFormat(sheet, "C2:C1000", "none", "#DAF7A6");
-  setColoursFormat(sheet, "C2:C1000", "Selected", "#FFFFFF");
-  setColoursFormat(sheet, "C2:C1000", "", "#e0ffff");
-  setTextFormat(sheet, "D2:V1000", "No", "#a9a9a9");
-  setColoursFormat(sheet, "U2:V1000", "Yes", "#ffd898");
+  setNumberFormat(sheet, "Attended events", "0");
+  setColoursFormatLessThanOrEqualTo(sheet, "Attended events", "10", "#ff75d8");
+  setColoursFormatLessThanOrEqualTo(sheet, "Attended events", "20", "#ffd898");
+  setColoursFormatLessThanOrEqualTo(sheet, "Attended events", "30", "#fad02c");
+  setColoursFormat(sheet, "Selected Roles", "none", "#DAF7A6");
+  setColoursFormat(sheet, "Selected Roles", "Selected", "#FFFFFF");
+  setColoursFormat(sheet, "Selected Roles", "", "#e0ffff");
+  setTextFormat(sheet, "FB promo", "No", "#a9a9a9");
+  setTextFormat(sheet, "Reporter", "No", "#a9a9a9");
+  setTextFormat(sheet, "Head Chef", "No", "#a9a9a9");
+  setTextFormat(sheet, "EM Chef", "No", "#a9a9a9");
+  setTextFormat(sheet, "B&L Chef", "No", "#a9a9a9");
+  setTextFormat(sheet, "Lunch Marshal", "No", "#a9a9a9");
+  setTextFormat(sheet, "Breakfast Marshal", "No", "#a9a9a9");
+  setTextFormat(sheet, "Lift Coordinator", "No", "#a9a9a9");
+  setTextFormat(sheet, "Activities Coordinator", "No", "#a9a9a9");
+  setTextFormat(sheet, "Kit Coordinator", "No", "#a9a9a9");
+  setTextFormat(sheet, "Newbie Buddy", "No", "#a9a9a9");
+  setTextFormat(sheet, "Covid Marshal", "No", "#a9a9a9");
+  setTextFormat(sheet, "EM Wash Up", "No", "#a9a9a9");
+  setTextFormat(sheet, "B&L Wash Up", "No", "#a9a9a9");
+  setTextFormat(sheet, "Event Assistant", "No", "#a9a9a9");
+  setTextFormat(sheet, "Trip Director", "No", "#a9a9a9");
+  setColoursFormat(sheet, "First time with Crew?", "Yes", "#ffd898");
+  setColoursFormat(sheet, "First caving trip?", "Yes", "#ffd898");
 
   sheet.setColumnWidth(25, 300);
   sheet.setColumnWidth(1, 150);
-  setWrapped(sheet, "Y2:Y1000");
+  setWrapped(sheet, "Requests and notes");
 
   results.close();
 }

@@ -6,8 +6,16 @@ function readGear(stmt) {
 
   appendToSheet(sheet, results);
   
-  setColoursFormat(sheet, "C2:F", "Yes", "#e6ffe6");
-  setTextFormat(sheet, "G2:M", "No", "#a9a9a9");
+  setColoursFormat(sheet, "Horizontal Skills", "Yes", "#e6ffe6");
+  setColoursFormat(sheet, "Horizontal Leading Skills", "Yes", "#e6ffe6");
+  setColoursFormat(sheet, "Lead/Second in Horizontal", "Yes", "#e6ffe6");
+  setColoursFormat(sheet, "SRT Skills", "Yes", "#e6ffe6");
+  setTextFormat(sheet, "Lead in Vertical", "No", "#a9a9a9");
+  setTextFormat(sheet, "Kit Bringing", "No", "#a9a9a9");
+  setTextFormat(sheet, "Rope Length", "No", "#a9a9a9");
+  setTextFormat(sheet, "Coaching Skills", "No", "#a9a9a9");
+  setTextFormat(sheet, "Horizontal/Vertical Preference", "No", "#a9a9a9");
+  setTextFormat(sheet, "Walking Gear", "No", "#a9a9a9");
 
   results.close();
 }

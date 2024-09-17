@@ -6,8 +6,8 @@ function readTransport(stmt) {
 
   appendToSheet(sheet, results);
   
-  setColoursFormat(sheet, "C2:C", "Yes", "#ffe6e6");
-  setColoursFormat(sheet, "D2:D", "Yes", "#e6ffe6");
+  setColoursFormat(sheet, "Needs Lift", "Yes", "#ffe6e6");
+  setColoursFormat(sheet, "Offering Lift", "Yes", "#e6ffe6");
 
   results.close();
 }
