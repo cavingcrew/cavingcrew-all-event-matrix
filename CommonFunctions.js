@@ -103,3 +103,45 @@ function getIP() {
   var json = UrlFetchApp.fetch(url);
   Logger.log(json);
 }
+
+function getOrderIdFromActiveCell() {
+  const sheet = SpreadsheetApp.getActiveSheet();
+  const activeCell = sheet.getActiveCell();
+  const activeRow = activeCell.getRow();
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const orderIdColumnIndex = headers.indexOf("Order ID") + 1;
+
+  if (orderIdColumnIndex === 0) {
+    throw new Error("Column 'Order ID' not found in the current sheet.");
+  }
+
+  if (activeRow === 1) {
+    throw new Error("Please select a cell in a data row, not the header row.");
+  }
+
+  const orderId = sheet.getRange(activeRow, orderIdColumnIndex).getValue();
+
+  if (!orderId || isNaN(orderId)) {
+    throw new Error("Invalid Order ID. Please make sure you've selected a valid order.");
+  }
+
+  return orderId;
+}
+
+function updateOrderStatus(orderId, newStatus) {
+  const sheet = SpreadsheetApp.getActiveSheet();
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const orderIdColumnIndex = headers.indexOf("Order ID") + 1;
+  const statusColumnIndex = headers.indexOf("Status") + 1;
+
+  if (statusColumnIndex === 0) {
+    sheet.getRange(1, sheet.getLastColumn() + 1).setValue("Status");
+    sheet.getRange(sheet.getActiveCell().getRow(), sheet.getLastColumn()).setValue(newStatus);
+  } else {
+    sheet.getRange(sheet.getActiveCell().getRow(), statusColumnIndex).setValue(newStatus);
+  }
+}
+
+function showError(message) {
+  Browser.msgBox("Error", message, Browser.Buttons.OK);
+}

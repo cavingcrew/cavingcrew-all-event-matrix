@@ -63,64 +63,51 @@ var metavalue = "noregistershow"
 markAttendance(attendancetype, attendanceshow, orderstatus, metakey, metavalue)
 }
 
-function markAttendance(attendancetype, attendanceshow, orderstatus, metakey, metavalue ) {
+function markAttendance(attendancetype, attendanceshow, orderstatus, metakey, metavalue) {
+  try {
+    const order_id = getOrderIdFromActiveCell();
+    const sheet = SpreadsheetApp.getActiveSheet();
+    const activeRow = sheet.getActiveCell().getRow();
+    const first_name = sheet.getRange(activeRow, 1, 1, 1).getValue();
 
-  var spreadsheet = SpreadsheetApp.getActive();
-  var sheet = spreadsheet.getSheetByName('Diet');
-  var active_range = sheet.getActiveRange();
-  var currentRow = active_range.getRowIndex();
-  //var currentRow = "14"; // you can use this to run this from console on a specific row - to test without using the line above
-  console.log(currentRow);
+    if (Browser.msgBox("Mark " + attendancetype + " on " + first_name + "'s place? \n Order " + order_id, Browser.Buttons.OK_CANCEL) == "ok") {
+      const cc_attendance_setter = Session.getActiveUser().getEmail();
 
+      const data = {
+        "meta_data": [
+          {
+            "key": metakey,
+            "value": metavalue
+          },
+          {
+            "key": "cc_attendance_set_by",
+            "value": cc_attendance_setter
+          }
+        ],
+        "status": orderstatus
+      };
 
-  if(currentRow <2){Browser.msgBox('Select an actual signup', Browser.Buttons.OK); return;}
-  if(currentRow >=200){Browser.msgBox('Select an actual signup', Browser.Buttons.OK); return;}
+      console.log(orderstatus);
 
+      const encodedAuthInformation = Utilities.base64Encode(apiusername + ":" + apipassword);
+      const headers = { "Authorization": "Basic " + encodedAuthInformation };
+      const options = {
+        'method': 'post',
+        'contentType': 'application/json',
+        'headers': headers,
+        'payload': JSON.stringify(data)
+      };
+      const url = "https://www." + apidomain + "/wp-json/wc/v3/orders/" + order_id;
 
-  var order_id = sheet.getRange(currentRow, 7,1,1).getValue();  
-  var first_name = sheet.getRange(currentRow, 1,1,1).getValue();  
+      const response = UrlFetchApp.fetch(url, options);
+      console.log(response);
 
-  console.log(order_id);
-  console.log(first_name);
-  
-  if(order_id === ""){Browser.msgBox('No Order ID Found', Browser.Buttons.OK); return;} 
-
-  if (Browser.msgBox("Mark " + attendancetype + " on " +first_name + "'s place? \n Order " + order_id, Browser.Buttons.OK_CANCEL) == "ok") { 
-
-    var cc_attendance_setter =  Session.getActiveUser().getEmail();
-
-    var data = {"meta_data": [
-        {"key": metakey,
-        "value": metavalue}, 
-        {"key": "cc_attendance_set_by",
-        "value": cc_attendance_setter }
-      ], 
-      "status": orderstatus
-    };
-
-    console.log(orderstatus);
-
-  var encodedAuthInformation = Utilities.base64Encode(apiusername+ ":" + apipassword);
-  var headers = {"Authorization" : "Basic " + encodedAuthInformation};
-  var options = {
-  'method' : 'post',
-  'contentType': 'application/json',
-    'headers': headers,  // Convert the JavaScript object to a JSON string.
-  'payload' : JSON.stringify(data)
-};
-url="https://www."+ apidomain + "/wp-json/wc/v3/orders/" + order_id
-
-var response = UrlFetchApp.fetch(url, options);
-  console.log(response);
-
-
-// //remove old data
-
-  
-// var blankArray =[[attendanceshow,order_id]];  /// set a blank variable to delete row (45 values)
-// sheet.getRange(currentRow, 1,1,2).setValues(blankArray);   // paste the blank variables into the cells to delete contents
+      // Update the status in the sheet
+      updateOrderStatus(order_id, attendanceshow);
+    }
+  } catch (error) {
+    showError(error.message);
   }
-
 }
 
 
