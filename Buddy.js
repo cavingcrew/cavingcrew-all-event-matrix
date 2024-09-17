@@ -18,7 +18,7 @@ function readBuddy(stmt) {
   try {
     var results = stmt.executeQuery(query);
     appendToSheet(sheet, results);
-    setColoursFormat(sheet, "C2:C", "Yes", "#ffe6e6");
+    setColoursFormat(sheet, "First Timer", "Yes", "#ffe6e6");
     results.close();
   } catch (error) {
     console.error("Error executing query:", error);
