@@ -71,7 +71,7 @@ function getColumnRange(sheet, columnHeader) {
   return sheet.getRange(2, columnIndex, sheet.getLastRow() - 1, 1);
 }
 
-function setColoursFormat(sheet, columnHeader, search, colour) { 
+function setColoursFormat(sheet, columnHeader, search, colour) {
   let range = getColumnRange(sheet, columnHeader);
   var rule = SpreadsheetApp.newConditionalFormatRule()
     .whenTextContains(search)
@@ -83,7 +83,7 @@ function setColoursFormat(sheet, columnHeader, search, colour) {
   sheet.setConditionalFormatRules(rules);
 }
 
-function setTextFormat(sheet, columnHeader, search, colour) { 
+function setTextFormat(sheet, columnHeader, search, colour) {
   let range = getColumnRange(sheet, columnHeader);
   var rule = SpreadsheetApp.newConditionalFormatRule()
     .whenTextContains(search)
@@ -95,13 +95,13 @@ function setTextFormat(sheet, columnHeader, search, colour) {
   sheet.setConditionalFormatRules(rules);
 }
 
-function setWrapped(sheet, columnHeader) { 
+function setWrapped(sheet, columnHeader) {
   var range = getColumnRange(sheet, columnHeader);
   range.setWrap(true);
   sheet.setColumnWidth(range.getColumn(), 300); // Set column width to 300 pixels
 }
 
-function setColoursFormatLessThanOrEqualTo(sheet, columnHeader, search, colour) { 
+function setColoursFormatLessThanOrEqualTo(sheet, columnHeader, search, colour) {
   search = Number(search);
   let range = getColumnRange(sheet, columnHeader);
   var rule = SpreadsheetApp.newConditionalFormatRule()
@@ -114,25 +114,21 @@ function setColoursFormatLessThanOrEqualTo(sheet, columnHeader, search, colour) 
   sheet.setConditionalFormatRules(rules);
 }
 
-function setNumberFormat(sheet, columnHeader, format) { 
+function setNumberFormat(sheet, columnHeader, format) {
   let range = getColumnRange(sheet, columnHeader);
   range.setNumberFormat(format);
 }
 
-function getIP() {
-  var url = "http://api.ipify.org";
-  var json = UrlFetchApp.fetch(url);
-  Logger.log(json);
-}
+
 
 function makeReport(stmt, reportConfig) {
   let cell = setupCell("Dashboard", "B49");
   let sheet = setupSheet(reportConfig.sheetName);
-  
+
   var results = stmt.executeQuery(reportConfig.query.replace('${cell}', cell));
-  
+
   appendToSheet(sheet, results);
-  
+
   if (reportConfig.formatting) {
     reportConfig.formatting.forEach(format => {
       if (format.type === 'color') {
@@ -150,7 +146,7 @@ function makeReport(stmt, reportConfig) {
       }
     });
   }
-  
+
   results.close();
 }
 
