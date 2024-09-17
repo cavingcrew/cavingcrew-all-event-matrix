@@ -17,5 +17,15 @@ function readGear(stmt) {
   setTextFormat(sheet, "Horizontal/Vertical Preference", "No", colors.grey);
   setTextFormat(sheet, "Walking Gear", "No", colors.grey);
 
+  // New color formatting for SRT Skills
+  setColoursFormat(sheet, "SRT Skills", "No-SRT", colors.lightRed);
+  setColoursFormat(sheet, "SRT Skills", "Pre-SRT Basic", colors.lightYellow);
+  setColoursFormat(sheet, "SRT Skills", "Pre-SRT Intermediate", colors.yellow);
+  setColoursFormat(sheet, "SRT Skills", "SRT Intermediate", colors.lightGreen);
+
+  // Flag "Nothing" in Kit Bringing
+  setColoursFormat(sheet, "Kit Bringing", "Nothing", colors.lightRed);
+  setTextFormat(sheet, "Kit Bringing", "Nothing - I'm totally new to this", colors.lightRed);
+
   results.close();
 }
