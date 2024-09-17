@@ -14,6 +14,11 @@ function readData() {
   conn.close();
 }
 
+function eventListing() {
+  // Implement the eventListing function here if it's not already defined elsewhere
+  console.log("Event listing function called");
+}
+
 // ScriptApp.newTrigger('readData')
 // .timeBased()
 // .everyMinutes(30)
