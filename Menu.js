@@ -15,12 +15,52 @@ function onOpen() {
   ui.createMenu('Refresh Matrix')
       .addItem('Refresh All', 'readData')
       .addSeparator()
-      .addItem('Refresh Diet', 'readDiet')
-      .addItem('Refresh Gear', 'readGear')
-      .addItem('Refresh Admin', 'readAdmin')
-      .addItem('Refresh Transport', 'readTransport')
-      .addItem('Refresh Buddy', 'readBuddy')
+      .addItem('Refresh Diet', 'refreshDiet')
+      .addItem('Refresh Gear', 'refreshGear')
+      .addItem('Refresh Admin', 'refreshAdmin')
+      .addItem('Refresh Transport', 'refreshTransport')
+      .addItem('Refresh Buddy', 'refreshBuddy')
       .addSeparator()
       .addItem('Refresh Event Listings', 'eventListing')
       .addToUi();
+}
+
+function refreshDiet() {
+  var conn = Jdbc.getConnection(url, username, password);
+  var stmt = conn.createStatement();
+  readDiet(stmt);
+  stmt.close();
+  conn.close();
+}
+
+function refreshGear() {
+  var conn = Jdbc.getConnection(url, username, password);
+  var stmt = conn.createStatement();
+  readGear(stmt);
+  stmt.close();
+  conn.close();
+}
+
+function refreshAdmin() {
+  var conn = Jdbc.getConnection(url, username, password);
+  var stmt = conn.createStatement();
+  readAdmin(stmt);
+  stmt.close();
+  conn.close();
+}
+
+function refreshTransport() {
+  var conn = Jdbc.getConnection(url, username, password);
+  var stmt = conn.createStatement();
+  readTransport(stmt);
+  stmt.close();
+  conn.close();
+}
+
+function refreshBuddy() {
+  var conn = Jdbc.getConnection(url, username, password);
+  var stmt = conn.createStatement();
+  readBuddy(stmt);
+  stmt.close();
+  conn.close();
 }
