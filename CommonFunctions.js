@@ -87,6 +87,7 @@ function setTextFormat(sheet, columnHeader, search, colour) {
 function setWrapped(sheet, columnHeader) { 
   var range = getColumnRange(sheet, columnHeader);
   range.setWrap(true);
+  sheet.setColumnWidth(range.getColumn(), 300); // Set column width to 300 pixels
 }
 
 function setColoursFormatLessThanOrEqualTo(sheet, columnHeader, search, colour) { 

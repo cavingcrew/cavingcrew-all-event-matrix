@@ -6,7 +6,8 @@ function readAdmin(stmt) {
 
   appendToSheet(sheet, results);
   
-  setWrapped(sheet, "E2:F");
+  setWrapped(sheet, "Participation Statement 1");
+  setWrapped(sheet, "Participation Statement 2");
 
   results.close();
 }
