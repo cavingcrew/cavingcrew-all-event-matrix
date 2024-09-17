@@ -6,16 +6,16 @@ function readGear(stmt) {
 
   appendToSheet(sheet, results);
   
-  setColoursFormat(sheet, "Horizontal Skills", "Yes", "#e6ffe6");
-  setColoursFormat(sheet, "Horizontal Leading Skills", "Yes", "#e6ffe6");
-  setColoursFormat(sheet, "Lead/Second in Horizontal", "Yes", "#e6ffe6");
-  setColoursFormat(sheet, "SRT Skills", "Yes", "#e6ffe6");
-  setTextFormat(sheet, "Lead in Vertical", "No", "#a9a9a9");
-  setTextFormat(sheet, "Kit Bringing", "No", "#a9a9a9");
-  setTextFormat(sheet, "Rope Length", "No", "#a9a9a9");
-  setTextFormat(sheet, "Coaching Skills", "No", "#a9a9a9");
-  setTextFormat(sheet, "Horizontal/Vertical Preference", "No", "#a9a9a9");
-  setTextFormat(sheet, "Walking Gear", "No", "#a9a9a9");
+  setColoursFormat(sheet, "Horizontal Skills", "Yes", colors.lightGreen);
+  setColoursFormat(sheet, "Horizontal Leading Skills", "Yes", colors.lightGreen);
+  setColoursFormat(sheet, "Lead/Second in Horizontal", "Yes", colors.lightGreen);
+  setColoursFormat(sheet, "SRT Skills", "Yes", colors.lightGreen);
+  setTextFormat(sheet, "Lead in Vertical", "No", colors.grey);
+  setTextFormat(sheet, "Kit Bringing", "No", colors.grey);
+  setTextFormat(sheet, "Rope Length", "No", colors.grey);
+  setTextFormat(sheet, "Coaching Skills", "No", colors.grey);
+  setTextFormat(sheet, "Horizontal/Vertical Preference", "No", colors.grey);
+  setTextFormat(sheet, "Walking Gear", "No", colors.grey);
 
   results.close();
 }

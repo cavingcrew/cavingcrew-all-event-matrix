@@ -9,6 +9,17 @@ var apidomain="cavingcrew.com"
 var apiusername="ck_91675da0323ed5e5f5704a79a59288950db68efc"
 var apipassword="cs_7be15b56e20ef6006720147f4ce44ff472039328"
 
+const colors = {
+  lightRed: "#ffe6e6",
+  lightGreen: "#e6ffe6",
+  lightYellow: "#ffd898",
+  lightBlue: "#e0ffff",
+  grey: "#a9a9a9",
+  pink: "#ff75d8",
+  yellow: "#fad02c",
+  white: "#FFFFFF"
+};
+
 function setupSheet(name) {
   var spreadsheet = SpreadsheetApp.getActive();
   var sheet = spreadsheet.getSheetByName(name);
