@@ -66,9 +66,6 @@ This project uses `clasp` (Command Line Apps Script Projects) for deployment and
 - `npm run push`: Deploys the local files to Google Apps Script. This is how you update the live script.
 - `npm run pull`: Fetches the latest version from Google Apps Script to your local environment.
 - `npm run watch`: Watches for local changes and automatically pushes them to Google Apps Script.
-- `npm run open`: Opens the Google Apps Script project in the browser.
-- `npm run deploy`: Creates a new versioned deployment of the Google Apps Script project.
-- `npm run undeploy`: Undeploys a specific version of the Google Apps Script project.
 - `npm run version`: Creates a new version of the Google Apps Script project.
 - `npm run logs`: Shows the most recent logs from the Google Apps Script project.
 
@@ -81,10 +78,6 @@ The system integrates with WordPress using the WooCommerce REST API. The `pokeTo
 ## Custom Menu
 
 The `Menu.js` file creates a custom menu in the Google Sheets UI, providing easy access to various functions like marking attendance and refreshing data. This enhances the user experience by making key functions readily available within the spreadsheet interface.
-
-## Note on Security
-
-This README does not include sensitive information such as database credentials or API keys. Make sure to keep such information secure and not commit it to version control. The `CommonFunctions.js` file contains database connection details which should be properly secured.
 
 ## Contribution and Maintenance
 
