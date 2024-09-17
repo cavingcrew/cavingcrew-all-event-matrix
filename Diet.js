@@ -6,9 +6,9 @@ function readDiet(stmt) {
 
   appendToSheet(sheet, results);
 
-  setColoursFormat(sheet, "C2:C", "Vegan", "#e6ffe6");
-  setColoursFormat(sheet, "C2:C", "Vegetarian", "#e6ffe6");
-  setTextFormat(sheet, "D2:D", "No", "#a9a9a9");
+  setColoursFormat(sheet, "Dietary Requirements", "Vegan", "#e6ffe6");
+  setColoursFormat(sheet, "Dietary Requirements", "Vegetarian", "#e6ffe6");
+  setTextFormat(sheet, "Diet and Health Details", "No", "#a9a9a9");
 
   results.close();
 }

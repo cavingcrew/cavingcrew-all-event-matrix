@@ -51,8 +51,17 @@ function appendToSheet(sheet, results) {
   sheet.autoResizeColumns(1, numCols);
 }
 
-function setColoursFormat(sheet, cellrange, search, colour) { 
-  let range = sheet.getRange(cellrange);
+function getColumnRange(sheet, columnHeader) {
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const columnIndex = headers.indexOf(columnHeader) + 1;
+  if (columnIndex === 0) {
+    throw new Error(`Column '${columnHeader}' not found in the sheet.`);
+  }
+  return sheet.getRange(2, columnIndex, sheet.getLastRow() - 1, 1);
+}
+
+function setColoursFormat(sheet, columnHeader, search, colour) { 
+  let range = getColumnRange(sheet, columnHeader);
   var rule = SpreadsheetApp.newConditionalFormatRule()
     .whenTextContains(search)
     .setBackground(colour)
@@ -63,8 +72,8 @@ function setColoursFormat(sheet, cellrange, search, colour) {
   sheet.setConditionalFormatRules(rules);
 }
 
-function setTextFormat(sheet, cellrange, search, colour) { 
-  let range = sheet.getRange(cellrange);
+function setTextFormat(sheet, columnHeader, search, colour) { 
+  let range = getColumnRange(sheet, columnHeader);
   var rule = SpreadsheetApp.newConditionalFormatRule()
     .whenTextContains(search)
     .setFontColor(colour)
@@ -75,14 +84,14 @@ function setTextFormat(sheet, cellrange, search, colour) {
   sheet.setConditionalFormatRules(rules);
 }
 
-function setWrapped(sheet, cellrange) { 
-  var cellrange = sheet.getRange(cellrange);
-  cellrange.setWrap(true);
+function setWrapped(sheet, columnHeader) { 
+  var range = getColumnRange(sheet, columnHeader);
+  range.setWrap(true);
 }
 
-function setColoursFormatLessThanOrEqualTo(sheet, cellrange, search, colour) { 
+function setColoursFormatLessThanOrEqualTo(sheet, columnHeader, search, colour) { 
   search = Number(search);
-  let range = sheet.getRange(cellrange);
+  let range = getColumnRange(sheet, columnHeader);
   var rule = SpreadsheetApp.newConditionalFormatRule()
     .whenNumberLessThanOrEqualTo(search)
     .setBackground(colour)
@@ -93,8 +102,8 @@ function setColoursFormatLessThanOrEqualTo(sheet, cellrange, search, colour) {
   sheet.setConditionalFormatRules(rules);
 }
 
-function setNumberFormat(sheet, cellrange, format) { 
-  let range = sheet.getRange(cellrange);
+function setNumberFormat(sheet, columnHeader, format) { 
+  let range = getColumnRange(sheet, columnHeader);
   range.setNumberFormat(format);
 }
 
