@@ -7,6 +7,7 @@ function readData() {
   readAdmin(stmt);
   readTransport(stmt);
   readBuddy(stmt);
+  readVolunteering(stmt);
 
   eventListing();
 
