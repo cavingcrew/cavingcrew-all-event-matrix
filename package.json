@@ -1,0 +1,32 @@
+{
+  "name": "cavingcrew-all-event-matrix",
+  "version": "1.0.0",
+  "description": "A Google Apps Script matrix for trip sign up for the Caving Crew.",
+  "scripts": {
+    "push": "clasp push --auth ~/.clasprc.timmydobson.json",
+    "pull": "clasp pull --auth ~/.clasprc.timmydobson.json",
+    "watch": "clasp push --watch --auth ~/.clasprc.timmydobson.json",
+    "open": "clasp open --auth ~/.clasprc.timmydobson.json",
+    "deploy": "clasp deploy --auth ~/.clasprc.timmydobson.json",
+    "undeploy": "clasp undeploy --auth ~/.clasprc.timmydobson.json",
+    "version": "clasp version --auth ~/.clasprc.timmydobson.json",
+    "logs": "clasp logs --auth ~/.clasprc.timmydobson.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tdobson/cavingcrew-all-event-matrix.git"
+  },
+  "author": "Tim Dobson",
+  "license": "All Rights Reserved",
+  "bugs": {
+    "url": "https://github.com/tdobson/cavingcrew-all-event-matrix/issues"
+  },
+  "homepage": "https://github.com/tdobson/cavingcrew-all-event-matrix#readme",
+  "dependencies": {
+    "@types/google-apps-script": "^1.0.56",
+    "clasp": "^1.0.0"
+  },
+  "devDependencies": {
+    "@google/clasp": "^2.4.2"
+  }
+}
