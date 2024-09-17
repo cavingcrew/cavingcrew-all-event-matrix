@@ -145,11 +145,18 @@ function makeReport(stmt, reportConfig) {
         setNumberFormat(sheet, format.column, format.format);
       } else if (format.type === 'colorLessThanOrEqual') {
         setColoursFormatLessThanOrEqualTo(sheet, format.column, format.value, format.color);
+      } else if (format.type === 'columnWidth') {
+        setColumnWidth(sheet, format.column, format.width);
       }
     });
   }
   
   results.close();
+}
+
+function setColumnWidth(sheet, columnHeader, width) {
+  var range = getColumnRange(sheet, columnHeader);
+  sheet.setColumnWidth(range.getColumn(), width);
 }
 
 function getOrderIdFromActiveCell() {
