@@ -8,6 +8,8 @@ function readTransport(stmt) {
   
   setColoursFormat(sheet, "Needs Lift", "Yes", colors.lightRed);
   setColoursFormat(sheet, "Offering Lift", "Yes", colors.lightGreen);
+  setTextFormat(sheet, "Needs Lift", "No", colors.grey);
+  setTextFormat(sheet, "Offering Lift", "No", colors.grey);
 
   results.close();
 }
