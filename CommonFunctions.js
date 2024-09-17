@@ -31,7 +31,21 @@ function setupSheet(name) {
 function setupCell(name, range) {
   var spreadsheet = SpreadsheetApp.getActive();
   let sheet = spreadsheet.getSheetByName(name);
-  return sheet.getRange(range).getValues();
+  let cellValue = sheet.getRange(range).getValue();
+  
+  if (isNaN(cellValue) || cellValue === "") {
+    // Rerun eventListing
+    eventListing();
+    
+    // Try again
+    cellValue = sheet.getRange(range).getValue();
+    
+    if (isNaN(cellValue) || cellValue === "") {
+      throw new Error("Invalid event selected - please try again");
+    }
+  }
+  
+  return cellValue;
 }
 
 function appendToSheet(sheet, results) {
