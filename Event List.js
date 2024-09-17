@@ -13,42 +13,16 @@ function eventListing() {
    *    
    */
 
-  //connect to Event Listing sheet, wipe existing content, and set headers.
-  var spreadsheet = SpreadsheetApp.getActive();
-  var sheet = spreadsheet.getSheetByName('Event Listing');
-  // var headerArray = ["Name","ID", "Date (TODO)"]
-  // sheet.appendRow(headerArray)
-
-  //connect to database
+  let sheet = setupSheet("Event Listing");
+  
   var conn = Jdbc.getConnection(url, username, password);
   var stmt = conn.createStatement();
 
-  //execute query, transferring results into inputArr and then writing that to the spreadsheet
+  var results = stmt.executeQuery('SELECT distinct SUBSTRING_INDEX(`order_item_name`, \' - \', 1) "Trip Name", `product_id` "ID", `cc_start_date` "Date" from jtl_order_product_customer_lookup where cc_attendance="pending" AND product_id <> "1272" AND product_id <> "548" AND (STR_TO_DATE(cc_start_date, \'%Y%m%d\') BETWEEN \'2024-01-01\' AND \'2024-12-31\' OR STR_TO_DATE(cc_start_date, \'%Y-%m-%d %H:%i:%s\') BETWEEN \'2024-01-01\' AND \'2024-12-31\') GROUP BY product_id ORDER BY CASE WHEN cc_start_date LIKE \'%-%\' THEN STR_TO_DATE(cc_start_date, \'%Y-%m-%d %H:%i:%s\') ELSE STR_TO_DATE(cc_start_date, \'%Y%m%d\') END asc');
 
-var results = stmt.executeQuery('SELECT distinct SUBSTRING_INDEX(`order_item_name`, \' - \', 1) "Trip Name", `product_id` "ID", `cc_start_date` "Date" from jtl_order_product_customer_lookup where cc_attendance="pending" AND product_id <> "1272" AND product_id <> "548" AND (STR_TO_DATE(cc_start_date, \'%Y%m%d\') BETWEEN \'2024-01-01\' AND \'2024-12-31\' OR STR_TO_DATE(cc_start_date, \'%Y-%m-%d %H:%i:%s\') BETWEEN \'2024-01-01\' AND \'2024-12-31\') GROUP BY product_id ORDER BY CASE WHEN cc_start_date LIKE \'%-%\' THEN STR_TO_DATE(cc_start_date, \'%Y-%m-%d %H:%i:%s\') ELSE STR_TO_DATE(cc_start_date, \'%Y%m%d\') END asc');
-  sheet.clearContents()
+  appendToSheet(sheet, results);
 
-  var metaData = results.getMetaData();
-  var numCols = metaData.getColumnCount();
-  
-  //set headers
-
-  var arr=[];
-
-    for (var col = 0; col < numCols; col++) {
-      arr.push(metaData.getColumnName(col + 1));
-    }
-
-    sheet.appendRow(arr);
-
-  //cycle through the results and put them into the sheet
-  while (results.next()) {
-    inputArr=[];
-
-    for (var col = 0; col < numCols; col++) {
-      inputArr.push(results.getString(col + 1));
-    }
-
-    sheet.appendRow(inputArr);
-  }
+  results.close();
+  stmt.close();
+  conn.close();
 }
