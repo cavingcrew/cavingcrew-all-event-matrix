@@ -13,11 +13,26 @@
  */
 
 function readEventListing(stmt) {
-  let sheet = setupSheet("Event Listing");
-
-  var results = stmt.executeQuery('SELECT distinct SUBSTRING_INDEX(`order_item_name`, \' - \', 1) "Trip Name", `product_id` "ID", `cc_start_date` "Date" from jtl_order_product_customer_lookup where cc_attendance="pending" AND product_id <> "1272" AND product_id <> "548" AND (STR_TO_DATE(cc_start_date, \'%Y%m%d\') BETWEEN \'2024-01-01\' AND \'2024-12-31\' OR STR_TO_DATE(cc_start_date, \'%Y-%m-%d %H:%i:%s\') BETWEEN \'2024-01-01\' AND \'2024-12-31\') GROUP BY product_id ORDER BY CASE WHEN cc_start_date LIKE \'%-%\' THEN STR_TO_DATE(cc_start_date, \'%Y-%m-%d %H:%i:%s\') ELSE STR_TO_DATE(cc_start_date, \'%Y%m%d\') END asc');
-
-  appendToSheet(sheet, results);
-
-  results.close();
+  makeReport(stmt, {
+    sheetName: "Event Listing",
+    query: `
+      SELECT distinct 
+        SUBSTRING_INDEX(\`order_item_name\`, ' - ', 1) AS "Trip Name", 
+        \`product_id\` AS "ID", 
+        \`cc_start_date\` AS "Date" 
+      FROM jtl_order_product_customer_lookup 
+      WHERE cc_attendance="pending" 
+        AND product_id <> "1272" 
+        AND product_id <> "548" 
+        AND (STR_TO_DATE(cc_start_date, '%Y%m%d') BETWEEN '2024-01-01' AND '2024-12-31' 
+          OR STR_TO_DATE(cc_start_date, '%Y-%m-%d %H:%i:%s') BETWEEN '2024-01-01' AND '2024-12-31') 
+      GROUP BY product_id 
+      ORDER BY 
+        CASE 
+          WHEN cc_start_date LIKE '%-%' THEN STR_TO_DATE(cc_start_date, '%Y-%m-%d %H:%i:%s') 
+          ELSE STR_TO_DATE(cc_start_date, '%Y%m%d') 
+        END ASC
+    `,
+    formatting: []
+  });
 }
