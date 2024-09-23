@@ -1,5 +1,5 @@
 function refreshCredentials() {
-  const spreadsheetId = '1MVTO45ZusIw2BRgtRh4BffPRbbuIZHViZKPZE3OntEc';
+  const spreadsheetId = '1MVTO45ZusIw2BRgtRh4BffPRbbuIZHViZKPZE3OntEc'; // Caving Crew credentials store
   const sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName('Credentials');
   const data = sheet.getDataRange().getValues();
   const headers = data.shift();

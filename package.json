@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tdobson/cavingcrew-all-event-matrix.git"
+    "url": "git+https://github.com/cavingcrew/cavingcrew-all-event-matrix.git"
   },
   "author": "Tim Dobson",
   "license": "All Rights Reserved",
   "bugs": {
-    "url": "https://github.com/tdobson/cavingcrew-all-event-matrix/issues"
+    "url": "https://github.com/cavingcrew/cavingcrew-all-event-matrix/issues"
   },
-  "homepage": "https://github.com/tdobson/cavingcrew-all-event-matrix#readme",
+  "homepage": "https://github.com/cavingcrew/cavingcrew-all-event-matrix#readme",
   "dependencies": {
     "@types/google-apps-script": "^1.0.56",
     "clasp": "^1.0.0"
