@@ -1,7 +1,7 @@
 const scriptProperties = PropertiesService.getScriptProperties();
 
 const server = scriptProperties.getProperty('cred_server');
-const port = scriptProperties.getProperty('cred_port');
+const port = parseInt(scriptProperties.getProperty('cred_port'), 10);
 const dbName = scriptProperties.getProperty('cred_dbName');
 const username = scriptProperties.getProperty('cred_username');
 const password = scriptProperties.getProperty('cred_password');
