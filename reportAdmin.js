@@ -1,4 +1,4 @@
-function readAdmin(stmt) {
+function readAdmin(stmt, cell) {
   makeReport(stmt, {
     sheetName: "Admin",
     query: `

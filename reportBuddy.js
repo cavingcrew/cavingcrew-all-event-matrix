@@ -1,4 +1,4 @@
-function readBuddy(stmt) {
+function readBuddy(stmt, cell) {
   makeReport(stmt, {
     sheetName: "Buddy",
     query: `

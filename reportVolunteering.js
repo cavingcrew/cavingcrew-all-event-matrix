@@ -1,4 +1,4 @@
-function readVolunteering(stmt) {
+function readVolunteering(stmt, cell) {
   makeReport(stmt, {
     sheetName: "Volunteering",
     query: `

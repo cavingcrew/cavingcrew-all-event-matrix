@@ -12,7 +12,7 @@
  *    
  */
 
-function readEventListing(stmt) {
+function readEventListing(stmt, cell) {
   makeReport(stmt, {
     sheetName: "Event Listing",
     query: `

@@ -1,4 +1,4 @@
-function readGear(stmt) {
+function readGear(stmt, cell) {
   makeReport(stmt, {
     sheetName: "Gear",
     query: `
