@@ -82,3 +82,81 @@ The `Menu.js` file creates a custom menu in the Google Sheets UI, providing easy
 ## Contribution and Maintenance
 
 When contributing to or maintaining this project, please ensure to update the relevant JavaScript files and test thoroughly before deploying. The `clasp` commands make it easy to manage versions and deployments, but care should be taken to avoid disrupting the live system.
+
+## Credential Management
+
+The `CredentialStoreManager.js` file is responsible for securely managing and refreshing credentials used throughout the application. Here's a detailed explanation of its functionality:
+
+### refreshCredentials()
+
+This function fetches credentials from a specific Google Sheets document and stores them in the script's properties. Here's how it works:
+
+1. It opens a specific Google Sheet (ID: '1MVTO45ZusIw2BRgtRh4BffPRbbuIZHViZKPZE3OntEc') and accesses the 'Credentials' sheet.
+2. It reads all the data from this sheet, expecting two columns: 'label' and 'value'.
+3. For each row in the sheet, it stores the 'value' in the script's properties, using 'cred_[label]' as the key.
+
+This approach allows for centralized credential management, making it easy to update credentials without changing the code.
+
+### createNightlyTrigger()
+
+This function sets up an automatic nightly refresh of the credentials:
+
+1. It first removes any existing triggers for the `refreshCredentials` function.
+2. It then creates a new trigger that runs `refreshCredentials` every day at 1:00 AM.
+
+This ensures that the credentials are always up-to-date, even if they're changed in the source spreadsheet.
+
+### setupCredentialRefresh()
+
+This function is meant to be run once to initialize the credential management system:
+
+1. It calls `refreshCredentials()` to immediately fetch and store the credentials.
+2. It then calls `createNightlyTrigger()` to set up the automatic nightly refresh.
+
+To use this system, a developer would run `setupCredentialRefresh()` once, and then the credentials will be automatically managed from that point forward.
+
+## Event Space Management
+
+The `eventSpaceManager.js` file handles the opening and closing of event spaces (i.e., available slots for an event). It's designed to work with both simple and variable products in WooCommerce. Here's a breakdown of its main functions:
+
+### openEventSpaces()
+
+This is the main function for opening event spaces:
+
+1. It fetches the product ID from a specific cell in the 'Dashboard' sheet.
+2. It then retrieves the product details from WooCommerce.
+3. Depending on whether the product is simple or variable, it calls either `openSimpleProductSpaces()` or `openVariableProductSpaces()`.
+
+### openVariableProductSpaces(product)
+
+This function handles opening spaces for variable products (e.g., events with different ticket types):
+
+1. It fetches all variations of the product from WooCommerce.
+2. It creates an HTML form with input fields for each variation, allowing the user to set the number of spaces for each.
+3. When the form is submitted, it calls `updateProductVariations()` to update the stock quantity for each variation in WooCommerce.
+
+### openSimpleProductSpaces(product)
+
+This function handles opening spaces for simple products:
+
+1. It prompts the user to enter the number of spaces to open.
+2. If a valid number is entered, it calls `updateProductStock()` to update the stock quantity in WooCommerce.
+
+### closeSignup()
+
+This function closes the signup for an event:
+
+1. It fetches the product ID from the 'Dashboard' sheet.
+2. Depending on whether the product is simple or variable, it calls either `closeSimpleProductSpaces()` or `closeVariableProductSpaces()`.
+3. Both of these functions set the stock quantity to 0 for all variations or for the simple product.
+
+### updateProductVariations(productId, updatedVariations) and updateProductStock(productId, newStock)
+
+These functions make API calls to WooCommerce to update the stock quantities for variable and simple products respectively.
+
+To use this system, a user would typically:
+
+1. Select the event in the 'Dashboard' sheet.
+2. Use the custom menu to run either 'Open Signup' (which calls `openEventSpaces()`) or 'Close Signup' (which calls `closeSignup()`).
+
+This system provides a user-friendly interface for managing event capacities directly from Google Sheets, with the changes being reflected immediately in the WooCommerce store.
