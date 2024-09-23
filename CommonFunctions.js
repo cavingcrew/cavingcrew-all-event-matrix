@@ -139,7 +139,7 @@ function makeReport(stmt, reportConfig) {
   let cell = setupCell("Dashboard", "B49");
   let sheet = setupSheet(reportConfig.sheetName);
 
-  var results = stmt.executeQuery(reportConfig.query.replace('${cell}', cell));
+  var results = stmt.executeQuery(reportConfig.query.replace(/\${cell}/g, cell));
 
   appendToSheet(sheet, results);
 

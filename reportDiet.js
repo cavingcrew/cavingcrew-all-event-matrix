@@ -1,4 +1,4 @@
-function readDiet(stmt) {
+function readDiet(stmt, cell) {
   makeReport(stmt, {
     sheetName: "Diet",
     query: `
