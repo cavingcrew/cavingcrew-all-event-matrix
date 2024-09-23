@@ -10,7 +10,7 @@ const cc_location = scriptProperties.getProperty('cred_cc_location');
 const apidomain = scriptProperties.getProperty('cred_apidomain');
 const apiusername = scriptProperties.getProperty('cred_apiusername');
 const apipassword = scriptProperties.getProperty('cred_apipassword');
-console.log(url)
+
 const colors = {
   lightRed: "#ffe6e6",
   lightGreen: "#e6ffe6",

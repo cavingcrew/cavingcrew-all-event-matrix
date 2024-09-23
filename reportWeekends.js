@@ -14,7 +14,7 @@ function readData() {
 
   reports.forEach(report => report(stmt, cell));
 
-  eventListing();
+  readEventListing(stmt, cell);
 
   stmt.close();
   conn.close();
