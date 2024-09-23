@@ -66,3 +66,39 @@ function updateProductStock(productId, newStock) {
   };
   pokeToWordPressProducts(data, productId);
 }
+
+function openSignup() {
+  openEventSpaces();
+}
+
+function closeSignup() {
+  const productId = setupCell("Dashboard", "B49");
+  const product = getProductById(productId);
+
+  if (product.type === 'variable') {
+    closeVariableProductSpaces(product);
+  } else {
+    closeSimpleProductSpaces(product);
+  }
+}
+
+function closeVariableProductSpaces(product) {
+  const variations = getProductVariations(product.id);
+  variations.forEach(variation => {
+    const data = {
+      stock_quantity: 0,
+      manage_stock: true
+    };
+    pokeToWordPressProducts(data, product.id, variation.id);
+  });
+  
+  const ui = SpreadsheetApp.getUi();
+  ui.alert('Signup closed successfully. All places set to 0.');
+}
+
+function closeSimpleProductSpaces(product) {
+  updateProductStock(product.id, 0);
+  
+  const ui = SpreadsheetApp.getUi();
+  ui.alert('Signup closed successfully. All places set to 0.');
+}
