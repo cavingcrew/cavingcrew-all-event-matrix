@@ -10,7 +10,7 @@ const cc_location = scriptProperties.getProperty('cred_cc_location');
 const apidomain = scriptProperties.getProperty('cred_apidomain');
 const apiusername = scriptProperties.getProperty('cred_apiusername');
 const apipassword = scriptProperties.getProperty('cred_apipassword');
-
+console.log(url)
 const colors = {
   lightRed: "#ffe6e6",
   lightGreen: "#e6ffe6",
@@ -34,19 +34,19 @@ function setupCell(name, range) {
   var spreadsheet = SpreadsheetApp.getActive();
   let sheet = spreadsheet.getSheetByName(name);
   let cellValue = sheet.getRange(range).getValue();
-  
+
   if (isNaN(cellValue) || cellValue === "") {
     // Rerun eventListing
     eventListing();
-    
+
     // Try again
     cellValue = sheet.getRange(range).getValue();
-    
+
     if (isNaN(cellValue) || cellValue === "") {
       throw new Error("Invalid event selected - please try again");
     }
   }
-  
+
   return cellValue;
 }
 
