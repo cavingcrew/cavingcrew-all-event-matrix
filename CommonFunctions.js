@@ -1,15 +1,15 @@
 const scriptProperties = PropertiesService.getScriptProperties();
 
-const server = scriptProperties.getProperty('server');
-const port = scriptProperties.getProperty('port');
-const dbName = scriptProperties.getProperty('dbName');
-const username = scriptProperties.getProperty('username');
-const password = scriptProperties.getProperty('password');
+const server = scriptProperties.getProperty('cred_server');
+const port = scriptProperties.getProperty('cred_port');
+const dbName = scriptProperties.getProperty('cred_dbName');
+const username = scriptProperties.getProperty('cred_username');
+const password = scriptProperties.getProperty('cred_password');
 const url = `jdbc:mysql://${server}:${port}/${dbName}`;
-const cc_location = scriptProperties.getProperty('cc_location');
-const apidomain = scriptProperties.getProperty('apidomain');
-const apiusername = scriptProperties.getProperty('apiusername');
-const apipassword = scriptProperties.getProperty('apipassword');
+const cc_location = scriptProperties.getProperty('cred_cc_location');
+const apidomain = scriptProperties.getProperty('cred_apidomain');
+const apiusername = scriptProperties.getProperty('cred_apiusername');
+const apipassword = scriptProperties.getProperty('cred_apipassword');
 
 const colors = {
   lightRed: "#ffe6e6",

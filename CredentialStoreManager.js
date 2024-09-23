@@ -13,7 +13,7 @@ function refreshCredentials() {
     const label = row[labelIndex];
     const value = row[valueIndex];
     if (label && value) {
-      PropertiesService.getScriptProperties().setProperty(label, value);
+      PropertiesService.getScriptProperties().setProperty(`cred_${label}`, value);
     }
   });
 }
