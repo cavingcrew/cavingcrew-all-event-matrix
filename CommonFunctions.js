@@ -1,13 +1,15 @@
-var server = '18.171.8.199';
-var port = 3306;
-var dbName = 'jtl_cavingcrew_com';
-var username = 'gsheets';
-var password = 'athohKeecieD8xees';
-var url = 'jdbc:mysql://'+server+':'+port+'/'+dbName;
-var cc_location = "placeholder"
-var apidomain="cavingcrew.com"
-var apiusername="ck_91675da0323ed5e5f5704a79a59288950db68efc"
-var apipassword="cs_7be15b56e20ef6006720147f4ce44ff472039328"
+const scriptProperties = PropertiesService.getScriptProperties();
+
+const server = scriptProperties.getProperty('server');
+const port = scriptProperties.getProperty('port');
+const dbName = scriptProperties.getProperty('dbName');
+const username = scriptProperties.getProperty('username');
+const password = scriptProperties.getProperty('password');
+const url = `jdbc:mysql://${server}:${port}/${dbName}`;
+const cc_location = scriptProperties.getProperty('cc_location');
+const apidomain = scriptProperties.getProperty('apidomain');
+const apiusername = scriptProperties.getProperty('apiusername');
+const apipassword = scriptProperties.getProperty('apipassword');
 
 const colors = {
   lightRed: "#ffe6e6",
