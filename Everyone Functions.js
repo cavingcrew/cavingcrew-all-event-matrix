@@ -63,7 +63,7 @@ function sendAllCragAssignments(action) {
 }
 
 function markAttendedAndCloseEvent() {
-  if (Browser.msgBox("This will mark all those who haven't been cancelled as ATTENDED and will close the event", Browser.Buttons.OK_CANCEL) == "ok") {
+  if (Browser.msgBox("This will mark all those who haven't been cancelled as ATTENDED, close the event, and set it to private", Browser.Buttons.OK_CANCEL) == "ok") {
     if (Browser.msgBox("This should be done after caving", Browser.Buttons.OK_CANCEL) == "ok") {
       if (Browser.msgBox("This cannot be undone", Browser.Buttons.OK_CANCEL) == "ok") {
         sendAllCragAssignments("close");
