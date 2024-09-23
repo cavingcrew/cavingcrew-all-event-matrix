@@ -1,5 +1,6 @@
 function refreshCredentials() {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Credentials');
+  const spreadsheetId = '1MVTO45ZusIw2BRgtRh4BffPRbbuIZHViZKPZE3OntEc';
+  const sheet = SpreadsheetApp.openById(spreadsheetId).getSheetByName('Credentials');
   const data = sheet.getDataRange().getValues();
   const headers = data.shift();
   const labelIndex = headers.indexOf('label');
