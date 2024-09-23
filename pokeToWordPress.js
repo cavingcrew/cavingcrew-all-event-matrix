@@ -24,19 +24,20 @@ function pokeToWordPressOrders(data, order_id) {
   }
 }
 
-function pokeToWordPressProducts(data, product_id) {
-
-  //console.log("Wordpress " + data);
-
+function pokeToWordPressProducts(data, product_id, variation_id = null) {
   let encodedAuthInformation = Utilities.base64Encode(apiusername + ":" + apipassword);
   let headers = { "Authorization": "Basic " + encodedAuthInformation };
   let options = {
     'method': 'post',
     'contentType': 'application/json',
-    'headers': headers,  // Convert the JavaScript object to a JSON string.
+    'headers': headers,
     'payload': JSON.stringify(data)
   };
-  apiUrl = "https://www." + apidomain + "/wp-json/wc/v3/products/" + product_id
+  
+  let apiUrl = "https://www." + apidomain + "/wp-json/wc/v3/products/" + product_id;
+  if (variation_id) {
+    apiUrl += "/variations/" + variation_id;
+  }
 
   var response = UrlFetchApp.fetch(apiUrl, options);
   var responseData = JSON.parse(response.getContentText());
@@ -45,6 +46,34 @@ function pokeToWordPressProducts(data, product_id) {
   } else {
     return 'Error';
   }
+}
+
+function getProductById(productId) {
+  let encodedAuthInformation = Utilities.base64Encode(apiusername + ":" + apipassword);
+  let headers = { "Authorization": "Basic " + encodedAuthInformation };
+  let apiUrl = "https://www." + apidomain + "/wp-json/wc/v3/products/" + productId;
+  
+  let options = {
+    'method': 'get',
+    'headers': headers
+  };
+
+  var response = UrlFetchApp.fetch(apiUrl, options);
+  return JSON.parse(response.getContentText());
+}
+
+function getProductVariations(productId) {
+  let encodedAuthInformation = Utilities.base64Encode(apiusername + ":" + apipassword);
+  let headers = { "Authorization": "Basic " + encodedAuthInformation };
+  let apiUrl = "https://www." + apidomain + "/wp-json/wc/v3/products/" + productId + "/variations";
+  
+  let options = {
+    'method': 'get',
+    'headers': headers
+  };
+
+  var response = UrlFetchApp.fetch(apiUrl, options);
+  return JSON.parse(response.getContentText());
 }
 
 function pokeToWooUserMeta(data, user_id) {

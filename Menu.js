@@ -23,6 +23,10 @@ function onOpen() {
       .addSeparator()
       .addItem('Refresh Event Listings', 'eventListing')
       .addToUi();
+
+  ui.createMenu('Event Management')
+      .addItem('Open Event Spaces', 'openEventSpaces')
+      .addToUi();
 }
 
 function refreshDiet() {
