@@ -47,11 +47,11 @@ function markNoShow() {
 }
 
 function markDuplicate() {
-	var attendancetype = "Duplicate";
-	var attendanceshow = "Duplicated";
-	var orderstatus = "completed";
-	var metakey = "cc_attendance";
-	var metavalue = "duplicate";
+	const attendancetype = "Duplicate";
+	const attendanceshow = "Duplicated";
+	const orderstatus = "completed";
+	const metakey = "cc_attendance";
+	const metavalue = "duplicate";
 
 	markAttendance(
 		attendancetype,
@@ -63,11 +63,11 @@ function markDuplicate() {
 }
 
 function markLateBail() {
-	var attendancetype = "Late Bail";
-	var attendanceshow = "Late Bail";
-	var orderstatus = "completed";
-	var metakey = "cc_attendance";
-	var metavalue = "latebail";
+	const attendancetype = "Late Bail";
+	const attendanceshow = "Late Bail";
+	const orderstatus = "completed";
+	const metakey = "cc_attendance";
+	const metavalue = "latebail";
 
 	markAttendance(
 		attendancetype,
@@ -79,11 +79,11 @@ function markLateBail() {
 }
 
 function markNoRegisterShow() {
-	var attendancetype = "No Register Show";
-	var attendanceshow = "No Register Show";
-	var orderstatus = "completed";
-	var metakey = "cc_attendance";
-	var metavalue = "noregistershow";
+	const attendancetype = "No Register Show";
+	const attendanceshow = "No Register Show";
+	const orderstatus = "completed";
+	const metakey = "cc_attendance";
+	const metavalue = "noregistershow";
 
 	markAttendance(
 		attendancetype,
