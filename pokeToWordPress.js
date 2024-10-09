@@ -75,7 +75,7 @@ function getProductVariations(productId) {
 		headers: headers,
 	};
 
-	var response = UrlFetchApp.fetch(apiUrl, options);
+	const response = UrlFetchApp.fetch(apiUrl, options);
 	return JSON.parse(response.getContentText());
 }
 
@@ -118,7 +118,7 @@ function pokeNoteToOrder(orderNumber, noteText) {
 		payload: JSON.stringify(payload),
 	};
 	var response = UrlFetchApp.fetch(apiUrl, options);
-	var responseData = JSON.parse(response.getContentText());
+	const responseData = JSON.parse(response.getContentText());
 	//console.log(response.getResponseCode())
 	if (response.getResponseCode() === 201) {
 		//console.log(responseData)
