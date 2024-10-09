@@ -210,7 +210,6 @@ function getOrderIdFromActiveCell() {
 function updateOrderStatus(orderId, newStatus) {
 	const sheet = SpreadsheetApp.getActiveSheet();
 	const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-	const orderIdColumnIndex = headers.indexOf("Order ID") + 1;
 	const statusColumnIndex = headers.indexOf("Status") + 1;
 
 	if (statusColumnIndex === 0) {
