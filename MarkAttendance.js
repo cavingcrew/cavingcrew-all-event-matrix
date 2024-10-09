@@ -106,7 +106,6 @@ function markAttendance(
 		const sheet = SpreadsheetApp.getActiveSheet();
 		const activeRow = sheet.getActiveCell().getRow();
 		const first_name = sheet.getRange(activeRow, 1, 1, 1).getValue();
-
 		if (
 			Browser.msgBox(
 				`Mark ${attendancetype} on ${first_name}'s place? \n Order ${order_id}`,
