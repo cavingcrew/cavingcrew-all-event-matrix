@@ -1,7 +1,7 @@
 function readDiet(stmt, cell) {
-  makeReport(stmt, {
-    sheetName: "Diet",
-    query: `
+	makeReport(stmt, {
+		sheetName: "Diet",
+		query: `
       SELECT DISTINCT
         \`first_name\` AS "First Name",
         \`nickname\` AS "Facebook Name",
@@ -13,10 +13,25 @@ function readDiet(stmt, cell) {
       WHERE product_id=${cell} AND pd.status="wc-processing"
       ORDER BY \`admin-dietary-requirements\` ASC
     `,
-    formatting: [
-      { type: 'color', column: "Dietary Requirements", search: "Vegan", color: colors.lightGreen },
-      { type: 'color', column: "Dietary Requirements", search: "Vegetarian", color: colors.lightGreen },
-      { type: 'text', column: "Diet and Health Details", search: "No", color: colors.grey }
-    ]
-  });
+		formatting: [
+			{
+				type: "color",
+				column: "Dietary Requirements",
+				search: "Vegan",
+				color: colors.lightGreen,
+			},
+			{
+				type: "color",
+				column: "Dietary Requirements",
+				search: "Vegetarian",
+				color: colors.lightGreen,
+			},
+			{
+				type: "text",
+				column: "Diet and Health Details",
+				search: "No",
+				color: colors.grey,
+			},
+		],
+	});
 }

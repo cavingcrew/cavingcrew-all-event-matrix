@@ -1,7 +1,7 @@
 function readBuddy(stmt, cell) {
-  makeReport(stmt, {
-    sheetName: "Buddy",
-    query: `
+	makeReport(stmt, {
+		sheetName: "Buddy",
+		query: `
       SELECT DISTINCT
         \`first_name\` AS "First Name",
         \`nickname\` AS "Facebook Name",
@@ -12,8 +12,13 @@ function readBuddy(stmt, cell) {
       WHERE product_id=${cell} AND status="wc-processing"
       ORDER BY \`first_name\` ASC
     `,
-    formatting: [
-      { type: 'color', column: "First Timer", search: "Yes", color: colors.lightRed }
-    ]
-  });
+		formatting: [
+			{
+				type: "color",
+				column: "First Timer",
+				search: "Yes",
+				color: colors.lightRed,
+			},
+		],
+	});
 }

@@ -1,7 +1,7 @@
 function readAdmin(stmt, cell) {
-  makeReport(stmt, {
-    sheetName: "Admin",
-    query: `
+	makeReport(stmt, {
+		sheetName: "Admin",
+		query: `
       SELECT DISTINCT
         \`first_name\` AS "First Name",
         \`last_name\` AS "Last Name",
@@ -18,9 +18,9 @@ function readAdmin(stmt, cell) {
       WHERE product_id=${cell} AND status="wc-processing"
       ORDER BY \`first_name\` ASC
     `,
-    formatting: [
-      { type: 'wrap', column: "Participation Statement 1" },
-      { type: 'wrap', column: "Participation Statement 2" }
-    ]
-  });
+		formatting: [
+			{ type: "wrap", column: "Participation Statement 1" },
+			{ type: "wrap", column: "Participation Statement 2" },
+		],
+	});
 }
