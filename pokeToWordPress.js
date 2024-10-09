@@ -13,14 +13,13 @@ function pokeToWordPressOrders(data, order_id) {
 	};
 	apiUrl = `https://www.${apidomain}/wp-json/wc/v3/orders/${order_id}`;
 
-	var response = UrlFetchApp.fetch(apiUrl, options);
-	var responseData = JSON.parse(response.getContentText());
+	const response = UrlFetchApp.fetch(apiUrl, options);
+	const responseData = JSON.parse(response.getContentText());
 	//console.log(responseData)
 	if (response.getResponseCode() === 200) {
 		return responseData.id;
-	} else {
-		return "Error";
 	}
+	return "Error";
 }
 
 function pokeToWordPressProducts(data, product_id, variation_id = null) {
@@ -104,17 +103,12 @@ function pokeToWooUserMeta(data, user_id) {
 }
 
 function pokeNoteToOrder(orderNumber, noteText) {
-	var apiUrl =
-		"https://www." +
-		apidomain +
-		"/wp-json/wc/v3/orders/" +
-		orderNumber +
-		"/notes";
-	var encodedAuthInformation = Utilities.base64Encode(
-		apiusername + ":" + apipassword,
+	const apiUrl = `https://www.${apidomain}/wp-json/wc/v3/orders/${orderNumber}/notes`;
+	const encodedAuthInformation = Utilities.base64Encode(
+		`${apiusername}:${apipassword}`,
 	);
-	var headers = {
-		Authorization: "Basic " + encodedAuthInformation,
+	const headers = {
+		Authorization: `Basic ${encodedAuthInformation}`,
 		"Content-Type": "application/json",
 	};
 	var payload = { note: noteText };
@@ -126,7 +120,7 @@ function pokeNoteToOrder(orderNumber, noteText) {
 	var response = UrlFetchApp.fetch(apiUrl, options);
 	var responseData = JSON.parse(response.getContentText());
 	//console.log(response.getResponseCode())
-	if (response.getResponseCode() == 201) {
+	if (response.getResponseCode() === 201) {
 		//console.log(responseData)
 		return responseData.id;
 	} else {
