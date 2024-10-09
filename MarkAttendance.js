@@ -1,9 +1,9 @@
 function markAttended() {
-	var attendancetype = "Attended";
-	var attendanceshow = "Attended";
-	var metakey = "cc_attendance";
-	var orderstatus = "completed";
-	var metavalue = "attended";
+	const attendancetype = "Attended";
+	const attendanceshow = "Attended";
+	const metakey = "cc_attendance";
+	const orderstatus = "completed";
+	const metavalue = "attended";
 
 	markAttendance(
 		attendancetype,
@@ -15,11 +15,11 @@ function markAttended() {
 }
 
 function markCancelled() {
-	var attendancetype = "Cancel";
-	var attendanceshow = "Cancelled";
-	var metakey = "cc_attendance";
-	var orderstatus = "completed";
-	var metavalue = "cancelled";
+	const attendancetype = "Cancel";
+	const attendanceshow = "Cancelled";
+	const metakey = "cc_attendance";
+	const orderstatus = "completed";
+	const metavalue = "cancelled";
 
 	markAttendance(
 		attendancetype,
@@ -31,11 +31,11 @@ function markCancelled() {
 }
 
 function markNoShow() {
-	var attendancetype = "NoShow";
-	var attendanceshow = "NoShow";
-	var orderstatus = "completed";
-	var metakey = "cc_attendance";
-	var metavalue = "noshow";
+	const attendancetype = "NoShow";
+	const attendanceshow = "NoShow";
+	const orderstatus = "completed";
+	const metakey = "cc_attendance";
+	const metavalue = "noshow";
 
 	markAttendance(
 		attendancetype,
@@ -109,14 +109,9 @@ function markAttendance(
 
 		if (
 			Browser.msgBox(
-				"Mark " +
-					attendancetype +
-					" on " +
-					first_name +
-					"'s place? \n Order " +
-					order_id,
+				`Mark ${attendancetype} on ${first_name}'s place? \n Order ${order_id}`,
 				Browser.Buttons.OK_CANCEL,
-			) == "ok"
+			) === "ok"
 		) {
 			const cc_attendance_setter = Session.getActiveUser().getEmail();
 
@@ -137,9 +132,9 @@ function markAttendance(
 			console.log(orderstatus);
 
 			const encodedAuthInformation = Utilities.base64Encode(
-				apiusername + ":" + apipassword,
+				`${apiusername}:${apipassword}`,
 			);
-			const headers = { Authorization: "Basic " + encodedAuthInformation };
+			const headers = { Authorization: `Basic ${encodedAuthInformation}` };
 			const options = {
 				method: "post",
 				contentType: "application/json",
@@ -147,7 +142,7 @@ function markAttendance(
 				payload: JSON.stringify(data),
 			};
 			const url =
-				"https://www." + apidomain + "/wp-json/wc/v3/orders/" + order_id;
+				`https://www.${apidomain}/wp-json/wc/v3/orders/${order_id}`;
 
 			const response = UrlFetchApp.fetch(url, options);
 			console.log(response);
