@@ -84,19 +84,32 @@ function getColumnRange(sheet, columnHeader) {
 	if (columnIndex === 0) {
 		throw new Error(`Column '${columnHeader}' not found in the sheet.`);
 	}
-	return sheet.getRange(2, columnIndex, sheet.getLastRow() - 1, 1);
+	const lastRow = sheet.getLastRow();
+	if (lastRow <= 1) {
+		// If there's only a header row or the sheet is empty, return null
+		return null;
+	}
+	return sheet.getRange(2, columnIndex, lastRow - 1, 1);
 }
 
 function setColoursFormat(sheet, columnHeader, search, colour) {
-	const range = getColumnRange(sheet, columnHeader);
-	const rule = SpreadsheetApp.newConditionalFormatRule()
-		.whenTextContains(search)
-		.setBackground(colour)
-		.setRanges([range])
-		.build();
-	const rules = sheet.getConditionalFormatRules();
-	rules.push(rule);
-	sheet.setConditionalFormatRules(rules);
+	try {
+		const range = getColumnRange(sheet, columnHeader);
+		if (range === null) {
+			// If there's no data, just return without setting any formatting
+			return;
+		}
+		const rule = SpreadsheetApp.newConditionalFormatRule()
+			.whenTextContains(search)
+			.setBackground(colour)
+			.setRanges([range])
+			.build();
+		const rules = sheet.getConditionalFormatRules();
+		rules.push(rule);
+		sheet.setConditionalFormatRules(rules);
+	} catch (error) {
+		console.log(`Error setting colour format for column '${columnHeader}': ${error.message}`);
+	}
 }
 
 function setTextFormat(sheet, columnHeader, search, colour) {
@@ -141,39 +154,47 @@ function setNumberFormat(sheet, columnHeader, format) {
 }
 
 function makeReport(stmt, reportConfig) {
-	const cell = setupCell("Dashboard", "B49");
-	const sheet = setupSheet(reportConfig.sheetName);
+	try {
+		const cell = setupCell("Dashboard", "B49");
+		const sheet = setupSheet(reportConfig.sheetName);
 
-	const results = stmt.executeQuery(
-		reportConfig.query.replace(/\${cell}/g, cell),
-	);
+		const results = stmt.executeQuery(
+			reportConfig.query.replace(/\${cell}/g, cell),
+		);
 
-	appendToSheet(sheet, results);
+		appendToSheet(sheet, results);
 
-	if (reportConfig.formatting) {
-		for (const format of reportConfig.formatting) {
-			if (format.type === "color") {
-				setColoursFormat(sheet, format.column, format.search, format.color);
-			} else if (format.type === "text") {
-				setTextFormat(sheet, format.column, format.search, format.color);
-			} else if (format.type === "wrap") {
-				setWrapped(sheet, format.column);
-			} else if (format.type === "numberFormat") {
-				setNumberFormat(sheet, format.column, format.format);
-			} else if (format.type === "colorLessThanOrEqual") {
-				setColoursFormatLessThanOrEqualTo(
-					sheet,
-					format.column,
-					format.value,
-					format.color,
-				);
-			} else if (format.type === "columnWidth") {
-				setColumnWidth(sheet, format.column, format.width);
+		if (reportConfig.formatting && sheet.getLastRow() > 1) {
+			for (const format of reportConfig.formatting) {
+				try {
+					if (format.type === "color") {
+						setColoursFormat(sheet, format.column, format.search, format.color);
+					} else if (format.type === "text") {
+						setTextFormat(sheet, format.column, format.search, format.color);
+					} else if (format.type === "wrap") {
+						setWrapped(sheet, format.column);
+					} else if (format.type === "numberFormat") {
+						setNumberFormat(sheet, format.column, format.format);
+					} else if (format.type === "colorLessThanOrEqual") {
+						setColoursFormatLessThanOrEqualTo(
+							sheet,
+							format.column,
+							format.value,
+							format.color,
+						);
+					} else if (format.type === "columnWidth") {
+						setColumnWidth(sheet, format.column, format.width);
+					}
+				} catch (formatError) {
+					console.log(`Error applying format in ${reportConfig.sheetName}: ${formatError.message}`);
+				}
 			}
 		}
-	}
 
-	results.close();
+		results.close();
+	} catch (error) {
+		console.log(`Error in makeReport for ${reportConfig.sheetName}: ${error.message}`);
+	}
 }
 
 function setColumnWidth(sheet, columnHeader, width) {
