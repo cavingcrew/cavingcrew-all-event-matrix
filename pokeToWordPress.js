@@ -11,7 +11,7 @@ function pokeToWordPressOrders(data, order_id) {
 		headers: headers, // Convert the JavaScript object to a JSON string.
 		payload: JSON.stringify(data),
 	};
-	apiUrl = `https://www.${apidomain}/wp-json/wc/v3/orders/${order_id}`;
+	const apiUrl = `https://www.${apidomain}/wp-json/wc/v3/orders/${order_id}`;
 
 	const response = UrlFetchApp.fetch(apiUrl, options);
 	const responseData = JSON.parse(response.getContentText());
