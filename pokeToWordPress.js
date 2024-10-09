@@ -39,8 +39,8 @@ function pokeToWordPressProducts(data, product_id, variation_id = null) {
 		apiUrl += `/variations/${variation_id}`;
 	}
 
-	var response = UrlFetchApp.fetch(apiUrl, options);
-	var responseData = JSON.parse(response.getContentText());
+	const response = UrlFetchApp.fetch(apiUrl, options);
+	const responseData = JSON.parse(response.getContentText());
 	if (response.getResponseCode() === 200) {
 		return responseData.id;
 	}
@@ -111,8 +111,8 @@ function pokeNoteToOrder(orderNumber, noteText) {
 		Authorization: `Basic ${encodedAuthInformation}`,
 		"Content-Type": "application/json",
 	};
-	var payload = { note: noteText };
-	var options = {
+	const payload = { note: noteText };
+	const options = {
 		method: "post",
 		headers: headers,
 		payload: JSON.stringify(payload),
@@ -123,7 +123,4 @@ function pokeNoteToOrder(orderNumber, noteText) {
 	if (response.getResponseCode() === 201) {
 		//console.log(responseData)
 		return responseData.id;
-	} else {
-		return "Error";
-	}
 }
