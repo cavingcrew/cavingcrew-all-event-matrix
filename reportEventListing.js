@@ -24,8 +24,8 @@ function readEventListing(stmt, cell) {
       WHERE cc_attendance="pending" 
         AND product_id <> "1272" 
         AND product_id <> "548" 
-        AND (STR_TO_DATE(cc_start_date, '%Y%m%d') BETWEEN '2024-01-01' AND '2024-12-31' 
-          OR STR_TO_DATE(cc_start_date, '%Y-%m-%d %H:%i:%s') BETWEEN '2024-01-01' AND '2024-12-31') 
+        AND (STR_TO_DATE(cc_start_date, '%Y%m%d') BETWEEN '2024-09-01' AND '2025-12-31' 
+          OR STR_TO_DATE(cc_start_date, '%Y-%m-%d %H:%i:%s') BETWEEN '2024-09-01' AND '2025-12-31') 
       GROUP BY product_id 
       ORDER BY 
         CASE 

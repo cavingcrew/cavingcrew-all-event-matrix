@@ -1,5 +1,4 @@
 function pokeToWordPressOrders(data, order_id) {
-	//console.log("Wordpress " + data);
 
 	const encodedAuthInformation = Utilities.base64Encode(
 		`${apiusername}:${apipassword}`,
@@ -80,7 +79,6 @@ function getProductVariations(productId) {
 }
 
 function pokeToWooUserMeta(data, user_id) {
-	//console.log("Wordpress " + data);
 
 	const encodedAuthInformation = Utilities.base64Encode(
 		`${apiusername}:${apipassword}`,
@@ -92,7 +90,7 @@ function pokeToWooUserMeta(data, user_id) {
 		headers: headers, // Convert the JavaScript object to a JSON string.
 		payload: JSON.stringify(data),
 	};
-	apiUrl = `https://www.${apidomain}/wp-json/wc/v3/customers/${user_id}`;
+	const apiUrl = `https://www.${apidomain}/wp-json/wc/v3/customers/${user_id}`;
 
 	const response = UrlFetchApp.fetch(apiUrl, options);
 	const responseData = JSON.parse(response.getContentText());
