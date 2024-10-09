@@ -25,9 +25,9 @@ function pokeToWordPressOrders(data, order_id) {
 
 function pokeToWordPressProducts(data, product_id, variation_id = null) {
 	const encodedAuthInformation = Utilities.base64Encode(
-		apiusername + ":" + apipassword,
+		`${apiusername}:${apipassword}`,
 	);
-	const headers = { Authorization: "Basic " + encodedAuthInformation };
+	const headers = { Authorization: `Basic ${encodedAuthInformation}` };
 	const options = {
 		method: "post",
 		contentType: "application/json",
@@ -35,10 +35,9 @@ function pokeToWordPressProducts(data, product_id, variation_id = null) {
 		payload: JSON.stringify(data),
 	};
 
-	let apiUrl =
-		"https://www." + apidomain + "/wp-json/wc/v3/products/" + product_id;
+	let apiUrl = `https://www.${apidomain}/wp-json/wc/v3/products/${product_id}`;
 	if (variation_id) {
-		apiUrl += "/variations/" + variation_id;
+		apiUrl += `/variations/${variation_id}`;
 	}
 
 	var response = UrlFetchApp.fetch(apiUrl, options);
