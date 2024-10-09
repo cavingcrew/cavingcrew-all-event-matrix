@@ -1,7 +1,7 @@
 function readTransport(stmt, cell) {
-  makeReport(stmt, {
-    sheetName: "Transport",
-    query: `
+	makeReport(stmt, {
+		sheetName: "Transport",
+		query: `
       SELECT
         \`first_name\` AS "First Name",
         \`nickname\` AS "Facebook Name",
@@ -15,11 +15,26 @@ function readTransport(stmt, cell) {
       WHERE product_id=${cell} AND status="wc-processing"
       ORDER BY \`transport-need-lift\` ASC
     `,
-    formatting: [
-      { type: 'color', column: "Needs Lift", search: "Yes", color: colors.lightRed },
-      { type: 'color', column: "Offering Lift", search: "Yes", color: colors.lightGreen },
-      { type: 'text', column: "Needs Lift", search: "No", color: colors.grey },
-      { type: 'text', column: "Offering Lift", search: "No", color: colors.grey }
-    ]
-  });
+		formatting: [
+			{
+				type: "color",
+				column: "Needs Lift",
+				search: "Yes",
+				color: colors.lightRed,
+			},
+			{
+				type: "color",
+				column: "Offering Lift",
+				search: "Yes",
+				color: colors.lightGreen,
+			},
+			{ type: "text", column: "Needs Lift", search: "No", color: colors.grey },
+			{
+				type: "text",
+				column: "Offering Lift",
+				search: "No",
+				color: colors.grey,
+			},
+		],
+	});
 }

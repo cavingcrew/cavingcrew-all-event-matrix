@@ -5,6 +5,8 @@ function onOpen() {
 		.addItem("Mark Late Bail", "markLateBail")
 		.addItem("Mark No Show", "markNoShow")
 		.addSeparator()
+		.addItem("Mark Cancelled by the Crew", "markCrewCancelled")
+		.addSeparator()
 		.addItem("Mark Duplicate", "markDuplicate")
 		.addSeparator()
 		.addItem("Mark Attended", "markAttended")

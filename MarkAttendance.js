@@ -78,6 +78,22 @@ function markLateBail() {
 	);
 }
 
+function markCrewCancelled() {
+	const attendancetype = "Crew Cancel";
+	const attendanceshow = "Cancelled by the Crew";
+	const orderstatus = "completed";
+	const metakey = "cc_attendance";
+	const metavalue = "crew_cancelled";
+
+	markAttendance(
+		attendancetype,
+		attendanceshow,
+		orderstatus,
+		metakey,
+		metavalue,
+	);
+}
+
 function markNoRegisterShow() {
 	const attendancetype = "No Register Show";
 	const attendanceshow = "No Register Show";
