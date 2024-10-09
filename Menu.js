@@ -20,6 +20,7 @@ function onOpen() {
       .addItem('Refresh Admin', 'refreshAdmin')
       .addItem('Refresh Transport', 'refreshTransport')
       .addItem('Refresh Buddy', 'refreshBuddy')
+      .addItem('Refresh Event Listing', 'refreshEventListing')
       .addSeparator()
       .addItem('Refresh Event Listings', 'eventListing')
       .addToUi();
@@ -67,6 +68,14 @@ function refreshBuddy() {
   var conn = Jdbc.getConnection(url, username, password);
   var stmt = conn.createStatement();
   readBuddy(stmt);
+  stmt.close();
+  conn.close();
+}
+
+function refreshEventListing() {
+  var conn = Jdbc.getConnection(url, username, password);
+  var stmt = conn.createStatement();
+  readEventListing(stmt);
   stmt.close();
   conn.close();
 }
