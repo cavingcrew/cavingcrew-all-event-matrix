@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Google Apps Script matrix for trip sign up for the Caving Crew.",
   "scripts": {
-    "push": "clasp push --auth ~/.clasprc.timmydobson.json",
+    "push": "clasp push --auth ~/.clasprc.timmydobson.json --force",
     "pull": "clasp pull --auth ~/.clasprc.timmydobson.json",
     "watch": "clasp push --watch --auth ~/.clasprc.timmydobson.json",
     "open": "clasp open --auth ~/.clasprc.timmydobson.json",
