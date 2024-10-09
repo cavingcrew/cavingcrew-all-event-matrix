@@ -205,7 +205,7 @@ var response = UrlFetchApp.fetch(url, options);
 			headers: headers, // Convert the JavaScript object to a JSON string.
 			payload: JSON.stringify(data),
 		};
-		url = `https://www.${apidomain}/wp-json/wc/v3/orders/${order_id}`;
+		const url = `https://www.${apidomain}/wp-json/wc/v3/orders/${order_id}`;
 
 		const response = UrlFetchApp.fetch(url, options);
 		console.log(response);
