@@ -59,7 +59,7 @@ function getProductById(productId) {
 		headers: headers,
 	};
 
-	var response = UrlFetchApp.fetch(apiUrl, options);
+	const response = UrlFetchApp.fetch(apiUrl, options);
 	return JSON.parse(response.getContentText());
 }
 
@@ -95,7 +95,7 @@ function pokeToWooUserMeta(data, user_id) {
 	apiUrl = `https://www.${apidomain}/wp-json/wc/v3/customers/${user_id}`;
 
 	var response = UrlFetchApp.fetch(apiUrl, options);
-	var responseData = JSON.parse(response.getContentText());
+	const responseData = JSON.parse(response.getContentText());
 	if (response.getResponseCode() === 200) {
 		return responseData;
 	}
