@@ -2,21 +2,21 @@ function pokeToWordPressOrders(data, order_id) {
 	//console.log("Wordpress " + data);
 
 	const encodedAuthInformation = Utilities.base64Encode(
-		apiusername + ":" + apipassword,
+		`${apiusername}:${apipassword}`,
 	);
-	const headers = { Authorization: "Basic " + encodedAuthInformation };
+	const headers = { Authorization: `Basic ${encodedAuthInformation}` };
 	const options = {
 		method: "post",
 		contentType: "application/json",
 		headers: headers, // Convert the JavaScript object to a JSON string.
 		payload: JSON.stringify(data),
 	};
-	apiUrl = "https://www." + apidomain + "/wp-json/wc/v3/orders/" + order_id;
+	apiUrl = `https://www.${apidomain}/wp-json/wc/v3/orders/${order_id}`;
 
 	var response = UrlFetchApp.fetch(apiUrl, options);
 	var responseData = JSON.parse(response.getContentText());
 	//console.log(responseData)
-	if (response.getResponseCode() == 200) {
+	if (response.getResponseCode() === 200) {
 		return responseData.id;
 	} else {
 		return "Error";
@@ -43,20 +43,18 @@ function pokeToWordPressProducts(data, product_id, variation_id = null) {
 
 	var response = UrlFetchApp.fetch(apiUrl, options);
 	var responseData = JSON.parse(response.getContentText());
-	if (response.getResponseCode() == 200) {
+	if (response.getResponseCode() === 200) {
 		return responseData.id;
-	} else {
-		return "Error";
 	}
+	return "Error";
 }
 
 function getProductById(productId) {
 	const encodedAuthInformation = Utilities.base64Encode(
-		apiusername + ":" + apipassword,
+		`${apiusername}:${apipassword}`,
 	);
-	const headers = { Authorization: "Basic " + encodedAuthInformation };
-	const apiUrl =
-		"https://www." + apidomain + "/wp-json/wc/v3/products/" + productId;
+	const headers = { Authorization: `Basic ${encodedAuthInformation}` };
+	const apiUrl = `https://www.${apidomain}/wp-json/wc/v3/products/${productId}`;
 
 	const options = {
 		method: "get",
@@ -69,15 +67,10 @@ function getProductById(productId) {
 
 function getProductVariations(productId) {
 	const encodedAuthInformation = Utilities.base64Encode(
-		apiusername + ":" + apipassword,
+		`${apiusername}:${apipassword}`,
 	);
-	const headers = { Authorization: "Basic " + encodedAuthInformation };
-	const apiUrl =
-		"https://www." +
-		apidomain +
-		"/wp-json/wc/v3/products/" +
-		productId +
-		"/variations";
+	const headers = { Authorization: `Basic ${encodedAuthInformation}` };
+	const apiUrl = `https://www.${apidomain}/wp-json/wc/v3/products/${productId}/variations`;
 
 	const options = {
 		method: "get",
@@ -92,24 +85,23 @@ function pokeToWooUserMeta(data, user_id) {
 	//console.log("Wordpress " + data);
 
 	const encodedAuthInformation = Utilities.base64Encode(
-		apiusername + ":" + apipassword,
+		`${apiusername}:${apipassword}`,
 	);
-	const headers = { Authorization: "Basic " + encodedAuthInformation };
+	const headers = { Authorization: `Basic ${encodedAuthInformation}` };
 	const options = {
 		method: "post",
 		contentType: "application/json",
 		headers: headers, // Convert the JavaScript object to a JSON string.
 		payload: JSON.stringify(data),
 	};
-	apiUrl = "https://www." + apidomain + "/wp-json/wc/v3/customers/" + user_id;
+	apiUrl = `https://www.${apidomain}/wp-json/wc/v3/customers/${user_id}`;
 
 	var response = UrlFetchApp.fetch(apiUrl, options);
 	var responseData = JSON.parse(response.getContentText());
-	if (response.getResponseCode() == 200) {
+	if (response.getResponseCode() === 200) {
 		return responseData;
-	} else {
-		return "Error";
 	}
+	return "Error";
 }
 
 function pokeNoteToOrder(orderNumber, noteText) {
