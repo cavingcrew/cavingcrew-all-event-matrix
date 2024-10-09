@@ -13,9 +13,9 @@
  */
 
 function readEventListing(stmt, cell) {
-  makeReport(stmt, {
-    sheetName: "Event Listing",
-    query: `
+	makeReport(stmt, {
+		sheetName: "Event Listing",
+		query: `
       SELECT distinct 
         SUBSTRING_INDEX(\`order_item_name\`, ' - ', 1) AS "Trip Name", 
         \`product_id\` AS "ID", 
@@ -33,6 +33,6 @@ function readEventListing(stmt, cell) {
           ELSE STR_TO_DATE(cc_start_date, '%Y%m%d') 
         END Desc
     `,
-    formatting: []
-  });
+		formatting: [],
+	});
 }
