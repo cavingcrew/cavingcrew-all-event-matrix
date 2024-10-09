@@ -1,16 +1,15 @@
 function sendAllCragAssignments(action) {
 	try {
-		var sconn = Jdbc.getConnection(url, username, password);
-		var sstmt = sconn.createStatement();
+		let data;
+		const sconn = Jdbc.getConnection(url, username, password);
+		const sstmt = sconn.createStatement();
 
 		const product_id = setupCell("Dashboard", "B49");
 		const active_user = Session.getActiveUser().getEmail();
 		const currentUnixTime = Date.now();
 
-		var order_results = sstmt.executeQuery(
-			'SELECT distinct order_id from jtl_order_product_customer_lookup where product_id="' +
-				product_id +
-				'"  AND status="wc-processing" AND cc_attendance="pending" LIMIT 99',
+		const order_results = sstmt.executeQuery(
+			`SELECT distinct order_id from jtl_order_product_customer_lookup where product_id="${product_id}"  AND status="wc-processing" AND cc_attendance="pending" LIMIT 99`
 		);
 
 		while (order_results.next()) {
@@ -18,7 +17,7 @@ function sendAllCragAssignments(action) {
 			console.log(order_id);
 
 			if (action === "close") {
-				var data = {
+				data = {
 					status: "completed",
 					meta_data: [
 						{
@@ -42,7 +41,7 @@ function sendAllCragAssignments(action) {
 		}
 
 		if (action === "close") {
-			var data = {
+			data = {
 				status: "private",
 				meta_data: [
 					{
@@ -71,16 +70,16 @@ function markAttendedAndCloseEvent() {
 		Browser.msgBox(
 			"This will mark all those who haven't been cancelled as ATTENDED, close the event, and set it to private",
 			Browser.Buttons.OK_CANCEL,
-		) == "ok"
+		) === "ok"
 	) {
 		if (
 			Browser.msgBox(
 				"This should be done after caving",
 				Browser.Buttons.OK_CANCEL,
-			) == "ok"
+			) === "ok"
 		) {
 			if (
-				Browser.msgBox("This cannot be undone", Browser.Buttons.OK_CANCEL) ==
+				Browser.msgBox("This cannot be undone", Browser.Buttons.OK_CANCEL) ===
 				"ok"
 			) {
 				sendAllCragAssignments("close");
