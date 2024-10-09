@@ -13,7 +13,7 @@ function refreshCredentials() {
 		);
 	}
 
-	data.forEach((row) => {
+	for (const row of data) {
 		const label = row[labelIndex];
 		const value = row[valueIndex];
 		if (label && value) {
@@ -22,17 +22,17 @@ function refreshCredentials() {
 				value,
 			);
 		}
-	});
+	}
 }
 
 function createNightlyTrigger() {
 	// Delete existing triggers
 	const triggers = ScriptApp.getProjectTriggers();
-	triggers.forEach((trigger) => {
+	for (const trigger of triggers) {
 		if (trigger.getHandlerFunction() === "refreshCredentials") {
 			ScriptApp.deleteTrigger(trigger);
 		}
-	});
+	}
 
 	// Create a new trigger to run at 1:00 AM every day
 	ScriptApp.newTrigger("refreshCredentials")
