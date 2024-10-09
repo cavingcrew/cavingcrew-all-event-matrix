@@ -23,26 +23,26 @@ const colors = {
 };
 
 function setupSheet(name) {
-	var spreadsheet = SpreadsheetApp.getActive();
-	var sheet = spreadsheet.getSheetByName(name);
+	const spreadsheet = SpreadsheetApp.getActive();
+	const sheet = spreadsheet.getSheetByName(name);
 	sheet.clearContents();
 	sheet.clearFormats();
 	return sheet;
 }
 
 function setupCell(name, range) {
-	var spreadsheet = SpreadsheetApp.getActive();
+	const spreadsheet = SpreadsheetApp.getActive();
 	const sheet = spreadsheet.getSheetByName(name);
 	let cellValue = sheet.getRange(range).getValue();
 
-	if (isNaN(cellValue) || cellValue === "") {
+	if (Number.isNaN(cellValue) || cellValue === "") {
 		// Rerun eventListing
 		eventListing();
 
 		// Try again
 		cellValue = sheet.getRange(range).getValue();
 
-		if (isNaN(cellValue) || cellValue === "") {
+		if (Number.isNaN(cellValue) || cellValue === "") {
 			throw new Error("Invalid event selected - please try again");
 		}
 	}
@@ -89,30 +89,30 @@ function getColumnRange(sheet, columnHeader) {
 
 function setColoursFormat(sheet, columnHeader, search, colour) {
 	const range = getColumnRange(sheet, columnHeader);
-	var rule = SpreadsheetApp.newConditionalFormatRule()
+	const rule = SpreadsheetApp.newConditionalFormatRule()
 		.whenTextContains(search)
 		.setBackground(colour)
 		.setRanges([range])
 		.build();
-	var rules = sheet.getConditionalFormatRules();
+	const rules = sheet.getConditionalFormatRules();
 	rules.push(rule);
 	sheet.setConditionalFormatRules(rules);
 }
 
 function setTextFormat(sheet, columnHeader, search, colour) {
 	const range = getColumnRange(sheet, columnHeader);
-	var rule = SpreadsheetApp.newConditionalFormatRule()
+	const rule = SpreadsheetApp.newConditionalFormatRule()
 		.whenTextContains(search)
 		.setFontColor(colour)
 		.setRanges([range])
 		.build();
-	var rules = sheet.getConditionalFormatRules();
+	const rules = sheet.getConditionalFormatRules();
 	rules.push(rule);
 	sheet.setConditionalFormatRules(rules);
 }
 
 function setWrapped(sheet, columnHeader) {
-	var range = getColumnRange(sheet, columnHeader);
+	const range = getColumnRange(sheet, columnHeader);
 	range.setWrap(true);
 	sheet.setColumnWidth(range.getColumn(), 300); // Set column width to 300 pixels
 }
@@ -123,14 +123,14 @@ function setColoursFormatLessThanOrEqualTo(
 	search,
 	colour,
 ) {
-	search = Number(search);
+	const numberSearch = Number(search);
 	const range = getColumnRange(sheet, columnHeader);
-	var rule = SpreadsheetApp.newConditionalFormatRule()
-		.whenNumberLessThanOrEqualTo(search)
+	const rule = SpreadsheetApp.newConditionalFormatRule()
+		.whenNumberLessThanOrEqualTo(numberSearch)
 		.setBackground(colour)
 		.setRanges([range])
 		.build();
-	var rules = sheet.getConditionalFormatRules();
+	const rules = sheet.getConditionalFormatRules();
 	rules.push(rule);
 	sheet.setConditionalFormatRules(rules);
 }
@@ -144,14 +144,14 @@ function makeReport(stmt, reportConfig) {
 	const cell = setupCell("Dashboard", "B49");
 	const sheet = setupSheet(reportConfig.sheetName);
 
-	var results = stmt.executeQuery(
+	const results = stmt.executeQuery(
 		reportConfig.query.replace(/\${cell}/g, cell),
 	);
 
 	appendToSheet(sheet, results);
 
 	if (reportConfig.formatting) {
-		reportConfig.formatting.forEach((format) => {
+		for (const format of reportConfig.formatting) {
 			if (format.type === "color") {
 				setColoursFormat(sheet, format.column, format.search, format.color);
 			} else if (format.type === "text") {
@@ -170,14 +170,14 @@ function makeReport(stmt, reportConfig) {
 			} else if (format.type === "columnWidth") {
 				setColumnWidth(sheet, format.column, format.width);
 			}
-		});
+		}
 	}
 
 	results.close();
 }
 
 function setColumnWidth(sheet, columnHeader, width) {
-	var range = getColumnRange(sheet, columnHeader);
+	const range = getColumnRange(sheet, columnHeader);
 	sheet.setColumnWidth(range.getColumn(), width);
 }
 
@@ -198,7 +198,7 @@ function getOrderIdFromActiveCell() {
 
 	const orderId = sheet.getRange(activeRow, orderIdColumnIndex).getValue();
 
-	if (!orderId || isNaN(orderId)) {
+	if (!orderId || Number.isNaN(orderId)) {
 		throw new Error(
 			"Invalid Order ID. Please make sure you've selected a valid order.",
 		);
