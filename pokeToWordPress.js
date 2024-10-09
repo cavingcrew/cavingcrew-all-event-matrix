@@ -123,4 +123,5 @@ function pokeNoteToOrder(orderNumber, noteText) {
 	if (response.getResponseCode() === 201) {
 		//console.log(responseData)
 		return responseData.id;
+	}
 }
