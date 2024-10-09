@@ -116,28 +116,28 @@ function assignTripDirector() {
 }
 
 function assignAssistantTripDirector() {
-	var volunteerrole = "Assistant Trip Director";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "event_assistant";
+	const volunteerrole = "Assistant Trip Director";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "event_assistant";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
 
 function markVolunteerClear() {
-	var volunteerrole = "No Role";
-	var metakey = "cc_volunteer";
-	var orderstatus = "processing";
-	var metavalue = "none";
+	const volunteerrole = "No Role";
+	const metakey = "cc_volunteer";
+	const orderstatus = "processing";
+	const metavalue = "none";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
 
 function assignRole(volunteerrole, orderstatus, metakey, metavalue) {
-	var spreadsheet = SpreadsheetApp.getActive();
-	var sheet = spreadsheet.getSheetByName("Volunteering");
-	var active_range = sheet.getActiveRange();
-	var currentRow = active_range.getRowIndex();
+	const spreadsheet = SpreadsheetApp.getActive();
+	const sheet = spreadsheet.getSheetByName("Volunteering");
+	const active_range = sheet.getActiveRange();
+	const currentRow = active_range.getRowIndex();
 	//var currentRow = "5";
 	console.log(currentRow);
 
@@ -150,8 +150,8 @@ function assignRole(volunteerrole, orderstatus, metakey, metavalue) {
 		return;
 	}
 
-	var order_id = sheet.getRange(currentRow, 26, 1, 1).getValue(); /// get submission ID 1 BV ( was 67)
-	var first_name = sheet.getRange(currentRow, 1, 1, 1).getValue(); /// get submission ID 1 BV ( was 67)
+	const order_id = sheet.getRange(currentRow, 26, 1, 1).getValue(); /// get submission ID 1 BV ( was 67)
+	const first_name = sheet.getRange(currentRow, 1, 1, 1).getValue(); /// get submission ID 1 BV ( was 67)
 
 	console.log(order_id);
 
