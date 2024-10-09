@@ -14,12 +14,12 @@ function openVariableProductSpaces(product) {
 	const ui = SpreadsheetApp.getUi();
 
 	let htmlOutput = '<form id="variationForm">';
-	variations.forEach((variation) => {
+	for (const variation of variations) {
 		htmlOutput += `
       <label for="${variation.id}">${variation.attributes[0].option}:</label>
       <input type="number" id="${variation.id}" name="${variation.id}" value="${variation.stock_quantity || 0}" min="0"><br><br>
     `;
-	});
+	}
 	htmlOutput += '<input type="submit" value="Update Spaces">';
 	htmlOutput += "</form>";
 
@@ -84,13 +84,13 @@ function closeSignup() {
 
 function closeVariableProductSpaces(product) {
 	const variations = getProductVariations(product.id);
-	variations.forEach((variation) => {
+	for (const variation of variations) {
 		const data = {
 			stock_quantity: 0,
 			manage_stock: true,
 		};
 		pokeToWordPressProducts(data, product.id, variation.id);
-	});
+	}
 
 	const ui = SpreadsheetApp.getUi();
 	ui.alert("Signup closed successfully. All places set to 0.");
