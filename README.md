@@ -11,7 +11,7 @@ The project consists of several JavaScript files, each responsible for different
 - `CommonFunctions.js`: Contains shared utility functions and configurations.
 - `Diet.js`: Handles dietary information for participants.
 - `Event List.js`: Manages the list of events.
-- `Everyone Functions.js`: Contains functions that apply to all participants.
+- `EveryoneFunctions.js`: Contains functions that apply to all participants.
 - `Gear.js`: Manages gear-related information.
 - `MarkAttendance.js`: Handles attendance marking functionality.
 - `Menu.js`: Creates the custom menu in the Google Sheets UI.
