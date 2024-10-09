@@ -26,46 +26,46 @@ function assignKitCoordinator() {
 }
 
 function assignBuddyCoordinator() {
-	var volunteerrole = "Buddy Coordinator";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "buddy_coordinator";
+	const volunteerrole = "Buddy Coordinator";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "buddy_coordinator";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
 
 function assignTripReporter() {
-	var volunteerrole = "Trip Reporter";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "postpromo1";
+	const volunteerrole = "Trip Reporter";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "postpromo1";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
 
 function assignBreakfastMarshal() {
-	var volunteerrole = "Breakfast Marshal";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "breakfast_marshal";
+	const volunteerrole = "Breakfast Marshal";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "breakfast_marshal";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
 
 function assignLunchMarshal() {
-	var volunteerrole = "Lunch Marshal";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "lunch_marshal";
+	const volunteerrole = "Lunch Marshal";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "lunch_marshal";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
 
 function assignCovidMarshal() {
-	var volunteerrole = "Covid Marshal";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "covid_marshal";
+	const volunteerrole = "Covid Marshal";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "covid_marshal";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
