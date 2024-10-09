@@ -29,46 +29,46 @@ function giveEveningMealChefTraining() {
 }
 
 function giveEveningMealChefToLearn() {
-	var meta_key = "competency_evening_meal_chef";
-	var meta_value = "Keen to Learn";
+	const meta_key = "competency_evening_meal_chef";
+	const meta_value = "Keen to Learn";
 	giveCompetency(meta_key, meta_value);
 }
 
 function giveBreakfastLunchChef() {
-	var meta_key = "competency_breakfast_lunch_chef";
-	var meta_value = "Signed Off";
+	const meta_key = "competency_breakfast_lunch_chef";
+	const meta_value = "Signed Off";
 	giveCompetency(meta_key, meta_value);
 }
 
 function giveBreakfastLunchChefTraining() {
-	var meta_key = "competency_breakfast_lunch_chef";
-	var meta_value = "In Training";
+	const meta_key = "competency_breakfast_lunch_chef";
+	const meta_value = "In Training";
 	giveCompetency(meta_key, meta_value);
 }
 
 function giveBreakfastLunchChefToLearn() {
-	var meta_key = "competency_breakfast_lunch_chef";
-	var meta_value = "Keen to Learn";
+	const meta_key = "competency_breakfast_lunch_chef";
+	const meta_value = "Keen to Learn";
 	giveCompetency(meta_key, meta_value);
 }
 
 function giveLiftCoordinator() {
-	var meta_key = "competency_lift_coordinator";
-	var meta_value = "Signed Off";
+	const meta_key = "competency_lift_coordinator";
+	const meta_value = "Signed Off";
 	giveCompetency(meta_key, meta_value);
 }
 
 function giveActivitiesCoord() {
-	var meta_key = "competency_activities_coordinator";
-	var meta_value = "Signed Off";
+	const meta_key = "competency_activities_coordinator";
+	const meta_value = "Signed Off";
 	giveCompetency(meta_key, meta_value);
 }
 
 function giveCompetency(meta_key, meta_value) {
-	var spreadsheet = SpreadsheetApp.getActive();
-	var sheet = spreadsheet.getSheetByName("Volunteering");
-	var active_range = sheet.getActiveRange();
-	var currentRow = active_range.getRowIndex();
+	const spreadsheet = SpreadsheetApp.getActive();
+	const sheet = spreadsheet.getSheetByName("Volunteering");
+	const active_range = sheet.getActiveRange();
+	const currentRow = active_range.getRowIndex();
 	//var currentRow = "18";
 	console.log(currentRow);
 	//var meta_key = "competency_indoor_trip_director"
@@ -83,8 +83,8 @@ function giveCompetency(meta_key, meta_value) {
 		return;
 	}
 
-	var user_id = sheet.getRange(currentRow, 19, 1, 1).getValue(); /// get submission ID 1 BV ( was 67)
-	var first_name = sheet.getRange(currentRow, 1, 1, 1).getValue(); /// get submission ID 1 BV ( was 67)
+	const user_id = sheet.getRange(currentRow, 19, 1, 1).getValue(); /// get submission ID 1 BV ( was 67)
+	const first_name = sheet.getRange(currentRow, 1, 1, 1).getValue(); /// get submission ID 1 BV ( was 67)
 
 	//console.log(user_id);
 
