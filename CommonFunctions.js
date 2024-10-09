@@ -108,7 +108,9 @@ function setColoursFormat(sheet, columnHeader, search, colour) {
 		rules.push(rule);
 		sheet.setConditionalFormatRules(rules);
 	} catch (error) {
-		console.log(`Error setting colour format for column '${columnHeader}': ${error.message}`);
+		console.log(
+			`Error setting colour format for column '${columnHeader}': ${error.message}`,
+		);
 	}
 }
 
@@ -186,14 +188,18 @@ function makeReport(stmt, reportConfig) {
 						setColumnWidth(sheet, format.column, format.width);
 					}
 				} catch (formatError) {
-					console.log(`Error applying format in ${reportConfig.sheetName}: ${formatError.message}`);
+					console.log(
+						`Error applying format in ${reportConfig.sheetName}: ${formatError.message}`,
+					);
 				}
 			}
 		}
 
 		results.close();
 	} catch (error) {
-		console.log(`Error in makeReport for ${reportConfig.sheetName}: ${error.message}`);
+		console.log(
+			`Error in makeReport for ${reportConfig.sheetName}: ${error.message}`,
+		);
 	}
 }
 
