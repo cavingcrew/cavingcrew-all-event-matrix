@@ -141,8 +141,7 @@ function markAttendance(
 				headers: headers,
 				payload: JSON.stringify(data),
 			};
-			const url =
-				`https://www.${apidomain}/wp-json/wc/v3/orders/${order_id}`;
+			const url = `https://www.${apidomain}/wp-json/wc/v3/orders/${order_id}`;
 
 			const response = UrlFetchApp.fetch(url, options);
 			console.log(response);
