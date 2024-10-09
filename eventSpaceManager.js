@@ -38,9 +38,9 @@ function openSimpleProductSpaces(product) {
 		ui.ButtonSet.OK_CANCEL,
 	);
 
-	if (result.getSelectedButton() == ui.Button.OK) {
+	if (result.getSelectedButton() === ui.Button.OK) {
 		const newStock = Number.parseInt(result.getResponseText());
-		if (!isNaN(newStock) && newStock >= 0) {
+		if (!Number.isNaN(newStock) && newStock >= 0) {
 			updateProductStock(product.id, newStock);
 			ui.alert("Event spaces updated successfully!");
 		} else {
