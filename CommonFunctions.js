@@ -167,32 +167,7 @@ function makeReport(stmt, reportConfig) {
 		appendToSheet(sheet, results);
 
 		if (reportConfig.formatting && sheet.getLastRow() > 1) {
-			for (const format of reportConfig.formatting) {
-				try {
-					if (format.type === "color") {
-						setColoursFormat(sheet, format.column, format.search, format.color);
-					} else if (format.type === "text") {
-						setTextFormat(sheet, format.column, format.search, format.color);
-					} else if (format.type === "wrap") {
-						setWrapped(sheet, format.column);
-					} else if (format.type === "numberFormat") {
-						setNumberFormat(sheet, format.column, format.format);
-					} else if (format.type === "colorLessThanOrEqual") {
-						setColoursFormatLessThanOrEqualTo(
-							sheet,
-							format.column,
-							format.value,
-							format.color,
-						);
-					} else if (format.type === "columnWidth") {
-						setColumnWidth(sheet, format.column, format.width);
-					}
-				} catch (formatError) {
-					console.log(
-						`Error applying format in ${reportConfig.sheetName}: ${formatError.message}`,
-					);
-				}
-			}
+			applyFormatting(sheet, reportConfig);
 		}
 
 		results.close();
@@ -200,6 +175,42 @@ function makeReport(stmt, reportConfig) {
 		console.log(
 			`Error in makeReport for ${reportConfig.sheetName}: ${error.message}`,
 		);
+	}
+}
+
+function applyFormatting(sheet, reportConfig) {
+	for (const format of reportConfig.formatting) {
+		try {
+			switch (format.type) {
+				case "color":
+					setColoursFormat(sheet, format.column, format.search, format.color);
+					break;
+				case "text":
+					setTextFormat(sheet, format.column, format.search, format.color);
+					break;
+				case "wrap":
+					setWrapped(sheet, format.column);
+					break;
+				case "numberFormat":
+					setNumberFormat(sheet, format.column, format.format);
+					break;
+				case "colorLessThanOrEqual":
+					setColoursFormatLessThanOrEqualTo(
+						sheet,
+						format.column,
+						format.value,
+						format.color,
+					);
+					break;
+				case "columnWidth":
+					setColumnWidth(sheet, format.column, format.width);
+					break;
+			}
+		} catch (formatError) {
+			console.log(
+				`Error applying format in ${reportConfig.sheetName}: ${formatError.message}`,
+			);
+		}
 	}
 }
 
