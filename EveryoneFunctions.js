@@ -9,7 +9,7 @@ function sendAllCragAssignments(action) {
 		const currentUnixTime = Date.now();
 
 		const order_results = sstmt.executeQuery(
-			`SELECT distinct order_id from jtl_order_product_customer_lookup where product_id="${product_id}"  AND status="wc-processing" AND cc_attendance="pending" LIMIT 99`
+			`SELECT distinct order_id from jtl_order_product_customer_lookup where product_id="${product_id}"  AND status="wc-processing" AND cc_attendance="pending" LIMIT 99`,
 		);
 
 		while (order_results.next()) {
