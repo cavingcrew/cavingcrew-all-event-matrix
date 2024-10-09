@@ -31,6 +31,7 @@ function onOpen() {
 		.addItem("Open Event Spaces", "openEventSpaces")
 		.addItem("Open Signup", "openSignup")
 		.addItem("Close Signup", "closeSignup")
+		.addItem("Cancel Whole Event", "cancelWholeEvent")
 		.addToUi();
 }
 
