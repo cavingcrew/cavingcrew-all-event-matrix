@@ -94,7 +94,7 @@ function pokeToWooUserMeta(data, user_id) {
 	};
 	apiUrl = `https://www.${apidomain}/wp-json/wc/v3/customers/${user_id}`;
 
-	var response = UrlFetchApp.fetch(apiUrl, options);
+	const response = UrlFetchApp.fetch(apiUrl, options);
 	const responseData = JSON.parse(response.getContentText());
 	if (response.getResponseCode() === 200) {
 		return responseData;
@@ -117,7 +117,7 @@ function pokeNoteToOrder(orderNumber, noteText) {
 		headers: headers,
 		payload: JSON.stringify(payload),
 	};
-	var response = UrlFetchApp.fetch(apiUrl, options);
+	const response = UrlFetchApp.fetch(apiUrl, options);
 	const responseData = JSON.parse(response.getContentText());
 	//console.log(response.getResponseCode())
 	if (response.getResponseCode() === 201) {
