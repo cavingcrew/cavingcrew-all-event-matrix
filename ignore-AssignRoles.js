@@ -71,46 +71,46 @@ function assignCovidMarshal() {
 }
 
 function assignEveningMealWashingUpMarshal() {
-	var volunteerrole = "Evening Meal Washing Up Marshal";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "evening_meal_washingup_marshal";
+	const volunteerrole = "Evening Meal Washing Up Marshal";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "evening_meal_washingup_marshal";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
 
 function assignHeadChef() {
-	var volunteerrole = "Head Chef";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "head_chef";
+	const volunteerrole = "Head Chef";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "head_chef";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
 
 function assignEveningMealChef() {
-	var volunteerrole = "Evening Meal Chef";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "evening_meal_chef";
+	const volunteerrole = "Evening Meal Chef";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "evening_meal_chef";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
 
 function assignLunchAndBreakfastChef() {
-	var volunteerrole = "Lunch and Breakfast Chef";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "lunch_breakfast_chef";
+	const volunteerrole = "Lunch and Breakfast Chef";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "lunch_breakfast_chef";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
 
 function assignTripDirector() {
-	var volunteerrole = "Trip Director";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "trip_director";
+	const volunteerrole = "Trip Director";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "trip_director";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
