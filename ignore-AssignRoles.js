@@ -1,26 +1,26 @@
 function assignLiftSharingCoordinator() {
-	var volunteerrole = "Lift Sharing Coordinator";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "transport_coordinator";
+	const volunteerrole = "Lift Sharing Coordinator";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "transport_coordinator";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
 
 function assignActivitesCoordinator() {
-	var volunteerrole = "Climbing & Activities Coordinator";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "climbing_coordinator";
+	const volunteerrole = "Climbing & Activities Coordinator";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "climbing_coordinator";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
 
 function assignKitCoordinator() {
-	var volunteerrole = "Gear and Kit Coordinator";
-	var metakey = "cc_volunteer";
-	var orderstatus = "on-hold";
-	var metavalue = "kit_coordinator";
+	const volunteerrole = "Gear and Kit Coordinator";
+	const metakey = "cc_volunteer";
+	const orderstatus = "on-hold";
+	const metavalue = "kit_coordinator";
 
 	assignRole(volunteerrole, orderstatus, metakey, metavalue);
 }
@@ -177,20 +177,15 @@ var response = UrlFetchApp.fetch(url, options);
 
 	if (
 		Browser.msgBox(
-			"Assign " +
-				volunteerrole +
-				" to " +
-				first_name +
-				"? \n Order " +
-				order_id,
+			`Assign ${volunteerrole} to ${first_name}? \n Order ${order_id}`,
 			Browser.Buttons.OK_CANCEL,
-		) == "ok"
+		) === "ok"
 	) {
 		const datetime = Date.now();
 
-		var cc_role_assigner = Session.getActiveUser().getEmail();
+		const cc_role_assigner = Session.getActiveUser().getEmail();
 
-		var data = {
+		const data = {
 			meta_data: [
 				{ key: metakey, value: metavalue },
 				{ key: "cc_volunteer_role_assigned_by", value: cc_role_assigner },
@@ -200,19 +195,19 @@ var response = UrlFetchApp.fetch(url, options);
 		};
 		console.log(orderstatus);
 
-		var encodedAuthInformation = Utilities.base64Encode(
-			apiusername + ":" + apipassword,
+		const encodedAuthInformation = Utilities.base64Encode(
+			`${apiusername}:${apipassword}`,
 		);
-		var headers = { Authorization: "Basic " + encodedAuthInformation };
-		var options = {
+		const headers = { Authorization: `Basic ${encodedAuthInformation}` };
+		const options = {
 			method: "post",
 			contentType: "application/json",
 			headers: headers, // Convert the JavaScript object to a JSON string.
 			payload: JSON.stringify(data),
 		};
-		url = "https://www." + apidomain + "/wp-json/wc/v3/orders/" + order_id;
+		url = `https://www.${apidomain}/wp-json/wc/v3/orders/${order_id}`;
 
-		var response = UrlFetchApp.fetch(url, options);
+		const response = UrlFetchApp.fetch(url, options);
 		console.log(response);
 
 		const assignedrole = [[metavalue]];
