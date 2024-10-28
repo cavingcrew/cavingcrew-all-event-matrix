@@ -155,7 +155,9 @@ function cancelWholeEvent() {
 			sstmt.close();
 			sconn.close();
 
-			Browser.msgBox("Event cancelled successfully. All attendees marked as 'clan_cancelled' and event set to private.");
+			Browser.msgBox(
+				"Event cancelled successfully. All attendees marked as 'clan_cancelled' and event set to private.",
+			);
 			readData(); // Refresh the data after cancelling the event
 		}
 	}
