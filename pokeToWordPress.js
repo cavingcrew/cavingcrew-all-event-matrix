@@ -1,5 +1,4 @@
 function pokeToWordPressOrders(data, order_id) {
-
 	const encodedAuthInformation = Utilities.base64Encode(
 		`${apiusername}:${apipassword}`,
 	);
@@ -79,7 +78,6 @@ function getProductVariations(productId) {
 }
 
 function pokeToWooUserMeta(data, user_id) {
-
 	const encodedAuthInformation = Utilities.base64Encode(
 		`${apiusername}:${apipassword}`,
 	);
