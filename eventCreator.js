@@ -44,83 +44,87 @@ const EVENT_TEMPLATES = {
 /**
  * Shows the modal dialog for creating a new event
  */
-function getEventDialogHtml() {
+function getClientScript(templates) {
   return `
-    <style>
-      body { font-family: Arial, sans-serif; padding: 20px; }
-      .form-group { margin-bottom: 20px; }
-      .radio-group { margin: 10px 0; }
-      label { display: block; margin-bottom: 5px; }
-      input[type="text"], input[type="datetime-local"] { 
-        width: 100%; 
-        padding: 8px;
-        margin-top: 5px;
-      }
-      button { 
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-      }
-      button:hover { background-color: #45a049; }
-    </style>
+    const templates = ${JSON.stringify(templates)};
+    
+    document.querySelectorAll('input[name="eventType"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        const template = templates[e.target.value];
+        document.getElementById('eventDetails').style.display = 'block';
+        document.getElementById('nameLabel').textContent = template.nameInstructions;
+        document.getElementById('eventName').placeholder = template.namePlaceholder;
+        document.getElementById('dateLabel').textContent = template.dateQuestion;
+      });
+    });
 
+    document.getElementById('eventForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const selectedType = document.querySelector('input[name="eventType"]:checked').value;
+      const eventName = document.getElementById('eventName').value;
+      const eventDate = document.getElementById('eventDate').value;
+
+      google.script.run
+        .withSuccessHandler((newPostId) => {
+          if (newPostId) {
+            window.open('https://www.cavingcrew.com/wp-admin/post.php?post=' + newPostId + '&action=edit');
+            google.script.host.close();
+          }
+        })
+        .createNewEvent(selectedType, eventName, eventDate);
+    });
+  `;
+}
+
+function getEventDialogHtml() {
+  const styles = `
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .form-group { margin-bottom: 20px; }
+    .radio-group { margin: 10px 0; }
+    label { display: block; margin-bottom: 5px; }
+    input[type="text"], input[type="datetime-local"] { 
+      width: 100%; 
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button { 
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover { background-color: #45a049; }
+  `;
+
+  const radioButtons = Object.entries(EVENT_TEMPLATES)
+    .map(([key, template]) => `
+      <div class="radio-group">
+        <input type="radio" name="eventType" value="${key}" id="${key}">
+        <label for="${key}">${template.label}</label>
+      </div>
+    `).join('');
+
+  return `
+    <style>${styles}</style>
     <form id="eventForm">
       <div class="form-group">
         <h3>Select Event Type</h3>
-        ${Object.entries(EVENT_TEMPLATES).map(([key, template]) => `
-          <div class="radio-group">
-            <input type="radio" name="eventType" value="${key}" id="${key}">
-            <label for="${key}">${template.label}</label>
-          </div>
-        `).join('')}
+        ${radioButtons}
       </div>
-
       <div id="eventDetails" style="display: none;">
         <div class="form-group">
           <label id="nameLabel"></label>
           <input type="text" id="eventName" required>
         </div>
-
         <div class="form-group">
           <label id="dateLabel"></label>
           <input type="datetime-local" id="eventDate" required>
         </div>
-
         <button type="submit">Create Event and Continue Editing</button>
       </div>
     </form>
-
-    <script>
-      const templates = ${JSON.stringify(EVENT_TEMPLATES)};
-      
-      document.querySelectorAll('input[name="eventType"]').forEach(radio => {
-        radio.addEventListener('change', (e) => {
-          const template = templates[e.target.value];
-          document.getElementById('eventDetails').style.display = 'block';
-          document.getElementById('nameLabel').textContent = template.nameInstructions;
-          document.getElementById('eventName').placeholder = template.namePlaceholder;
-          document.getElementById('dateLabel').textContent = template.dateQuestion;
-        });
-      });
-
-      document.getElementById('eventForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const selectedType = document.querySelector('input[name="eventType"]:checked').value;
-        const eventName = document.getElementById('eventName').value;
-        const eventDate = document.getElementById('eventDate').value;
-
-        google.script.run
-          .withSuccessHandler((newPostId) => {
-            if (newPostId) {
-              window.open(`https://www.cavingcrew.com/wp-admin/post.php?post=${newPostId}&action=edit`);
-              google.script.host.close();
-            }
-          })
-          .createNewEvent(selectedType, eventName, eventDate);
-      });
-    </script>
+    <script>${getClientScript(EVENT_TEMPLATES)}</script>
   `;
 }
 
