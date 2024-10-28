@@ -22,9 +22,8 @@ function onOpen() {
 		.addItem("Refresh Admin", "refreshAdmin")
 		.addItem("Refresh Transport", "refreshTransport")
 		.addItem("Refresh Buddy", "refreshBuddy")
-		.addItem("Refresh Event Listing", "refreshEventListing")
 		.addSeparator()
-		.addItem("Refresh Event Listings", "eventListing")
+		.addItem("Refresh Event Listing", "refreshEventListing")
 		.addToUi();
 
 	ui.createMenu("Event Management")
