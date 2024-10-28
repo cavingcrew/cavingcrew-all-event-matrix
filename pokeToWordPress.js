@@ -121,3 +121,33 @@ function pokeNoteToOrder(orderNumber, noteText) {
 		return responseData.id;
 	}
 }
+
+function createDuplicateProduct(originalProduct) {
+	const newProduct = Object.assign({}, originalProduct);
+	newProduct.id = "";
+	return newProduct;
+}
+
+function slugify(text) {
+	return text
+		.toLowerCase()
+		.replace(/[^\w\s-]/g, '')
+		.replace(/\s+/g, '-')
+		.replace(/-+/g, '-')
+		.trim();
+}
+
+function sendProductToWordPress(product) {
+	const encodedAuthInformation = Utilities.base64Encode(apiusername + ":" + apipassword);
+	const headers = { "Authorization": "Basic " + encodedAuthInformation };
+	const productUrl = "https://www." + apidomain + "/wp-json/wc/v3/products";
+	const options = {
+		"method": "post",
+		"contentType": "application/json",
+		"headers": headers,
+		"payload": JSON.stringify(product)
+	};
+	const response = UrlFetchApp.fetch(productUrl, options);
+	const newProduct = JSON.parse(response.getContentText());
+	return newProduct.id;
+}
