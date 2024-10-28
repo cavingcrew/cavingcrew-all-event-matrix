@@ -1,51 +1,49 @@
-
 /**
  * Event type definitions with associated WordPress template IDs and UI text
  */
 const EVENT_TEMPLATES = {
-  OVERNIGHT: {
-    id: 11583,
-    label: "Overnight Trip",
-    nameInstructions: "What's the name of this weekend trip?",
-    namePlaceholder: "Month Location Caving Weekend",
-    dateQuestion: "When does the trip start?"
-  },
-  TRAINING: {
-    id: 123,  // Replace with actual template ID
-    label: "Training Event",
-    nameInstructions: "What's the name of this training event?",
-    namePlaceholder: "SRT Training Session",
-    dateQuestion: "When is the training session?"
-  },
-  KNOWN_LOCATION: {
-    id: 11595,  // Replace with actual template ID
-    label: "Known Location Tuesday/Saturday Trip",
-    nameInstructions: "What's the name of this trip?",
-    namePlaceholder: "Box Mine Tuesday Evening Trip",
-    dateQuestion: "When is this trip?"
-  },
-  MYSTERY: {
-    id: 11576,  // Replace with actual template ID
-    label: "Tuesday Evening Mystery Trip",
-    nameInstructions: "What's the name of this mystery trip?",
-    namePlaceholder: "Mystery Tuesday Evening Trip",
-    dateQuestion: "When is this trip?"
-  },
-  GIGGLE: {
-    id: 11579,  // Replace with actual template ID
-    label: "Beginner Giggle Trip Mystery Trip",
-    nameInstructions: "What's the name of this GiggleTrip?",
-    namePlaceholder: "Bagshawe Beginners GiggleTrip XX/XX",
-    dateQuestion: "When is this trip?"
-  }
-
+	OVERNIGHT: {
+		id: 11583,
+		label: "Overnight Trip",
+		nameInstructions: "What's the name of this weekend trip?",
+		namePlaceholder: "Month Location Caving Weekend",
+		dateQuestion: "When does the trip start?",
+	},
+	TRAINING: {
+		id: 123, // Replace with actual template ID
+		label: "Training Event",
+		nameInstructions: "What's the name of this training event?",
+		namePlaceholder: "SRT Training Session",
+		dateQuestion: "When is the training session?",
+	},
+	KNOWN_LOCATION: {
+		id: 11595, // Replace with actual template ID
+		label: "Known Location Tuesday/Saturday Trip",
+		nameInstructions: "What's the name of this trip?",
+		namePlaceholder: "Box Mine Tuesday Evening Trip",
+		dateQuestion: "When is this trip?",
+	},
+	MYSTERY: {
+		id: 11576, // Replace with actual template ID
+		label: "Tuesday Evening Mystery Trip",
+		nameInstructions: "What's the name of this mystery trip?",
+		namePlaceholder: "Mystery Tuesday Evening Trip",
+		dateQuestion: "When is this trip?",
+	},
+	GIGGLE: {
+		id: 11579, // Replace with actual template ID
+		label: "Beginner Giggle Trip Mystery Trip",
+		nameInstructions: "What's the name of this GiggleTrip?",
+		namePlaceholder: "Bagshawe Beginners GiggleTrip XX/XX",
+		dateQuestion: "When is this trip?",
+	},
 };
 
 /**
  * Shows the modal dialog for creating a new event
  */
 function getClientScript(templates) {
-  return `
+	return `
     const templates = ${JSON.stringify(templates)};
     
     document.querySelectorAll('input[name="eventType"]').forEach(radio => {
@@ -77,7 +75,7 @@ function getClientScript(templates) {
 }
 
 function getEventDialogHtml() {
-  const styles = `
+	const styles = `
     body { font-family: Arial, sans-serif; padding: 20px; }
     .form-group { margin-bottom: 20px; }
     .radio-group { margin: 10px 0; }
@@ -97,15 +95,18 @@ function getEventDialogHtml() {
     button:hover { background-color: #45a049; }
   `;
 
-  const radioButtons = Object.entries(EVENT_TEMPLATES)
-    .map(([key, template]) => `
+	const radioButtons = Object.entries(EVENT_TEMPLATES)
+		.map(
+			([key, template]) => `
       <div class="radio-group">
         <input type="radio" name="eventType" value="${key}" id="${key}">
         <label for="${key}">${template.label}</label>
       </div>
-    `).join('');
+    `,
+		)
+		.join("");
 
-  return `
+	return `
     <style>${styles}</style>
     <form id="eventForm">
       <div class="form-group">
@@ -129,52 +130,52 @@ function getEventDialogHtml() {
 }
 
 function showNewEventDialog() {
-  const html = HtmlService.createHtmlOutput(getEventDialogHtml())
-    .setWidth(400)
-    .setHeight(600)
-    .setTitle('Create New Event');
+	const html = HtmlService.createHtmlOutput(getEventDialogHtml())
+		.setWidth(400)
+		.setHeight(600)
+		.setTitle("Create New Event");
 
-  SpreadsheetApp.getUi().showModalDialog(html, 'Create New Event');
+	SpreadsheetApp.getUi().showModalDialog(html, "Create New Event");
 }
 
 /**
  * Creates a new event based on the selected template and user input
- * 
+ *
  * @param {string} eventType - Key of the event template to use
  * @param {string} eventName - Name for the new event
  * @param {string} eventDate - Date string from datetime-local input
  * @returns {number|null} - ID of the newly created post, or null if creation failed
  */
 function createNewEvent(eventType, eventName, eventDate) {
-  const template = EVENT_TEMPLATES[eventType];
-  if (!template) return null;
+	const template = EVENT_TEMPLATES[eventType];
+	if (!template) return null;
 
-  // Get the template product
-  const templateProduct = getProductById(template.id);
-  if (!templateProduct) return null;
+	// Get the template product
+	const templateProduct = getProductById(template.id);
+	if (!templateProduct) return null;
 
-  // Create new product from template
-  const newProduct = createDuplicateProduct(templateProduct);
-  
-  // Update basic product info
-  newProduct.name = eventName;
-  newProduct.slug = slugify(eventName);
-  
-  // Format date for WordPress
-  // Using ISO 8601 format: YYYY-MM-DD HH:mm:ss
-  const formattedDate = Utilities.formatDate(
-    new Date(eventDate),
-    'GMT',
-    'yyyy-MM-dd HH:mm:ss'
-  );
+	// Create new product from template
+	const newProduct = createDuplicateProduct(templateProduct);
 
-  // Update meta data
-  for (const meta of newProduct.meta_data) {
-    if (meta.key === 'cc_start_date') {
-      meta.value = formattedDate;
-    }
-  }
+	// Update basic product info
+	newProduct.name = eventName;
+	newProduct.slug = slugify(eventName);
 
-  // Send to WordPress
-  return sendProductToWordPress(newProduct);
+	// Format date for WordPress
+	// Using ISO 8601 format: YYYY-MM-DD HH:mm:ss
+	const formattedDate = Utilities.formatDate(
+		new Date(eventDate),
+		"GMT",
+		"yyyy-MM-dd HH:mm:ss",
+	);
+
+	// Update meta data
+	for (const meta of newProduct.meta_data) {
+		if (meta.key === "cc_start_date") {
+			meta.value = formattedDate;
+		}
+	}
+
+	// Send to WordPress
+	return sendProductToWordPress(newProduct);
 }
