@@ -56,18 +56,47 @@ function getClientScript(templates) {
       });
     });
 
+    function setLoading(isLoading) {
+      const submitBtn = document.getElementById('submitButton');
+      const spinner = document.getElementById('spinner');
+      const buttonText = document.getElementById('buttonText');
+      
+      submitBtn.disabled = isLoading;
+      spinner.style.display = isLoading ? 'inline-block' : 'none';
+      buttonText.textContent = isLoading ? 'Creating Event...' : 'Create Event and Continue Editing';
+    }
+
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMessage');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+      setLoading(false);
+    }
+
     document.getElementById('eventForm').addEventListener('submit', (e) => {
       e.preventDefault();
+      
+      // Clear any previous errors
+      document.getElementById('errorMessage').style.display = 'none';
+      
+      // Set loading state
+      setLoading(true);
+
       const selectedType = document.querySelector('input[name="eventType"]:checked').value;
       const eventName = document.getElementById('eventName').value;
       const eventDate = document.getElementById('eventDate').value;
 
       google.script.run
-        .withSuccessHandler((newPostId) => {
-          if (newPostId) {
-            window.open('https://www.cavingcrew.com/wp-admin/post.php?post=' + newPostId + '&action=edit');
+        .withSuccessHandler((result) => {
+          if (result && result.success) {
+            window.open('https://www.cavingcrew.com/wp-admin/post.php?post=' + result.id + '&action=edit');
             google.script.host.close();
+          } else {
+            showError(result.error || 'Failed to create event');
           }
+        })
+        .withFailureHandler((error) => {
+          showError(error.message || 'An unexpected error occurred');
         })
         .createNewEvent(selectedType, eventName, eventDate);
     });
@@ -87,6 +116,21 @@ function getEventDialogHtml() {
     input[type="text"], input[type="datetime-local"] { 
         width: 100%; 
     }
+    #errorMessage {
+        display: none;
+        color: #dc3545;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #dc3545;
+        border-radius: 4px;
+        background-color: #f8d7da;
+    }
+    .spinner-border {
+        display: none;
+        width: 1rem;
+        height: 1rem;
+        margin-right: 8px;
+    }
   `;
 
 	const radioButtons = Object.entries(EVENT_TEMPLATES)
@@ -104,6 +148,7 @@ function getEventDialogHtml() {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>${styles}</style>
     <form id="eventForm" class="container-fluid">
+        <div id="errorMessage"></div>
         <div class="mb-4">
             <h3>Select Event Type</h3>
             ${radioButtons}
@@ -117,7 +162,10 @@ function getEventDialogHtml() {
                 <label id="dateLabel" class="form-label"></label>
                 <input type="datetime-local" id="eventDate" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Create Event and Continue Editing</button>
+            <button type="submit" id="submitButton" class="btn btn-primary w-100">
+                <span id="spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span id="buttonText">Create Event and Continue Editing</span>
+            </button>
         </div>
     </form>
     <script>${getClientScript(EVENT_TEMPLATES)}</script>
@@ -139,40 +187,54 @@ function showNewEventDialog() {
  * @param {string} eventType - Key of the event template to use
  * @param {string} eventName - Name for the new event
  * @param {string} eventDate - Date string from datetime-local input
- * @returns {number|null} - ID of the newly created post, or null if creation failed
+ * @returns {Object} - Object containing success status, new post ID if successful, or error message if failed
  */
 function createNewEvent(eventType, eventName, eventDate) {
-	const template = EVENT_TEMPLATES[eventType];
-	if (!template) return null;
-
-	// Get the template product
-	const templateProduct = getProductById(template.id);
-	if (!templateProduct) return null;
-
-	// Create new product from template
-	const newProduct = createDuplicateProduct(templateProduct);
-
-	// Update basic product info
-	newProduct.name = eventName;
-	newProduct.slug = slugify(eventName);
-
-	// Format date for WordPress
-	// Using ISO 8601 format: YYYY-MM-DD HH:mm:ss
-	const formattedDate = Utilities.formatDate(
-		new Date(eventDate),
-		"GMT",
-		"yyyy-MM-dd HH:mm:ss",
-	);
-
-	// Update meta data
-	for (const meta of newProduct.meta_data) {
-		if (meta.key === "cc_start_date") {
-			meta.value = formattedDate;
+	try {
+		const template = EVENT_TEMPLATES[eventType];
+		if (!template) {
+			return { success: false, error: 'Invalid event type selected' };
 		}
-	}
 
-	// Send to WordPress
-	return sendProductToWordPress(newProduct);
+		// Get the template product
+		const templateProduct = getProductById(template.id);
+		if (!templateProduct) {
+			return { success: false, error: 'Failed to get template product' };
+		}
+
+		// Create new product from template
+		const newProduct = createDuplicateProduct(templateProduct);
+
+		// Update basic product info
+		newProduct.name = eventName;
+		newProduct.slug = slugify(eventName);
+
+		// Format date for WordPress
+		const formattedDate = Utilities.formatDate(
+			new Date(eventDate),
+			"GMT",
+			"yyyy-MM-dd HH:mm:ss",
+		);
+
+		// Update meta data
+		for (const meta of newProduct.meta_data) {
+			if (meta.key === "cc_start_date") {
+				meta.value = formattedDate;
+			}
+		}
+
+		// Send to WordPress
+		const newPostId = sendProductToWordPress(newProduct);
+		
+		if (!newPostId) {
+			return { success: false, error: 'Failed to create new event in WordPress' };
+		}
+
+		return { success: true, id: newPostId };
+	} catch (error) {
+		console.error('Error creating event:', error);
+		return { success: false, error: error.message || 'An unexpected error occurred' };
+	}
 }
 
 function testCreateNewEvent() {
