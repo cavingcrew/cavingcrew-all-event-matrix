@@ -131,21 +131,23 @@ function createDuplicateProduct(originalProduct) {
 function slugify(text) {
 	return text
 		.toLowerCase()
-		.replace(/[^\w\s-]/g, '')
-		.replace(/\s+/g, '-')
-		.replace(/-+/g, '-')
+		.replace(/[^\w\s-]/g, "")
+		.replace(/\s+/g, "-")
+		.replace(/-+/g, "-")
 		.trim();
 }
 
 function sendProductToWordPress(product) {
-	const encodedAuthInformation = Utilities.base64Encode(apiusername + ":" + apipassword);
-	const headers = { "Authorization": "Basic " + encodedAuthInformation };
+	const encodedAuthInformation = Utilities.base64Encode(
+		apiusername + ":" + apipassword,
+	);
+	const headers = { Authorization: "Basic " + encodedAuthInformation };
 	const productUrl = "https://www." + apidomain + "/wp-json/wc/v3/products";
 	const options = {
-		"method": "post",
-		"contentType": "application/json",
-		"headers": headers,
-		"payload": JSON.stringify(product)
+		method: "post",
+		contentType: "application/json",
+		headers: headers,
+		payload: JSON.stringify(product),
 	};
 	const response = UrlFetchApp.fetch(productUrl, options);
 	const newProduct = JSON.parse(response.getContentText());
