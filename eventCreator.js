@@ -11,7 +11,7 @@ const EVENT_TEMPLATES = {
     dateQuestion: "When does the trip start?"
   },
   TRAINING: {
-    id: 00123,  // Replace with actual template ID
+    id: 123,  // Replace with actual template ID
     label: "Training Event",
     nameInstructions: "What's the name of this training event?",
     namePlaceholder: "SRT Training Session",
@@ -44,8 +44,8 @@ const EVENT_TEMPLATES = {
 /**
  * Shows the modal dialog for creating a new event
  */
-function showNewEventDialog() {
-  const html = HtmlService.createHtmlOutput(`
+function getEventDialogHtml() {
+  return `
     <style>
       body { font-family: Arial, sans-serif; padding: 20px; }
       .form-group { margin-bottom: 20px; }
@@ -121,10 +121,14 @@ function showNewEventDialog() {
           .createNewEvent(selectedType, eventName, eventDate);
       });
     </script>
-  `)
-  .setWidth(400)
-  .setHeight(600)
-  .setTitle('Create New Event');
+  `;
+}
+
+function showNewEventDialog() {
+  const html = HtmlService.createHtmlOutput(getEventDialogHtml())
+    .setWidth(400)
+    .setHeight(600)
+    .setTitle('Create New Event');
 
   SpreadsheetApp.getUi().showModalDialog(html, 'Create New Event');
 }
@@ -161,11 +165,11 @@ function createNewEvent(eventType, eventName, eventDate) {
   );
 
   // Update meta data
-  newProduct.meta_data.forEach(meta => {
+  for (const meta of newProduct.meta_data) {
     if (meta.key === 'cc_start_date') {
       meta.value = formattedDate;
     }
-  });
+  }
 
   // Send to WordPress
   return sendProductToWordPress(newProduct);
