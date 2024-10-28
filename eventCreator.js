@@ -209,12 +209,17 @@ function createNewEvent(eventType, eventName, eventDate) {
 		newProduct.name = eventName;
 		newProduct.slug = slugify(eventName);
 
-		// Format date for WordPress
+		// Format date for WordPress and SKU
+		const eventDateObj = new Date(eventDate);
 		const formattedDate = Utilities.formatDate(
-			new Date(eventDate),
+			eventDateObj,
 			"GMT",
 			"yyyy-MM-dd HH:mm:ss",
 		);
+
+		// Create SKU in format YYYY-MM-DD-type
+		const skuDate = formatDateISO(eventDateObj);
+		newProduct.sku = `${skuDate}-${eventType}`;
 
 		// Update meta data
 		for (const meta of newProduct.meta_data) {
