@@ -27,6 +27,7 @@ function onOpen() {
 		.addToUi();
 
 	ui.createMenu("Event Management")
+		.addItem("Add New Event", "showNewEventDialog")
 		.addItem("Open Event Spaces", "openEventSpaces")
 		.addItem("Open Signup", "openSignup")
 		.addItem("Close Signup", "closeSignup")
