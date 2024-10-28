@@ -193,13 +193,13 @@ function createNewEvent(eventType, eventName, eventDate) {
 	try {
 		const template = EVENT_TEMPLATES[eventType];
 		if (!template) {
-			return { success: false, error: 'Invalid event type selected' };
+			return { success: false, error: "Invalid event type selected" };
 		}
 
 		// Get the template product
 		const templateProduct = getProductById(template.id);
 		if (!templateProduct) {
-			return { success: false, error: 'Failed to get template product' };
+			return { success: false, error: "Failed to get template product" };
 		}
 
 		// Create new product from template
@@ -225,15 +225,21 @@ function createNewEvent(eventType, eventName, eventDate) {
 
 		// Send to WordPress
 		const newPostId = sendProductToWordPress(newProduct);
-		
+
 		if (!newPostId) {
-			return { success: false, error: 'Failed to create new event in WordPress' };
+			return {
+				success: false,
+				error: "Failed to create new event in WordPress",
+			};
 		}
 
 		return { success: true, id: newPostId };
 	} catch (error) {
-		console.error('Error creating event:', error);
-		return { success: false, error: error.message || 'An unexpected error occurred' };
+		console.error("Error creating event:", error);
+		return {
+			success: false,
+			error: error.message || "An unexpected error occurred",
+		};
 	}
 }
 
