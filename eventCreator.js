@@ -248,6 +248,41 @@ function createNewEvent(eventType, eventName, eventDate) {
 	}
 }
 
+/**
+ * Formats a date in the ISO 8601 format (YYYY-MM-DD).
+ *
+ * @param {Date} date - The date to format.
+ * @returns {string} - The formatted date.
+ */
+function formatDateISO(date) {
+    return date.toISOString().split("T")[0];
+}
+
+/**
+ * Formats a date in the format "MM/DD/YY".
+ *
+ * @param {Date} date - The date to format.
+ * @returns {string} - The formatted date.
+ */
+function formatDate(date) {
+    const day = ("0" + date.getDate()).slice(-2);
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const year = date.getFullYear().toString().slice(-2);
+    return month + "/" + day + "/" + year;
+}
+
+/**
+ * Formats a date in the format "DD/MM/YYYY HH:mm".
+ *
+ * @param {Date} date - The date to format.
+ * @returns {string} - The formatted date.
+ */
+function formatDateWithLowercaseMeridian(date) {
+    const formattedHours = date.getHours().toString().padStart(2, "0");
+    const formattedMinutes = date.getMinutes().toString().padStart(2, "0");
+    return Utilities.formatDate(date, "GMT", "dd/MM/yyyy ") + formattedHours + ":" + formattedMinutes;
+}
+
 function testCreateNewEvent() {
 	// Test data that matches what would come from the form
 	const testData = {
