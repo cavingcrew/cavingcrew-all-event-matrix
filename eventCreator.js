@@ -174,3 +174,29 @@ function createNewEvent(eventType, eventName, eventDate) {
 	// Send to WordPress
 	return sendProductToWordPress(newProduct);
 }
+
+function testCreateNewEvent() {
+  // Test data that matches what would come from the form
+  const testData = {
+    eventType: 'OVERNIGHT', // One of the valid EVENT_TEMPLATES keys
+    eventName: 'Test Weekend Trip',
+    eventDate: '2024-11-01T19:00' // Format from datetime-local input
+  };
+
+  console.log('Starting test with data:', testData);
+  
+  try {
+    const result = createNewEvent(
+      testData.eventType,
+      testData.eventName,
+      testData.eventDate
+    );
+    
+    console.log('Result:', result);
+    return result;
+  } catch (error) {
+    console.error('Error in createNewEvent:', error);
+    console.error('Error stack:', error.stack);
+    throw error; // Re-throw to see in Apps Script logs
+  }
+}
