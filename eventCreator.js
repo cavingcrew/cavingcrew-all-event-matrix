@@ -11,26 +11,34 @@ const EVENT_TEMPLATES = {
     dateQuestion: "When does the trip start?"
   },
   TRAINING: {
-    id: 15832,  // Replace with actual template ID
+    id: 00123,  // Replace with actual template ID
     label: "Training Event",
     nameInstructions: "What's the name of this training event?",
     namePlaceholder: "SRT Training Session",
     dateQuestion: "When is the training session?"
   },
   KNOWN_LOCATION: {
-    id: 15833,  // Replace with actual template ID
+    id: 11595,  // Replace with actual template ID
     label: "Known Location Tuesday/Saturday Trip",
     nameInstructions: "What's the name of this trip?",
     namePlaceholder: "Box Mine Tuesday Evening Trip",
     dateQuestion: "When is this trip?"
   },
   MYSTERY: {
-    id: 15834,  // Replace with actual template ID
+    id: 11576,  // Replace with actual template ID
     label: "Tuesday Evening Mystery Trip",
     nameInstructions: "What's the name of this mystery trip?",
     namePlaceholder: "Mystery Tuesday Evening Trip",
     dateQuestion: "When is this trip?"
+  },
+  GIGGLE: {
+    id: 11579,  // Replace with actual template ID
+    label: "Beginner Giggle Trip Mystery Trip",
+    nameInstructions: "What's the name of this GiggleTrip?",
+    namePlaceholder: "Bagshawe Beginners GiggleTrip XX/XX",
+    dateQuestion: "When is this trip?"
   }
+
 };
 
 /**
