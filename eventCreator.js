@@ -223,7 +223,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 
 		// Update meta data
 		for (const meta of newProduct.meta_data) {
-			if (meta.key === "cc_start_date") {
+			if (meta.key === "cc_start_date_time") {  // Changed from "cc_start_date"
 				meta.value = formattedDate;
 			}
 		}
