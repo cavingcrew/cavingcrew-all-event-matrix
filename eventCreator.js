@@ -32,7 +32,7 @@ const EVENT_TEMPLATES = {
 	},
 	GIGGLE: {
 		id: 11579, // Replace with actual template ID
-		label: "Beginner Giggle Trip Mystery Trip",
+		label: "Bagshawe Beginner GiggleTrip",
 		nameInstructions: "What's the name of this GiggleTrip?",
 		namePlaceholder: "Bagshawe Beginners GiggleTrip XX/XX",
 		dateQuestion: "When is this trip?",
