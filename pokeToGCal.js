@@ -67,23 +67,24 @@ function createCalendarEvent(eventName, startTime, eventType) {
 }
 
 function calculateEndTime(startTime, eventType) {
-	const endTime = new Date(startTime);
-
-	switch (eventType.toUpperCase()) {
-		case "OVERNIGHT":
-			endTime.setDate(endTime.getDate() + 2);
-			break;
-		case "TRAINING":
-			endTime.setHours(endTime.getHours() + 6);
-			break;
-		case "KNOWN_LOCATION":
-		case "MYSTERY":
-		case "GIGGLE":
-			endTime.setHours(endTime.getHours() + 4);
-			break;
-		default:
-			endTime.setHours(endTime.getHours() + 2);
-	}
-
-	return endTime;
+  const endTime = new Date(startTime);
+  
+  switch(eventType.toUpperCase()) {
+    case "OVERNIGHT":
+      endTime.setDate(endTime.getDate() + 2);
+      break;
+    case "TRAINING":
+    case "HORIZONTAL_TRAINING":
+    case "BASIC_SRT":
+      endTime.setHours(endTime.getHours() + 6);
+      break;
+    case "KNOWN_LOCATION":
+    case "MYSTERY":
+    case "GIGGLE":
+      endTime.setHours(endTime.getHours() + 4);
+      break;
+    default:
+      endTime.setHours(endTime.getHours() + 2);
+  }
+  return endTime;
 }

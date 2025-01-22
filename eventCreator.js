@@ -2,41 +2,55 @@
  * Event type definitions with associated WordPress template IDs and UI text
  */
 const EVENT_TEMPLATES = {
-	OVERNIGHT: {
-		id: 11583,
-		label: "Overnight Trip",
-		nameInstructions: "What's the name of this weekend trip?",
-		namePlaceholder: "e.g. 'October Peak District Caving Weekend'",
-		dateQuestion: "When does the trip start?",
-	},
-	TRAINING: {
-		id: 123, // Replace with actual template ID
-		label: "Training Event",
-		nameInstructions: "What's the name of this training event?",
-		namePlaceholder: "e.g. 'SRT Training Session'",
-		dateQuestion: "When is the training session?",
-	},
-	KNOWN_LOCATION: {
-		id: 11595, // Replace with actual template ID
-		label: "Known Location Tuesday/Saturday Trip",
-		nameInstructions: "What's the name of this trip?",
-		namePlaceholder: "e.g. 'Box Mine Tuesday Evening Trip'",
-		dateQuestion: "When is this trip?",
-	},
-	MYSTERY: {
-		id: 11576, // Replace with actual template ID
-		label: "Tuesday Evening Mystery Trip",
-		nameInstructions: "What's the name of this mystery trip?",
-		namePlaceholder: "e.g. 'Mystery Tuesday Evening Trip'",
-		dateQuestion: "When is this trip?",
-	},
-	GIGGLE: {
-		id: 11579, // Replace with actual template ID
-		label: "Bagshawe Beginner GiggleTrip",
-		nameInstructions: "What's the name of this GiggleTrip?",
-		namePlaceholder: "e.g. 'Bagshawe Beginners GiggleTrip'",
-		dateQuestion: "When is this trip?",
-	},
+  OVERNIGHT: {
+    id: 11583,
+    label: "Overnight Trip",
+    nameInstructions: "What's the name of this weekend trip?",
+    namePlaceholder: "e.g. 'October Peak District Caving Weekend'",
+    dateQuestion: "When does the trip start?",
+  },
+  TRAINING: {
+    id: 123,
+    label: "Generic Training Event",
+    nameInstructions: "What's the name of this training event?",
+    namePlaceholder: "e.g. 'General Caving Training Session'",
+    dateQuestion: "When is the training session?"
+  },
+  HORIZONTAL_TRAINING: {
+    id: 12759,
+    label: "Horizontal Training Event",
+    nameInstructions: "What's the name of this horizontal training?",
+    namePlaceholder: "e.g. 'Horizontal Caving Techniques Workshop'",
+    dateQuestion: "When does the training start?"
+  },
+  BASIC_SRT: {
+    id: 12758,
+    label: "Basic SRT Training Event",
+    nameInstructions: "What's the name of this SRT training?",
+    namePlaceholder: "e.g. 'Basic Single Rope Technique Session'",
+    dateQuestion: "When does the training start?"
+  },
+  KNOWN_LOCATION: {
+    id: 11595,
+    label: "Known Location Tuesday/Saturday Trip",
+    nameInstructions: "What's the name of this trip?",
+    namePlaceholder: "e.g. 'Box Mine Tuesday Evening Trip'",
+    dateQuestion: "When is this trip?",
+  },
+  MYSTERY: {
+    id: 11576,
+    label: "Tuesday Evening Mystery Trip",
+    nameInstructions: "What's the name of this mystery trip?",
+    namePlaceholder: "e.g. 'Mystery Tuesday Evening Trip'",
+    dateQuestion: "When is this trip?",
+  },
+  GIGGLE: {
+    id: 11579,
+    label: "Bagshawe Beginner GiggleTrip",
+    nameInstructions: "What's the name of this GiggleTrip?",
+    namePlaceholder: "e.g. 'Bagshawe Beginners GiggleTrip'",
+    dateQuestion: "When is this trip?",
+  },
 };
 
 /**
