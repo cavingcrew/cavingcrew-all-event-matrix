@@ -205,6 +205,9 @@ function applyFormatting(sheet, reportConfig) {
 				case "columnWidth":
 					setColumnWidth(sheet, format.column, format.width);
 					break;
+				case "dataValidation":
+					setDataValidation(sheet, format.column, format.rule);
+					break;
 			}
 		} catch (formatError) {
 			console.log(
@@ -217,6 +220,16 @@ function applyFormatting(sheet, reportConfig) {
 function setColumnWidth(sheet, columnHeader, width) {
 	const range = getColumnRange(sheet, columnHeader);
 	sheet.setColumnWidth(range.getColumn(), width);
+}
+
+function setDataValidation(sheet, columnHeader, rule) {
+	const range = getColumnRange(sheet, columnHeader);
+	const validation = SpreadsheetApp.newDataValidation()
+		[rule.type](rule.condition)
+		.setAllowInvalid(false)
+		.setHelpText(rule.message)
+		.build();
+	range.setDataValidation(validation);
 }
 
 function getOrderIdFromActiveCell() {
