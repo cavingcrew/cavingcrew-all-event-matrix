@@ -8,6 +8,38 @@ function readUpcomingEvents(stmt, cell) {
         COALESCE(pending_counts.pending_attendees, 0) AS "Signups",
         e.open_spaces AS "Open Spaces",
         e.post_status AS "Status",
+        CASE 
+          WHEN e.membership_required = 'yes' THEN 'Yes'
+          ELSE 'No'
+        END AS "Membership Required",
+        COALESCE(
+          (SELECT meta_value 
+           FROM jtl_postmeta 
+           WHERE post_id = e.product_id 
+             AND meta_key = 'event_min_skills'
+           LIMIT 1),
+          'None specified'
+        ) AS "Minimum Skills",
+        COALESCE(
+          (SELECT meta_value 
+           FROM jtl_postmeta 
+           WHERE post_id = e.product_id 
+             AND meta_key = 'event_min_gear'
+           LIMIT 1),
+          'None specified'
+        ) AS "Minimum Gear",
+        CASE 
+          WHEN e.event_for_u18s = 'no' THEN 'Yes'
+          ELSE 'No'
+        END AS "Over 18 Required",
+        COALESCE(
+          (SELECT meta_value 
+           FROM jtl_postmeta 
+           WHERE post_id = e.product_id 
+             AND meta_key = 'event_prior_experience'
+           LIMIT 1),
+          'None specified'
+        ) AS "Prior Experience Required",
         e.primary_category AS "Category",
         e.product_id AS "ID"
       FROM jtl_vw_events_db e
