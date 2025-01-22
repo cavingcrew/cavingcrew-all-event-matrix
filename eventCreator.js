@@ -6,35 +6,35 @@ const EVENT_TEMPLATES = {
 		id: 11583,
 		label: "Overnight Trip",
 		nameInstructions: "What's the name of this weekend trip?",
-		namePlaceholder: "Month Location Caving Weekend",
+		namePlaceholder: "e.g. 'October Peak District Caving Weekend'",
 		dateQuestion: "When does the trip start?",
 	},
 	TRAINING: {
 		id: 123, // Replace with actual template ID
 		label: "Training Event",
 		nameInstructions: "What's the name of this training event?",
-		namePlaceholder: "SRT Training Session",
+		namePlaceholder: "e.g. 'SRT Training Session'",
 		dateQuestion: "When is the training session?",
 	},
 	KNOWN_LOCATION: {
 		id: 11595, // Replace with actual template ID
 		label: "Known Location Tuesday/Saturday Trip",
 		nameInstructions: "What's the name of this trip?",
-		namePlaceholder: "Box Mine Tuesday Evening Trip",
+		namePlaceholder: "e.g. 'Box Mine Tuesday Evening Trip'",
 		dateQuestion: "When is this trip?",
 	},
 	MYSTERY: {
 		id: 11576, // Replace with actual template ID
 		label: "Tuesday Evening Mystery Trip",
 		nameInstructions: "What's the name of this mystery trip?",
-		namePlaceholder: "Mystery Tuesday Evening Trip",
+		namePlaceholder: "e.g. 'Mystery Tuesday Evening Trip'",
 		dateQuestion: "When is this trip?",
 	},
 	GIGGLE: {
 		id: 11579, // Replace with actual template ID
 		label: "Bagshawe Beginner GiggleTrip",
 		nameInstructions: "What's the name of this GiggleTrip?",
-		namePlaceholder: "Bagshawe Beginners GiggleTrip XX/XX",
+		namePlaceholder: "e.g. 'Bagshawe Beginners GiggleTrip'",
 		dateQuestion: "When is this trip?",
 	},
 };
@@ -271,10 +271,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 		const baseUrl = "https://socialmedia-image-creator.pages.dev/";
 		const params = {
 			Headline: "The Caving Crew",
-			SubHeadline:
-				eventName.lastIndexOf("/") > -1
-					? eventName.substring(0, eventName.lastIndexOf("/")).trim()
-					: eventName, // Remove date after last slash
+			SubHeadline: eventName, // Use full event name directly
 			Footer: formatSocialMediaFooter(eventDateObj, eventType),
 			HeadlinePosition: 157,
 			SubHeadlinePosition: 314,
