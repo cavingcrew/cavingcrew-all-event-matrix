@@ -6,7 +6,8 @@ function readUpcomingEvents(stmt, cell) {
         e.product_name AS "Event Name",
         COALESCE(e.event_start_date_time, e.event_start_date) AS "Start Date",
         COALESCE(pending_counts.pending_attendees, 0) AS "Signups",
-        e.open_spaces AS "Open Spaces",
+        e.event_trip_leader AS "Trip Leader",
+        e.open_spaces AS "Open Spaces", 
         e.post_status AS "Status",
         CASE 
           WHEN e.membership_required = 'yes' THEN 'Yes'
