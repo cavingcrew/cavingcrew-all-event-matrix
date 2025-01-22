@@ -18,14 +18,7 @@ function readUpcomingEvents(stmt, cell) {
           WHEN e.event_for_u18s = 'no' THEN 'Yes'
           ELSE 'No'
         END AS "Over 18 Required",
-        COALESCE(
-          (SELECT meta_value 
-           FROM jtl_postmeta 
-           WHERE post_id = e.product_id 
-             AND meta_key = 'event_prior_experience'
-           LIMIT 1),
-          'None specified'
-        ) AS "Prior Experience Required",
+        COALESCE(e.event_prior_experience, 'None specified') AS "Prior Experience Required",
         e.primary_category AS "Category",
         e.product_id AS "ID"
       FROM jtl_vw_events_db e
