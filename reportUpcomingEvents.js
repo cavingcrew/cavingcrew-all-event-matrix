@@ -19,6 +19,13 @@ function readUpcomingEvents(stmt, cell) {
         GROUP BY product_id
       ) pending_counts ON e.product_id = pending_counts.product_id
       WHERE e.stock_status != 'private'
+        AND COALESCE(e.event_start_date_time, e.event_start_date) IS NOT NULL
+        AND EXISTS (
+          SELECT 1 
+          FROM jtl_order_product_customer_lookup o 
+          WHERE o.product_id = e.product_id 
+            AND o.order_created >= CURDATE() - INTERVAL 12 MONTH
+        )
         AND (
           COALESCE(e.event_start_date_time, e.event_start_date) >= CURDATE() - INTERVAL 7 DAY
           OR pending_counts.pending_attendees > 0
