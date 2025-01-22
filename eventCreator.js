@@ -1,5 +1,5 @@
 // Add calendar integration
-const CALENDAR_ID = '19d2hfsmh7q1qancm6graaj6k0@group.calendar.google.com';
+const CALENDAR_ID = "19d2hfsmh7q1qancm6graaj6k0@group.calendar.google.com";
 
 /**
  * Event type definitions with associated WordPress template IDs and UI text
@@ -240,18 +240,18 @@ function createNewEvent(eventType, eventName, eventDate) {
 			};
 		}
 
-      // Create calendar event
-      try {
-        const calendarEventId = createCalendarEvent(
-          eventName,
-          eventDateObj, 
-          eventType
-        );
-        console.log(`Created calendar event: ${calendarEventId}`);
-      } catch (calendarError) {
-        console.warn('Calendar event creation failed:', calendarError);
-        // Still proceed with WordPress creation
-      }
+		// Create calendar event
+		try {
+			const calendarEventId = createCalendarEvent(
+				eventName,
+				eventDateObj,
+				eventType,
+			);
+			console.log(`Created calendar event: ${calendarEventId}`);
+		} catch (calendarError) {
+			console.warn("Calendar event creation failed:", calendarError);
+			// Still proceed with WordPress creation
+		}
 
 		return { success: true, id: newPostId };
 	} catch (error) {
