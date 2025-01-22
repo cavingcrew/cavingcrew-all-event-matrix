@@ -24,6 +24,11 @@ function readGear(stmt, cell) {
     `,
 		formatting: [
 			{
+				type: "columnWidth",
+				column: "Wellie Size",
+				width: 100
+			},
+			{
 				type: "color",
 				column: "Horizontal Skills",
 				search: "Yes",
