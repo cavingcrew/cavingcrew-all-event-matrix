@@ -1,6 +1,3 @@
-// Add calendar integration
-const CALENDAR_ID = "19d2hfsmh7q1qancm6graaj6k0@group.calendar.google.com";
-
 /**
  * Event type definitions with associated WordPress template IDs and UI text
  */
