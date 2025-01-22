@@ -39,44 +39,44 @@ function readUpcomingEvents(stmt, cell) {
 			{ type: "columnWidth", column: "Event Name", width: 300 },
 			{ type: "columnWidth", column: "Start Date", width: 150 },
 			{
-				type: "columnWidth", 
+				type: "columnWidth",
 				column: "Open Spaces",
-				width: 120
+				width: 120,
 			},
 			{
 				type: "color",
 				column: "Open Spaces",
 				search: "0",
-				color: colors.lightRed
+				color: colors.lightRed,
 			},
 			{
 				type: "color",
 				column: "Open Spaces",
 				search: "-",
-				color: colors.pink
+				color: colors.pink,
 			},
 			{
 				type: "color",
 				column: "Open Spaces",
 				search: "[1-9]",
-				color: colors.lightGreen
+				color: colors.lightGreen,
 			},
 			{
-				type: "columnWidth", 
+				type: "columnWidth",
 				column: "Status",
-				width: 100
+				width: 100,
 			},
 			{
 				type: "color",
 				column: "Status",
 				search: "private",
-				color: colors.grey
+				color: colors.grey,
 			},
 			{
 				type: "color",
 				column: "Status",
 				search: "draft",
-				color: colors.yellow
+				color: colors.yellow,
 			},
 		],
 	});
