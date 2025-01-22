@@ -89,7 +89,7 @@ function refreshEventListing() {
 function refreshUpcomingEvents() {
 	const conn = Jdbc.getConnection(url, username, password);
 	const stmt = conn.createStatement();
-	makeReport(stmt, UPCOMING_EVENTS_REPORT);
+	readUpcomingEvents(stmt);
 	stmt.close();
 	conn.close();
 }
