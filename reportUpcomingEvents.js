@@ -34,15 +34,10 @@ function readUpcomingEvents(stmt, cell) {
         AND COALESCE(e.event_start_date_time, e.event_start_date) IS NOT NULL
         AND LOWER(e.product_name) NOT LIKE '%template%'
         AND e.primary_category != 'Memberships'
+        AND e.post_status = 'publish'
         AND (
           COALESCE(e.event_start_date_time, e.event_start_date) >= CURDATE()
           OR pending_counts.pending_attendees > 0
-        )
-        AND EXISTS (
-          SELECT 1 
-          FROM jtl_order_product_customer_lookup o 
-          WHERE o.product_id = e.product_id 
-            AND o.order_created >= CURDATE() - INTERVAL 6 MONTH
         )
       ORDER BY COALESCE(e.event_start_date_time, e.event_start_date) DESC
     `,
