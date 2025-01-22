@@ -85,3 +85,11 @@ function refreshEventListing() {
 	stmt.close();
 	conn.close();
 }
+
+function refreshUpcomingEvents() {
+	const conn = Jdbc.getConnection(url, username, password);
+	const stmt = conn.createStatement();
+	makeReport(stmt, UPCOMING_EVENTS_REPORT);
+	stmt.close();
+	conn.close();
+}
