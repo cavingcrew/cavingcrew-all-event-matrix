@@ -25,7 +25,12 @@ function readUpcomingEvents(stmt, cell) {
 			{ type: "wrap", column: "Event Name" },
 			{ type: "columnWidth", column: "Event Name", width: 300 },
 			{ type: "columnWidth", column: "Start Date", width: 150 },
-			{ type: "color", column: "Stock Status", search: "private", color: colors.grey }
+			{
+				type: "color",
+				column: "Stock Status",
+				search: "private",
+				color: colors.grey,
+			},
 		],
 	});
 }

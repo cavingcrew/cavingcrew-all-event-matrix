@@ -22,7 +22,6 @@ const colors = {
 	white: "#FFFFFF",
 };
 
-
 function setupSheet(name) {
 	const spreadsheet = SpreadsheetApp.getActive();
 	const sheet = spreadsheet.getSheetByName(name);
