@@ -6,7 +6,8 @@ function readUpcomingEvents(stmt, cell) {
         e.product_name AS "Event Name",
         COALESCE(e.event_start_date_time, e.event_start_date) AS "Start Date",
         COALESCE(pending_counts.pending_attendees, 0) AS "Signups",
-        e.stock_status AS "Stock Status",
+        e.open_spaces AS "Open Spaces",
+        e.post_status AS "Status",
         e.primary_category AS "Category",
         e.product_id AS "ID"
       FROM jtl_vw_events_db e
@@ -38,10 +39,44 @@ function readUpcomingEvents(stmt, cell) {
 			{ type: "columnWidth", column: "Event Name", width: 300 },
 			{ type: "columnWidth", column: "Start Date", width: 150 },
 			{
+				type: "columnWidth", 
+				column: "Open Spaces",
+				width: 120
+			},
+			{
 				type: "color",
-				column: "Stock Status",
+				column: "Open Spaces",
+				search: "0",
+				color: colors.lightRed
+			},
+			{
+				type: "color",
+				column: "Open Spaces",
+				search: "-",
+				color: colors.pink
+			},
+			{
+				type: "color",
+				column: "Open Spaces",
+				search: "[1-9]",
+				color: colors.lightGreen
+			},
+			{
+				type: "columnWidth", 
+				column: "Status",
+				width: 100
+			},
+			{
+				type: "color",
+				column: "Status",
 				search: "private",
-				color: colors.grey,
+				color: colors.grey
+			},
+			{
+				type: "color",
+				column: "Status",
+				search: "draft",
+				color: colors.yellow
 			},
 		],
 	});
