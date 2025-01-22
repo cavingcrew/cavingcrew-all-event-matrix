@@ -7,18 +7,22 @@ function readUpcomingEvents(stmt, cell) {
         e.product_name AS "Event Name",
         COALESCE(e.event_start_date_time, e.event_start_date) AS "Start Date",
         e.total_sales AS "Total Bookings",
-        COUNT(o.order_id) AS "Pending Attendees",
+        COALESCE(pending_counts.pending_attendees, 0) AS "Pending Attendees",
         e.stock_status AS "Stock Status",
         e.primary_category AS "Category"
       FROM jtl_vw_events_db e
-      LEFT JOIN jtl_order_product_customer_lookup o 
-        ON e.product_id = o.product_id 
-        AND o.status = 'wc-processing'
-        AND o.cc_attendance = 'pending'
+      LEFT JOIN (
+        SELECT product_id, COUNT(order_id) AS pending_attendees
+        FROM jtl_order_product_customer_lookup
+        WHERE status = 'wc-processing'
+          AND cc_attendance = 'pending'
+        GROUP BY product_id
+      ) pending_counts ON e.product_id = pending_counts.product_id
       WHERE e.stock_status != 'private'
-        AND (COALESCE(e.event_start_date_time, e.event_start_date) >= CURDATE() - INTERVAL 7 DAY
-            OR COUNT(o.order_id) > 0)
-      GROUP BY e.product_id
+        AND (
+          COALESCE(e.event_start_date_time, e.event_start_date) >= CURDATE() - INTERVAL 7 DAY
+          OR pending_counts.pending_attendees > 0
+        )
       ORDER BY COALESCE(e.event_start_date_time, e.event_start_date) DESC
     `,
 		formatting: [
