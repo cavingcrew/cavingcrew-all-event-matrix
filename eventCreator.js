@@ -95,17 +95,20 @@ function getClientScript(templates) {
             // Add social media button
             const buttonContainer = document.createElement('div');
             buttonContainer.style.marginTop = '20px';
-            buttonContainer.innerHTML = `
-              <a href="${result.socialLink}" target="_blank" 
-                 class="btn btn-success" 
-                 style="width: 100%; background-color: #4CAF50;">
-                Create Social Media Image
-              </a>
-            `;
+            buttonContainer.innerHTML = 
+              '<a href="' + result.socialLink + '" target="_blank" ' +
+              'class="btn btn-success" ' +
+              'style="width: 100%; background-color: #4CAF50;">' +
+              'Create Social Media Image' +
+              '</a>';
             document.querySelector('#eventForm').appendChild(buttonContainer);
             
             // Keep existing open/edit behavior
-            window.open('https://www.cavingcrew.com/wp-admin/post.php?post=' + result.id + '&action=edit');
+            window.open(
+              'https://www.cavingcrew.com/wp-admin/post.php?post=' + 
+              result.id + 
+              '&action=edit'
+            );
           } else 
             showError(result.error || 'Failed to create event');
         })
