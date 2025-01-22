@@ -220,7 +220,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 		newProduct.sku = `${skuDate}-${eventType}`;
 
 		// Update start date in metadata
-		newProduct.meta_data = newProduct.meta_data.map(meta => {
+		newProduct.meta_data = newProduct.meta_data.map((meta) => {
 			if (meta.key === "cc_start_date_time") {
 				return { ...meta, value: formattedDate };
 			}
