@@ -270,38 +270,41 @@ function createNewEvent(eventType, eventName, eventDate) {
 			console.warn("Calendar event creation failed:", calendarError);
 		}
 
-      // Create social media link
-      const baseUrl = "https://socialmedia-image-creator.pages.dev/";
-      const params = {
-        Headline: "The Caving Crew",
-        SubHeadline: eventName.lastIndexOf('/') > -1 
-          ? eventName.substring(0, eventName.lastIndexOf('/')).trim()
-          : eventName, // Remove date after last slash
-        Footer: formatSocialMediaFooter(eventDateObj, eventType),
-        HeadlinePosition: 157,
-        SubHeadlinePosition: 314,
-        FooterPosition: 533.8,
-        BackgroundImage: "/images/photos/IMG_4470.jpg"
-      };
-      
-      const socialLink = `${baseUrl}?${Object.entries(params)
-        .map(([k,v]) => `${k}=${encodeURIComponent(v)}`)
-        .join("&")}`;
+		// Create social media link
+		const baseUrl = "https://socialmedia-image-creator.pages.dev/";
+		const params = {
+			Headline: "The Caving Crew",
+			SubHeadline:
+				eventName.lastIndexOf("/") > -1
+					? eventName.substring(0, eventName.lastIndexOf("/")).trim()
+					: eventName, // Remove date after last slash
+			Footer: formatSocialMediaFooter(eventDateObj, eventType),
+			HeadlinePosition: 157,
+			SubHeadlinePosition: 314,
+			FooterPosition: 533.8,
+			BackgroundImage: "/images/photos/IMG_4470.jpg",
+		};
 
-      // Store link in meta
-      const linkData = {
-        meta_data: [{
-          key: 'social_media_link',
-          value: socialLink
-        }]
-      };
-      pokeToWordPressProducts(linkData, newPostId);
+		const socialLink = `${baseUrl}?${Object.entries(params)
+			.map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+			.join("&")}`;
 
-      return { 
-        success: true, 
-        id: newPostId,
-        socialLink: socialLink // Add this to response
-      };
+		// Store link in meta
+		const linkData = {
+			meta_data: [
+				{
+					key: "social_media_link",
+					value: socialLink,
+				},
+			],
+		};
+		pokeToWordPressProducts(linkData, newPostId);
+
+		return {
+			success: true,
+			id: newPostId,
+			socialLink: socialLink, // Add this to response
+		};
 	} catch (error) {
 		console.error("Error creating event:", error);
 		return {
