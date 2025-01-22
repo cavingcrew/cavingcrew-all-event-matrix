@@ -12,22 +12,8 @@ function readUpcomingEvents(stmt, cell) {
           WHEN e.membership_required = 'yes' THEN 'Yes'
           ELSE 'No'
         END AS "Membership Required",
-        COALESCE(
-          (SELECT meta_value 
-           FROM jtl_postmeta 
-           WHERE post_id = e.product_id 
-             AND meta_key = 'event_min_skills'
-           LIMIT 1),
-          'None specified'
-        ) AS "Minimum Skills",
-        COALESCE(
-          (SELECT meta_value 
-           FROM jtl_postmeta 
-           WHERE post_id = e.product_id 
-             AND meta_key = 'event_min_gear'
-           LIMIT 1),
-          'None specified'
-        ) AS "Minimum Gear",
+        e.minimum_skills AS "Minimum Skills",
+        e.minimum_gear AS "Minimum Gear",
         CASE 
           WHEN e.event_for_u18s = 'no' THEN 'Yes'
           ELSE 'No'
