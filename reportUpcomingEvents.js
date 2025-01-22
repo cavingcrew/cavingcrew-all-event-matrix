@@ -3,12 +3,12 @@ function readUpcomingEvents(stmt, cell) {
 		sheetName: "Upcoming Events",
 		query: `
       SELECT 
-        e.product_id AS "ID",
         e.product_name AS "Event Name",
         COALESCE(e.event_start_date_time, e.event_start_date) AS "Start Date",
         COALESCE(pending_counts.pending_attendees, 0) AS "Signups",
         e.stock_status AS "Stock Status",
-        e.primary_category AS "Category"
+        e.primary_category AS "Category",
+        e.product_id AS "ID"
       FROM jtl_vw_events_db e
       LEFT JOIN (
         SELECT product_id, COUNT(order_id) AS pending_attendees
