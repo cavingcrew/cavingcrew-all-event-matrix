@@ -20,14 +20,22 @@ function readUpcomingEvents(stmt, cell) {
       ) pending_counts ON e.product_id = pending_counts.product_id
       WHERE e.stock_status != 'private'
         AND COALESCE(e.event_start_date_time, e.event_start_date) IS NOT NULL
+        AND LOWER(e.product_name) NOT LIKE '%template%'
+        AND e.primary_category != 'Memberships'
         AND EXISTS (
           SELECT 1 
           FROM jtl_order_product_customer_lookup o 
           WHERE o.product_id = e.product_id 
-            AND o.order_created >= CURDATE() - INTERVAL 12 MONTH
+            AND o.order_created >= CURDATE() - INTERVAL 6 MONTH
         )
         AND (
-          COALESCE(e.event_start_date_time, e.event_start_date) >= CURDATE() - INTERVAL 7 DAY
+          (COALESCE(e.event_start_date_time, e.event_start_date) >= CURDATE() - INTERVAL 7 DAY
+          AND EXISTS (
+            SELECT 1
+            FROM jtl_order_product_customer_lookup o2
+            WHERE o2.product_id = e.product_id
+              AND (o2.status != 'completed' OR o2.cc_attendance = 'pending')
+          ))
           OR pending_counts.pending_attendees > 0
         )
       ORDER BY COALESCE(e.event_start_date_time, e.event_start_date) DESC
