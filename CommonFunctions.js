@@ -267,30 +267,33 @@ function showError(message) {
 }
 
 function formatSocialMediaFooter(startTime, eventType) {
-  const date = new Date(startTime);
-  
-  if (eventType === "OVERNIGHT") {
-    const endDate = new Date(date);
-    endDate.setDate(date.getDate() + 2);
-    return (
-      `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "short" })} - ` +
-      `${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString("default", { month: "short" })}`
-    );
-  }
+	const date = new Date(startTime);
 
-  if (["TRAINING", "HORIZONTAL_TRAINING", "BASIC_SRT"].includes(eventType)) {
-    const time = date.toLocaleTimeString('en-GB', { 
-      hour: 'numeric', 
-      minute: '2-digit' 
-    }).replace(/:/g, '.');
-    return `${time} • ${date.toLocaleString('default', { 
-      weekday: 'long' 
-    })} ${date.getDate()}${getOrdinal(date.getDate())} ${
-      date.toLocaleString('default', { month: 'short' })
-    }`;
-  }
+	if (eventType === "OVERNIGHT") {
+		const endDate = new Date(date);
+		endDate.setDate(date.getDate() + 2);
+		return (
+			`${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "short" })} - ` +
+			`${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString("default", { month: "short" })}`
+		);
+	}
 
-  return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "short" })}`;
+	if (["TRAINING", "HORIZONTAL_TRAINING", "BASIC_SRT"].includes(eventType)) {
+		const time = date
+			.toLocaleTimeString("en-GB", {
+				hour: "numeric",
+				minute: "2-digit",
+			})
+			.replace(/:/g, ".");
+		return `${time} • ${date.toLocaleString("default", {
+			weekday: "long",
+		})} ${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString(
+			"default",
+			{ month: "short" },
+		)}`;
+	}
+
+	return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "short" })}`;
 }
 
 function getOrdinal(n) {
