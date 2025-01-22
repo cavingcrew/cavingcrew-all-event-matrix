@@ -84,6 +84,7 @@ function markAttendedAndCloseEvent() {
 			) {
 				sendAllCragAssignments("close");
 				readData(); // Refresh the data after closing the event
+				refreshUpcomingEvents(); // Update upcoming events list
 			}
 		}
 	}

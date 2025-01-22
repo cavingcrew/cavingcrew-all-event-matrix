@@ -24,6 +24,7 @@ function onOpen() {
 		.addItem("Refresh Buddy", "refreshBuddy")
 		.addSeparator()
 		.addItem("Refresh Event Listing", "refreshEventListing")
+		.addItem("Refresh Upcoming Events", "refreshUpcomingEvents")
 		.addToUi();
 
 	ui.createMenu("Event Management")
@@ -32,6 +33,8 @@ function onOpen() {
 		.addItem("Open Signup", "openSignup")
 		.addItem("Close Signup", "closeSignup")
 		.addItem("Cancel Whole Event", "cancelWholeEvent")
+		.addSeparator()
+		.addItem("View Upcoming Events", "refreshUpcomingEvents")
 		.addToUi();
 }
 
