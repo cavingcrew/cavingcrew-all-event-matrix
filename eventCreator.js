@@ -92,8 +92,20 @@ function getClientScript(templates) {
       google.script.run
         .withSuccessHandler((result) => {
           if (result && result.success) {
+            // Add social media button
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.marginTop = '20px';
+            buttonContainer.innerHTML = `
+              <a href="${result.socialLink}" target="_blank" 
+                 class="btn btn-success" 
+                 style="width: 100%; background-color: #4CAF50;">
+                Create Social Media Image
+              </a>
+            `;
+            document.querySelector('#eventForm').appendChild(buttonContainer);
+            
+            // Keep existing open/edit behavior
             window.open('https://www.cavingcrew.com/wp-admin/post.php?post=' + result.id + '&action=edit');
-            google.script.host.close();
           } else {
             showError(result.error || 'Failed to create event');
           }
@@ -256,7 +268,36 @@ function createNewEvent(eventType, eventName, eventDate) {
 			console.warn("Calendar event creation failed:", calendarError);
 		}
 
-		return { success: true, id: newPostId };
+      // Create social media link
+      const baseUrl = "https://socialmedia-image-creator.pages.dev/";
+      const params = {
+        Headline: "The Caving Crew",
+        SubHeadline: eventName.split(" - ")[0], // Remove date from name
+        Footer: formatSocialMediaFooter(eventDateObj, eventType),
+        HeadlinePosition: 157,
+        SubHeadlinePosition: 314,
+        FooterPosition: 533.8,
+        BackgroundImage: "/images/photos/IMG_4470.jpg"
+      };
+      
+      const socialLink = `${baseUrl}?${Object.entries(params)
+        .map(([k,v]) => `${k}=${encodeURIComponent(v)}`)
+        .join("&")}`;
+
+      // Store link in meta
+      const linkData = {
+        meta_data: [{
+          key: 'social_media_link',
+          value: socialLink
+        }]
+      };
+      pokeToWordPressProducts(linkData, newPostId);
+
+      return { 
+        success: true, 
+        id: newPostId,
+        socialLink: socialLink // Add this to response
+      };
 	} catch (error) {
 		console.error("Error creating event:", error);
 		return {
