@@ -156,10 +156,10 @@ function slugify(text) {
 
 function sendProductToWordPress(product) {
 	const encodedAuthInformation = Utilities.base64Encode(
-		apiusername + ":" + apipassword,
+		`${apiusername}:${apipassword}`,
 	);
-	const headers = { Authorization: "Basic " + encodedAuthInformation };
-	const productUrl = "https://www." + apidomain + "/wp-json/wc/v3/products";
+	const headers = { Authorization: `Basic ${encodedAuthInformation}` };
+	const productUrl = `https://www.${apidomain}/wp-json/wc/v3/products`;
 	const options = {
 		method: "post",
 		contentType: "application/json",
