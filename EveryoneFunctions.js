@@ -138,9 +138,9 @@ function cancelWholeEvent() {
 
 			// Add calendar cleanup
 			try {
-			  deleteCalendarEventForProduct(product_id);
+				deleteCalendarEventForProduct(product_id);
 			} catch (e) {
-			  console.warn('Failed to delete calendar event:', e);
+				console.warn("Failed to delete calendar event:", e);
 			}
 
 			// Set event to private

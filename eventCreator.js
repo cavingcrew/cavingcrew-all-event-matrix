@@ -242,18 +242,18 @@ function createNewEvent(eventType, eventName, eventDate) {
 
 		// Create calendar event AFTER successful WordPress creation
 		try {
-		  const calendarEventId = createCalendarEventForProduct(
-			eventName,
-			eventDateObj.toISOString(),
-			eventType,
-			newPostId
-		  );
-		  
-		  if (!calendarEventId) {
-			console.warn("Calendar event creation failed - proceeding without");
-		  }
+			const calendarEventId = createCalendarEventForProduct(
+				eventName,
+				eventDateObj.toISOString(),
+				eventType,
+				newPostId,
+			);
+
+			if (!calendarEventId) {
+				console.warn("Calendar event creation failed - proceeding without");
+			}
 		} catch (calendarError) {
-		  console.warn("Calendar event creation failed:", calendarError);
+			console.warn("Calendar event creation failed:", calendarError);
 		}
 
 		return { success: true, id: newPostId };
