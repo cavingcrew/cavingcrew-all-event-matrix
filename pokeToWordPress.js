@@ -123,9 +123,26 @@ function pokeNoteToOrder(orderNumber, noteText) {
 }
 
 function createDuplicateProduct(originalProduct) {
-	const newProduct = Object.assign({}, originalProduct);
-	newProduct.id = "";
-	return newProduct;
+    // Deep clone the product including all metadata
+    const newProduct = JSON.parse(JSON.stringify(originalProduct));
+    
+    // Reset WordPress-specific identifiers
+    newProduct.id = "";
+    newProduct.sku = "";
+    newProduct.status = "draft";
+    newProduct.date_created = null;
+    newProduct.date_modified = null;
+    
+    // Clean meta data while preserving membership fields
+    newProduct.meta_data = newProduct.meta_data
+        .filter(meta => !['_edit_lock', '_edit_last'].includes(meta.key))
+        .map(meta => ({
+            key: meta.key,
+            value: meta.value,
+            id: undefined // Clear existing meta IDs for fresh creation
+        }));
+
+    return newProduct;
 }
 
 function slugify(text) {

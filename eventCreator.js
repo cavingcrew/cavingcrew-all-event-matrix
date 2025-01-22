@@ -204,8 +204,6 @@ function createNewEvent(eventType, eventName, eventDate) {
 
 		// Create new product from template
 		const newProduct = createDuplicateProduct(templateProduct);
-
-		// Update basic product info
 		newProduct.name = eventName;
 		newProduct.slug = slugify(eventName);
 
@@ -221,13 +219,13 @@ function createNewEvent(eventType, eventName, eventDate) {
 		const skuDate = formatDateISO(eventDateObj);
 		newProduct.sku = `${skuDate}-${eventType}`;
 
-		// Update meta data
-		for (const meta of newProduct.meta_data) {
+		// Update start date in metadata
+		newProduct.meta_data = newProduct.meta_data.map(meta => {
 			if (meta.key === "cc_start_date_time") {
-				// Changed from "cc_start_date"
-				meta.value = formattedDate;
+				return { ...meta, value: formattedDate };
 			}
-		}
+			return meta;
+		});
 
 		// Send to WordPress
 		const newPostId = sendProductToWordPress(newProduct);
