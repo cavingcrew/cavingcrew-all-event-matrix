@@ -26,7 +26,7 @@ function readGear(stmt, cell) {
 			{
 				type: "columnWidth",
 				column: "Wellie Size",
-				width: 100
+				width: 100,
 			},
 			{
 				type: "color",
