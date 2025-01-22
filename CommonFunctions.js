@@ -290,5 +290,7 @@ function formatSocialMediaFooter(startTime, eventType) {
 }
 
 function getOrdinal(n) {
-	return [undefined, "st", "nd", "rd"][(((n / 10) % 10) ^ 1 && n % 10) || 10] || "th";
+	return (
+		[undefined, "st", "nd", "rd"][(((n / 10) % 10) ^ 1 && n % 10) || 10] || "th"
+	);
 }
