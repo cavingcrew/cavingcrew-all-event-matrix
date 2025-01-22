@@ -274,7 +274,9 @@ function createNewEvent(eventType, eventName, eventDate) {
       const baseUrl = "https://socialmedia-image-creator.pages.dev/";
       const params = {
         Headline: "The Caving Crew",
-        SubHeadline: eventName.split(" - ")[0], // Remove date from name
+        SubHeadline: eventName.lastIndexOf('/') > -1 
+          ? eventName.substring(0, eventName.lastIndexOf('/')).trim()
+          : eventName, // Remove date after last slash
         Footer: formatSocialMediaFooter(eventDateObj, eventType),
         HeadlinePosition: 157,
         SubHeadlinePosition: 314,
