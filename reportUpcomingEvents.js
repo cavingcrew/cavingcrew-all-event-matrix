@@ -56,6 +56,16 @@ function readUpcomingEvents(stmt, cell) {
 				width: 120,
 			},
 			{
+				type: "columnWidth",
+				column: "Trip Leader",
+				width: 120,
+			},
+			{
+				type: "color",
+				column: "Trip Leader",
+				color: colors.lightBlue,
+			},
+			{
 				type: "color",
 				column: "Open Spaces",
 				search: "0",
