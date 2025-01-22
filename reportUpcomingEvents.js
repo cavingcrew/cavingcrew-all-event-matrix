@@ -12,8 +12,8 @@ function readUpcomingEvents(stmt, cell) {
           WHEN e.membership_required = 'yes' THEN 'Yes'
           ELSE 'No'
         END AS "Membership Required",
-        e.minimum_skills AS "Minimum Skills",
-        e.minimum_gear AS "Minimum Gear",
+        e.event_skills_required AS "Minimum Skills",
+        e.event_gear_required AS "Minimum Gear",
         CASE 
           WHEN e.event_for_u18s = 'no' THEN 'Yes'
           ELSE 'No'
