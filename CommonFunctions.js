@@ -267,24 +267,28 @@ function showError(message) {
 }
 
 function formatSocialMediaFooter(startTime, eventType) {
-  const date = new Date(startTime);
-  const options = { day: 'numeric', month: 'short' };
-  
-  if (eventType === 'OVERNIGHT') {
-    const endDate = new Date(date);
-    endDate.setDate(date.getDate() + 2);
-    return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString('default', { month: 'short' })} - ` +
-           `${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString('default', { month: 'short' })}`;
-  }
-  
-  if (eventType === 'TRAINING') {
-    const time = date.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' }).replace(/:/g, '.');
-    return `${time} • ${date.toLocaleString('default', { weekday: 'long' })} ${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString('default', { month: 'short' })}`;
-  }
+	const date = new Date(startTime);
+	const options = { day: "numeric", month: "short" };
 
-  return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString('default', { month: 'short' })}`;
+	if (eventType === "OVERNIGHT") {
+		const endDate = new Date(date);
+		endDate.setDate(date.getDate() + 2);
+		return (
+			`${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "short" })} - ` +
+			`${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString("default", { month: "short" })}`
+		);
+	}
+
+	if (eventType === "TRAINING") {
+		const time = date
+			.toLocaleTimeString("en-GB", { hour: "numeric", minute: "2-digit" })
+			.replace(/:/g, ".");
+		return `${time} • ${date.toLocaleString("default", { weekday: "long" })} ${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "short" })}`;
+	}
+
+	return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "short" })}`;
 }
 
 function getOrdinal(n) {
-  return [, 'st', 'nd', 'rd'][(n/10%10^1&&n%10)||10]||'th';
+	return [, "st", "nd", "rd"][(((n / 10) % 10) ^ 1 && n % 10) || 10] || "th";
 }

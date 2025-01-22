@@ -106,9 +106,8 @@ function getClientScript(templates) {
             
             // Keep existing open/edit behavior
             window.open('https://www.cavingcrew.com/wp-admin/post.php?post=' + result.id + '&action=edit');
-          } else {
+          } else 
             showError(result.error || 'Failed to create event');
-          }
         })
         .withFailureHandler((error) => {
           showError(error.message || 'An unexpected error occurred');
