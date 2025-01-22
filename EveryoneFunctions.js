@@ -136,6 +136,13 @@ function cancelWholeEvent() {
 				updateOrderStatus(order_id, "Cancelled");
 			}
 
+			// Add calendar cleanup
+			try {
+			  deleteCalendarEventForProduct(product_id);
+			} catch (e) {
+			  console.warn('Failed to delete calendar event:', e);
+			}
+
 			// Set event to private
 			const eventData = {
 				status: "private",
