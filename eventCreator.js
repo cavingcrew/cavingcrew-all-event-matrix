@@ -130,7 +130,7 @@ function getClientScript(templates) {
       });
 
       // OPEN SOCIAL TAB IMMEDIATELY
-      const socialWindow = window.open(`$baseUrl?$socialParams`, '_blank');
+      const socialWindow = window.open(`${baseUrl}?${socialParams}`, '_blank');
 
       // Then process the event creation
       google.script.run
@@ -138,7 +138,7 @@ function getClientScript(templates) {
           if (result?.success) {
             // Only open WordPress editor if successful
             window.open(
-              `https://www.cavingcrew.com/wp-admin/post.php?post=${result.id}&action=edit`,
+              'https://www.cavingcrew.com/wp-admin/post.php?post=' + result.id + '&action=edit',
               '_blank'
             );
           } else {
@@ -158,7 +158,7 @@ function getClientScript(templates) {
 function getEventDialogHtml() {
 	const styles = `
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
       padding: 20px;
     }
     .radio-group {
