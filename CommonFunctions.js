@@ -320,7 +320,7 @@ function formatDate(date, formatStr) {
 				return String(date.getMonth() + 1).padStart(2, "0");
 			case "y":
 				return date.getFullYear().toString().slice(-2);
-			case "y":
+			case "Y":
 				return date.getFullYear();
 			case "h":
 				return String(date.getHours()).padStart(2, "0");
