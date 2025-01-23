@@ -68,7 +68,7 @@ function readUpcomingEvents(stmt, cell) {
 				type: "color",
 				column: "Trip Leader",
 				color: colors.lightBlue,
-				when: (cell) => cell && cell.getValue(),
+				when: (cell) => cell?.getValue(),
 			},
 			{
 				type: "color",
