@@ -274,6 +274,13 @@ function createNewEvent(eventType, eventName, eventDate) {
 			};
 		}
 
+		// Copy membership discounts from template to new product
+		try {
+			copyMembershipDiscounts(template.id, newPostId);
+		} catch (discountError) {
+			console.warn("Failed to copy membership discounts:", discountError);
+		}
+
 		// Create calendar event AFTER successful WordPress creation
 		try {
 			const calendarEventId = createCalendarEventForProduct(
