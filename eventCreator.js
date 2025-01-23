@@ -103,16 +103,8 @@ function getClientScript(templates) {
       google.script.run
         .withSuccessHandler((result) => {
           if (result && result.success) {
-            // Add social media button
-            const buttonContainer = document.createElement('div');
-            buttonContainer.style.marginTop = '20px';
-            buttonContainer.innerHTML = 
-              '<a href="' + result.socialLink + '" target="_blank" ' +
-              'class="btn btn-success" ' +
-              'style="width: 100%; background-color: #4CAF50;">' +
-              'Create Social Media Image' +
-              '</a>';
-            document.querySelector('#eventForm').appendChild(buttonContainer);
+            // Open social media creator in new tab
+            window.open(result.socialLink, '_blank');
             
             // Keep existing open/edit behavior
             window.open(
@@ -239,8 +231,8 @@ function createNewEvent(eventType, eventName, eventDate) {
 		const eventDateObj = new Date(eventDate);
 		const formattedDate = Utilities.formatDate(
 			eventDateObj,
-			"GMT",
-			"yyyy-MM-dd HH:mm:ss",
+			SpreadsheetApp.getActive().getSpreadsheetTimeZone(),
+			"yyyy-MM-dd HH:mm:ss"
 		);
 
 		// Create SKU in format YYYY-MM-DD-type
@@ -249,11 +241,19 @@ function createNewEvent(eventType, eventName, eventDate) {
 
 		// Update start date in metadata
 		newProduct.meta_data = newProduct.meta_data.map((meta) => {
-			if (meta.key === "cc_start_date_time") {
+			if (meta.key === "event_start_date_time") {
 				return { ...meta, value: formattedDate };
 			}
 			return meta;
 		});
+
+		// Add new metadata if it doesn't exist
+		if (!newProduct.meta_data.some(m => m.key === "event_start_date_time")) {
+			newProduct.meta_data.push({
+				key: "event_start_date_time",
+				value: formattedDate
+			});
+		}
 
 		// Send to WordPress
 		const newPostId = sendProductToWordPress(newProduct);
@@ -351,10 +351,25 @@ function formatDate(date) {
  * @param {Date} date - The date to format.
  * @returns {string} - The formatted date.
  */
-function formatDateWithLowercaseMeridian(date) {
-	const formattedHours = date.getHours().toString().padStart(2, "0");
-	const formattedMinutes = date.getMinutes().toString().padStart(2, "0");
-	return `${Utilities.formatDate(date, "GMT", "dd/MM/yyyy ")}${formattedHours}:${formattedMinutes}`;
+function formatSocialMediaFooter(startTime, eventType) {
+  const date = new Date(startTime);
+  
+  if (eventType === "OVERNIGHT") {
+    const endDate = new Date(date);
+    endDate.setDate(date.getDate() + 2);
+    return (
+      `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "long" })} ` +
+      `- ${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString("default", { month: "long" })}`
+    );
+  }
+  
+  return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "long" })}`;
+}
+
+function getOrdinal(n) {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return s[(v - 20) % 10] || s[v] || s[0];
 }
 
 function testCreateNewEvent() {
