@@ -7,7 +7,12 @@ function createCalendarEventForProduct(
 	productId,
 ) {
 	try {
-		const eventId = createCalendarEvent(eventName, startTime, eventType, productId);
+		const eventId = createCalendarEvent(
+			eventName,
+			startTime,
+			eventType,
+			productId,
+		);
 
 		// Store event ID in product meta
 		const data = {
@@ -58,10 +63,10 @@ function deleteCalendarEventForProduct(productId) {
 function createCalendarEvent(eventName, startTime, eventType, productId) {
 	const calendar = CalendarApp.getCalendarById(CALENDAR_ID);
 	const endTime = calculateEndTime(new Date(startTime), eventType);
-	
+
 	// Create WordPress post URL
 	const postUrl = `https://www.cavingcrew.com/?p=${productId}`;
-	
+
 	const event = calendar.createEvent(eventName, new Date(startTime), endTime, {
 		description: `Automatically created from Caving Crew system
 Event type: ${eventType}
