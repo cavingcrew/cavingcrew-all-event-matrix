@@ -368,9 +368,9 @@ function createNewEvent(eventType, eventName, eventDate) {
 			BackgroundImage: "/images/photos/IMG_4470.jpg",
 		};
 
-		const socialLink = `${baseUrl}?${Object.entries(params)
-			.map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
-			.join("&")}`;
+		const socialLink = \`${baseUrl}?\${Object.entries(params)
+			.map(([k, v]) => \`\${k}=\${encodeURIComponent(v)}\`)
+			.join("&")}\`;
 
 		// Store link in meta
 		const linkData = {
