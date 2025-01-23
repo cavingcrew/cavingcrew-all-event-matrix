@@ -188,71 +188,76 @@ function createDuplicateProduct(originalProduct) {
 }
 
 function getMembershipPlansWithProductDiscount(productId) {
-  const encodedAuth = Utilities.base64Encode(`${apiusername}:${apipassword}`);
-  const headers = { Authorization: `Basic ${encodedAuth}` };
-  const apiUrl = `https://www.${apidomain}/wp-json/wc/v3/memberships/plans?per_page=100`;
-  
-  try {
-    const response = UrlFetchApp.fetch(apiUrl, { headers });
-    const plans = JSON.parse(response.getContentText());
-    
-    return plans.filter(plan => 
-      plan.rules?.some(rule =>
-        rule.rule_type === 'purchasing_discount' &&
-        rule.object_ids?.includes(productId)
-      )
-    );
-  } catch (e) {
-    console.error('Error fetching membership plans:', e);
-    return [];
-  }
+	const encodedAuth = Utilities.base64Encode(`${apiusername}:${apipassword}`);
+	const headers = { Authorization: `Basic ${encodedAuth}` };
+	const apiUrl = `https://www.${apidomain}/wp-json/wc/v3/memberships/plans?per_page=100`;
+
+	try {
+		const response = UrlFetchApp.fetch(apiUrl, { headers });
+		const plans = JSON.parse(response.getContentText());
+
+		return plans.filter((plan) =>
+			plan.rules?.some(
+				(rule) =>
+					rule.rule_type === "purchasing_discount" &&
+					rule.object_ids?.includes(productId),
+			),
+		);
+	} catch (e) {
+		console.error("Error fetching membership plans:", e);
+		return [];
+	}
 }
 
 function updateMembershipPlanRules(planId, rules) {
-  const encodedAuth = Utilities.base64Encode(`${apiusername}:${apipassword}`);
-  const headers = { 
-    Authorization: `Basic ${encodedAuth}`,
-    'Content-Type': 'application/json'
-  };
-  
-  const apiUrl = `https://www.${apidomain}/wp-json/wc/v3/memberships/plans/${planId}`;
-  const payload = JSON.stringify({ rules });
-  
-  const options = {
-    method: 'PUT',
-    headers,
-    payload,
-    muteHttpExceptions: true
-  };
-  
-  try {
-    const response = UrlFetchApp.fetch(apiUrl, options);
-    return response.getResponseCode() === 200;
-  } catch (e) {
-    console.error('Error updating membership plan:', e);
-    return false;
-  }
+	const encodedAuth = Utilities.base64Encode(`${apiusername}:${apipassword}`);
+	const headers = {
+		Authorization: `Basic ${encodedAuth}`,
+		"Content-Type": "application/json",
+	};
+
+	const apiUrl = `https://www.${apidomain}/wp-json/wc/v3/memberships/plans/${planId}`;
+	const payload = JSON.stringify({ rules });
+
+	const options = {
+		method: "PUT",
+		headers,
+		payload,
+		muteHttpExceptions: true,
+	};
+
+	try {
+		const response = UrlFetchApp.fetch(apiUrl, options);
+		return response.getResponseCode() === 200;
+	} catch (e) {
+		console.error("Error updating membership plan:", e);
+		return false;
+	}
 }
 
 function copyMembershipDiscounts(sourceProductId, newProductId) {
-  const plans = getMembershipPlansWithProductDiscount(sourceProductId);
-  
-  plans.forEach(plan => {
-    const updatedRules = plan.rules.map(rule => {
-      if (rule.rule_type === 'purchasing_discount' && 
-          rule.object_ids.includes(sourceProductId)) {
-        return {
-          ...rule,
-          object_ids: [...new Set([...rule.object_ids, newProductId])]
-        };
-      }
-      return rule;
-    });
-    
-    if (updateMembershipPlanRules(plan.id, updatedRules)) {
-      console.log(`Updated membership plan ${plan.id} with new product ${newProductId}`);
-    }
-  });
+	const plans = getMembershipPlansWithProductDiscount(sourceProductId);
+
+	plans.forEach((plan) => {
+		const updatedRules = plan.rules.map((rule) => {
+			if (
+				rule.rule_type === "purchasing_discount" &&
+				rule.object_ids.includes(sourceProductId)
+			) {
+				return {
+					...rule,
+					object_ids: [...new Set([...rule.object_ids, newProductId])],
+				};
+			}
+			return rule;
+		});
+
+		if (updateMembershipPlanRules(plan.id, updatedRules)) {
+			console.log(
+				`Updated membership plan ${plan.id} with new product ${newProductId}`,
+			);
+		}
+	});
 }
 
 function slugify(text) {
