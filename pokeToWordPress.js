@@ -220,10 +220,17 @@ function sendProductToWordPress(product) {
 		for (const variation of product.variations) {
 			const variationPayload = {
 				...variation,
-				sku: variation.sku ? `${newProduct.sku}-${variation.sku}` : "",
-				meta_data: variation.meta_data.filter(
-					(meta) => !["_associated_post", "_original_id"].includes(meta.key),
-				),
+				manage_stock: Boolean(variation.manage_stock),
+				stock_quantity: Number(variation.stock_quantity) || 0,
+				sku: variation.sku ? `${newProduct.sku}-${variation.sku}` : '',
+				meta_data: variation.meta_data.map(meta => ({
+					...meta,
+					value: meta.key === 'manage_stock' ? 
+						Boolean(meta.value) : 
+						meta.value
+				})).filter(meta => 
+					!['_associated_post', '_original_id'].includes(meta.key)
+				)
 			};
 
 			const variationOptions = {
