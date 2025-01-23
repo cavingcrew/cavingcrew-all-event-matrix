@@ -109,11 +109,11 @@ function getClientScript(templates) {
         if (eventType === "OVERNIGHT") {
           const endDate = new Date(date);
           endDate.setDate(date.getDate() + 2);
-          return `${formatDate(date, 'jS F Y')} - ${formatDate(endDate, 'jS F Y')}`;
+          return `$formatDate(date, 'jS F Y')- $formatDate(endDate, 'jS F Y')`;
         }
         
         if (["TRAINING","HORIZONTAL_TRAINING","BASIC_SRT"].includes(eventType)) {
-          return `${formatDate(date, 'H:i')} • ${formatDate(date, 'l jS F Y')}`;
+          return `$formatDate(date, 'H:i')• $formatDate(date, 'l jS F Y')`;
         }
         
         return formatDate(date, 'jS F Y');
