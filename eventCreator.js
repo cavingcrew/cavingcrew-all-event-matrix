@@ -306,15 +306,19 @@ function createNewEvent(eventType, eventName, eventDate) {
 		// Create SKU in format YYYY-MM-DD-type
 		const skuDate = formatDateISO(eventDateObj);
 		newProduct.sku = `${skuDate}-${eventType}`;
-		console.log(`[DEBUG] Creating product with SKU: ${newProduct.sku}`, 
-		  `Type: ${eventType}, Date: ${skuDate}, Name: ${newProduct.name}`);
+		console.log(
+			`[DEBUG] Creating product with SKU: ${newProduct.sku}`,
+			`Type: ${eventType}, Date: ${skuDate}, Name: ${newProduct.name}`,
+		);
 
 		// Check for SKU conflicts
 		const existingProducts = getProductBySKU(newProduct.sku);
 		if (existingProducts.length > 0) {
-		  console.error(`[CONFLICT] SKU ${newProduct.sku} already exists:`, 
-			existingProducts.map(p => p.id));
-		  throw new Error(`SKU conflict detected: ${newProduct.sku}`);
+			console.error(
+				`[CONFLICT] SKU ${newProduct.sku} already exists:`,
+				existingProducts.map((p) => p.id),
+			);
+			throw new Error(`SKU conflict detected: ${newProduct.sku}`);
 		}
 
 		// Update start date in metadata
