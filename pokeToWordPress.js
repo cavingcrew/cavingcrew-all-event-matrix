@@ -238,7 +238,7 @@ function updateMembershipPlanRules(planId, rules) {
 function copyMembershipDiscounts(sourceProductId, newProductId) {
 	const plans = getMembershipPlansWithProductDiscount(sourceProductId);
 
-	plans.forEach((plan) => {
+	for (const plan of plans) {
 		const updatedRules = plan.rules.map((rule) => {
 			if (
 				rule.rule_type === "purchasing_discount" &&
@@ -257,7 +257,7 @@ function copyMembershipDiscounts(sourceProductId, newProductId) {
 				`Updated membership plan ${plan.id} with new product ${newProductId}`,
 			);
 		}
-	});
+	}
 }
 
 function slugify(text) {
