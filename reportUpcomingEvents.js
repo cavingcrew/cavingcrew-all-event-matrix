@@ -69,6 +69,7 @@ function readUpcomingEvents(stmt, cell) {
 				type: "color",
 				column: "Trip Leader",
 				color: colors.lightBlue,
+				when: (cell) => cell && cell.getValue(), // Only apply color if cell has content
 			},
 			{
 				type: "color",
