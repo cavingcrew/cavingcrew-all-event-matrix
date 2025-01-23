@@ -153,7 +153,7 @@ function getClientScript(templates) {
       });
 
       // OPEN SOCIAL TAB IMMEDIATELY
-      const socialWindow = window.open(`${baseUrl}?${socialParams.toString()}`, '_blank');
+      const socialWindow = window.open(`$baseUrl?$socialParams.toString()`, '_blank');
 
       // Then process the event creation
       google.script.run
