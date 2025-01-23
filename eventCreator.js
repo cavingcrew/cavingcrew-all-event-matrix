@@ -232,7 +232,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 		const formattedDate = Utilities.formatDate(
 			eventDateObj,
 			SpreadsheetApp.getActive().getSpreadsheetTimeZone(),
-			"yyyy-MM-dd HH:mm:ss"
+			"yyyy-MM-dd HH:mm:ss",
 		);
 
 		// Create SKU in format YYYY-MM-DD-type
@@ -248,10 +248,10 @@ function createNewEvent(eventType, eventName, eventDate) {
 		});
 
 		// Add new metadata if it doesn't exist
-		if (!newProduct.meta_data.some(m => m.key === "event_start_date_time")) {
+		if (!newProduct.meta_data.some((m) => m.key === "event_start_date_time")) {
 			newProduct.meta_data.push({
 				key: "event_start_date_time",
-				value: formattedDate
+				value: formattedDate,
 			});
 		}
 
@@ -352,24 +352,24 @@ function formatDate(date) {
  * @returns {string} - The formatted date.
  */
 function formatSocialMediaFooter(startTime, eventType) {
-  const date = new Date(startTime);
-  
-  if (eventType === "OVERNIGHT") {
-    const endDate = new Date(date);
-    endDate.setDate(date.getDate() + 2);
-    return (
-      `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "long" })} ` +
-      `- ${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString("default", { month: "long" })}`
-    );
-  }
-  
-  return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "long" })}`;
+	const date = new Date(startTime);
+
+	if (eventType === "OVERNIGHT") {
+		const endDate = new Date(date);
+		endDate.setDate(date.getDate() + 2);
+		return (
+			`${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "long" })} ` +
+			`- ${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString("default", { month: "long" })}`
+		);
+	}
+
+	return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "long" })}`;
 }
 
 function getOrdinal(n) {
-  const s = ["th", "st", "nd", "rd"];
-  const v = n % 100;
-  return s[(v - 20) % 10] || s[v] || s[0];
+	const s = ["th", "st", "nd", "rd"];
+	const v = n % 100;
+	return s[(v - 20) % 10] || s[v] || s[0];
 }
 
 function testCreateNewEvent() {
