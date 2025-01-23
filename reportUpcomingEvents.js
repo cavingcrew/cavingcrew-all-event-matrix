@@ -94,86 +94,86 @@ function readUpcomingEvents(stmt, cell) {
 				type: "color",
 				column: "Membership Required",
 				search: "Yes",
-				color: colors.lightRed
+				color: colors.lightRed,
 			},
 			{
 				type: "color",
-				column: "Membership Required", 
+				column: "Membership Required",
 				search: "No",
-				color: colors.lightGreen
+				color: colors.lightGreen,
 			},
 			// Must Have Caved Before
 			{
 				type: "color",
 				column: "Must Have Caved Before",
 				search: "Yes",
-				color: colors.lightRed
+				color: colors.lightRed,
 			},
 			{
 				type: "color",
 				column: "Must Have Caved Before",
-				search: "No", 
-				color: colors.lightGreen
+				search: "No",
+				color: colors.lightGreen,
 			},
 			// Experience Requirements
 			{
 				type: "color",
 				column: "Experience Requirements",
 				search: "caved_before",
-				color: colors.orange
+				color: colors.orange,
 			},
 			{
 				type: "color",
 				column: "Experience Requirements",
 				search: "Open to All Abilities",
-				color: colors.lightGreen
+				color: colors.lightGreen,
 			},
-			{ 
+			{
 				type: "wrap",
-				column: "Experience Requirements"
+				column: "Experience Requirements",
 			},
 			// Minimum Gear
 			{
 				type: "color",
 				column: "Minimum Gear",
 				search: "None",
-				color: colors.lightGrey
+				color: colors.lightGrey,
 			},
 			{
 				type: "wrap",
-				column: "Minimum Gear"
+				column: "Minimum Gear",
 			},
 			// Over 18 Required
 			{
 				type: "color",
 				column: "Over 18 Required",
 				search: "Yes",
-				color: colors.lightRed
+				color: colors.lightRed,
 			},
 			{
 				type: "color",
 				column: "Over 18 Required",
 				search: "No",
-				color: colors.lightGreen
+				color: colors.lightGreen,
 			},
 			// Category
 			{
 				type: "color",
 				column: "Category",
 				search: "Overnight Trips",
-				color: colors.lightBlue
+				color: colors.lightBlue,
 			},
 			{
 				type: "color",
 				column: "Category",
 				search: "Evening and Day",
-				color: colors.lightPurple
+				color: colors.lightPurple,
 			},
 			{
 				type: "color",
 				column: "Category",
 				search: "Extra-Welcoming",
-				color: colors.pink
+				color: colors.pink,
 			},
 			// Status
 			{
@@ -185,7 +185,7 @@ function readUpcomingEvents(stmt, cell) {
 				type: "color",
 				column: "Status",
 				search: "publish",
-				color: colors.lightGreen
+				color: colors.lightGreen,
 			},
 			{
 				type: "color",
