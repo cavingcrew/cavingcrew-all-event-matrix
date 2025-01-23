@@ -106,20 +106,17 @@ function getClientScript(templates) {
       
       // Client-side version of formatSocialMediaFooter
       const formatFooter = (date, eventType) => {
-        const getOrdinal = (n) => [,'st','nd','rd'][(n/10%10^1&&n%10)||10]||'th';
-        
         if (eventType === "OVERNIGHT") {
           const endDate = new Date(date);
           endDate.setDate(date.getDate() + 2);
-          return `$date.getDate()$getOrdinal(date.getDate())$date.toLocaleString('default',{month:'long'})$date.getFullYear()- $endDate.getDate()$getOrdinal(endDate.getDate())$endDate.toLocaleString('default',{month:'long'})$endDate.getFullYear()`;
+          return `${formatDate(date, 'jS F Y')} - ${formatDate(endDate, 'jS F Y')}`;
         }
         
         if (["TRAINING","HORIZONTAL_TRAINING","BASIC_SRT"].includes(eventType)) {
-          const time = date.toLocaleTimeString('en-GB',{hour:'numeric',minute:'2-digit'}).replace(/:/g,'.');
-          return `$time• $date.toLocaleString('default',{weekday:'long'})$date.getDate()$getOrdinal(date.getDate())$date.toLocaleString('default',{month:'long'})$date.getFullYear()`;
+          return `${formatDate(date, 'H:i')} • ${formatDate(date, 'l jS F Y')}`;
         }
         
-        return `$date.getDate()$getOrdinal(date.getDate())$date.toLocaleString('default',{month:'long'})$date.getFullYear()`;
+        return formatDate(date, 'jS F Y');
       };
 
       const socialParams = new URLSearchParams({

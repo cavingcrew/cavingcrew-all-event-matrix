@@ -280,37 +280,51 @@ function showError(message) {
 }
 
 function formatSocialMediaFooter(startTime, eventType) {
-	const date = new Date(startTime);
+  const date = new Date(startTime);
 
-	if (eventType === "OVERNIGHT") {
-		const endDate = new Date(date);
-		endDate.setDate(date.getDate() + 2);
-		return (
-			`${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "long" })} ${date.getFullYear()} ` +
-			`- ${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString("default", { month: "long" })} ${endDate.getFullYear()}`
-		);
-	}
+  if (eventType === "OVERNIGHT") {
+    const endDate = new Date(date);
+    endDate.setDate(date.getDate() + 2);
+    return `${formatDate(date, 'jS F Y')} - ${formatDate(endDate, 'jS F Y')}`;
+  }
+  
+  if (["TRAINING", "HORIZONTAL_TRAINING", "BASIC_SRT"].includes(eventType)) {
+    return `${formatDate(date, 'H:i')} • ${formatDate(date, 'l jS F Y')}`;
+  }
+  
+  return formatDate(date, 'jS F Y');
+}
 
-	if (["TRAINING", "HORIZONTAL_TRAINING", "BASIC_SRT"].includes(eventType)) {
-		const time = date
-			.toLocaleTimeString("en-GB", {
-				hour: "numeric",
-				minute: "2-digit",
-			})
-			.replace(/:/g, ".");
-		return `${time} • ${date.toLocaleString("default", {
-			weekday: "long",
-		})} ${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString(
-			"default",
-			{ month: "long" },
-		)} ${date.getFullYear()}`;
-	}
+function formatDate(date, formatStr) {
+  const options = {
+    day: 'numeric',
+    month: 'long', 
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: false,
+    weekday: 'long'
+  };
 
-	return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "long" })} ${date.getFullYear()}`;
+  return formatStr.replace(/([a-z]+)/gi, (match) => {
+    switch(match.toLowerCase()) {
+      case 'd': return String(date.getDate()).padStart(2, '0');
+      case 'j': return date.getDate();
+      case 's': return getOrdinal(date.getDate());
+      case 'f': return date.toLocaleString('en-US', { month: 'long' });
+      case 'm': return String(date.getMonth() + 1).padStart(2, '0');
+      case 'y': return date.getFullYear().toString().slice(-2);
+      case 'y': return date.getFullYear();
+      case 'h': return String(date.getHours()).padStart(2, '0');
+      case 'i': return String(date.getMinutes()).padStart(2, '0');
+      case 'l': return date.toLocaleString('en-US', { weekday: 'long' });
+      default: return match;
+    }
+  });
 }
 
 function getOrdinal(n) {
-	return (
-		[undefined, "st", "nd", "rd"][(((n / 10) % 10) ^ 1 && n % 10) || 10] || "th"
-	);
+  return (
+    [undefined, "st", "nd", "rd"][(((n / 10) % 10) ^ 1 && n % 10) || 10] || "th"
+  );
 }
