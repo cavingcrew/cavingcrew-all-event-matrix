@@ -100,22 +100,57 @@ function getClientScript(templates) {
       const eventName = document.getElementById('eventName').value;
       const eventDate = document.getElementById('eventDate').value;
 
+      // Generate social media link IMMEDIATELY from form data
+      const baseUrl = "https://socialmedia-image-creator.pages.dev/";
+      const date = new Date(eventDate);
+      
+      // Client-side version of formatSocialMediaFooter
+      const formatFooter = (date, eventType) => {
+        const getOrdinal = (n) => [,'st','nd','rd'][(n/10%10^1&&n%10)||10]||'th';
+        
+        if (eventType === "OVERNIGHT") {
+          const endDate = new Date(date);
+          endDate.setDate(date.getDate() + 2);
+          return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString('default',{month:'long'})} - ${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString('default',{month:'long'})}`;
+        }
+        
+        if (["TRAINING","HORIZONTAL_TRAINING","BASIC_SRT"].includes(eventType)) {
+          const time = date.toLocaleTimeString('en-GB',{hour:'numeric',minute:'2-digit'}).replace(/:/g,'.');
+          return `${time} • ${date.toLocaleString('default',{weekday:'long'})} ${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString('default',{month:'long'})}`;
+        }
+        
+        return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString('default',{month:'long'})}`;
+      };
+
+      const socialParams = new URLSearchParams({
+        Headline: "The Caving Crew",
+        SubHeadline: eventName,
+        Footer: formatFooter(date, selectedType),
+        HeadlinePosition: 157,
+        SubHeadlinePosition: 314,
+        FooterPosition: 533.8,
+        BackgroundImage: "/images/photos/IMG_4470.jpg"
+      });
+
+      // OPEN SOCIAL TAB IMMEDIATELY
+      const socialWindow = window.open(`${baseUrl}?${socialParams}`, '_blank');
+
+      // Then process the event creation
       google.script.run
         .withSuccessHandler((result) => {
-          if (result && result.success) {
-            // Open social media creator in new tab
-            window.open(result.socialLink, '_blank');
-            
-            // Keep existing open/edit behavior
+          if (result?.success) {
+            // Only open WordPress editor if successful
             window.open(
-              'https://www.cavingcrew.com/wp-admin/post.php?post=' + 
-              result.id + 
-              '&action=edit'
+              `https://www.cavingcrew.com/wp-admin/post.php?post=${result.id}&action=edit`,
+              '_blank'
             );
-          } else 
-            showError(result.error || 'Failed to create event');
+          } else {
+            socialWindow?.close(); // Close empty social tab if creation failed
+            showError(result?.error || 'Failed to create event');
+          }
         })
         .withFailureHandler((error) => {
+          socialWindow?.close(); // Close empty social tab on error
           showError(error.message || 'An unexpected error occurred');
         })
         .createNewEvent(selectedType, eventName, eventDate);
