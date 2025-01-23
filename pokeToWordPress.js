@@ -133,6 +133,10 @@ function createDuplicateProduct(originalProduct) {
 	newProduct.date_created = null;
 	newProduct.date_modified = null;
 
+	// Add boolean conversion for stock management
+	newProduct.manage_stock = originalProduct.manage_stock === "true" || originalProduct.manage_stock === true;
+	newProduct.stock_quantity = Number(originalProduct.stock_quantity) || 0;
+
 	// Preserve membership-related meta data
 	const preservedMetaKeys = new Set([
 		"_membership_discount",
@@ -149,7 +153,9 @@ function createDuplicateProduct(originalProduct) {
 		)
 		.map((meta) => ({
 			key: meta.key,
-			value: meta.value,
+			value: meta.key === 'manage_stock' ? 
+				(meta.value === "true" || meta.value === true) :
+				meta.value,
 			id: undefined, // Clear existing meta IDs
 		}));
 
@@ -159,12 +165,16 @@ function createDuplicateProduct(originalProduct) {
 		const originalVariations = getProductVariations(originalProduct.id);
 		newProduct.variations = originalVariations.map((v) => ({
 			...v,
+			manage_stock: v.manage_stock === "true" || v.manage_stock === true,
+			stock_quantity: Number(v.stock_quantity) || 0,
 			id: undefined, // Clear variation ID for new creation
 			date_created: null,
 			date_modified: null,
 			meta_data: v.meta_data.map((meta) => ({
 				key: meta.key,
-				value: meta.value,
+				value: meta.key === 'manage_stock' ? 
+					(meta.value === "true" || meta.value === true) :
+					meta.value,
 				id: undefined,
 			})),
 		}));
