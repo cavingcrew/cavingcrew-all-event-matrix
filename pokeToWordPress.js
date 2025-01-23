@@ -134,7 +134,9 @@ function createDuplicateProduct(originalProduct) {
 	newProduct.date_modified = null;
 
 	// Add boolean conversion for stock management
-	newProduct.manage_stock = originalProduct.manage_stock === "true" || originalProduct.manage_stock === true;
+	newProduct.manage_stock =
+		originalProduct.manage_stock === "true" ||
+		originalProduct.manage_stock === true;
 	newProduct.stock_quantity = Number(originalProduct.stock_quantity) || 0;
 
 	// Preserve membership-related meta data
@@ -153,9 +155,10 @@ function createDuplicateProduct(originalProduct) {
 		)
 		.map((meta) => ({
 			key: meta.key,
-			value: meta.key === 'manage_stock' ? 
-				(meta.value === "true" || meta.value === true) :
-				meta.value,
+			value:
+				meta.key === "manage_stock"
+					? meta.value === "true" || meta.value === true
+					: meta.value,
 			id: undefined, // Clear existing meta IDs
 		}));
 
@@ -172,9 +175,10 @@ function createDuplicateProduct(originalProduct) {
 			date_modified: null,
 			meta_data: v.meta_data.map((meta) => ({
 				key: meta.key,
-				value: meta.key === 'manage_stock' ? 
-					(meta.value === "true" || meta.value === true) :
-					meta.value,
+				value:
+					meta.key === "manage_stock"
+						? meta.value === "true" || meta.value === true
+						: meta.value,
 				id: undefined,
 			})),
 		}));
@@ -222,15 +226,16 @@ function sendProductToWordPress(product) {
 				...variation,
 				manage_stock: Boolean(variation.manage_stock),
 				stock_quantity: Number(variation.stock_quantity) || 0,
-				sku: variation.sku ? `${newProduct.sku}-${variation.sku}` : '',
-				meta_data: variation.meta_data.map(meta => ({
-					...meta,
-					value: meta.key === 'manage_stock' ? 
-						Boolean(meta.value) : 
-						meta.value
-				})).filter(meta => 
-					!['_associated_post', '_original_id'].includes(meta.key)
-				)
+				sku: variation.sku ? `${newProduct.sku}-${variation.sku}` : "",
+				meta_data: variation.meta_data
+					.map((meta) => ({
+						...meta,
+						value:
+							meta.key === "manage_stock" ? Boolean(meta.value) : meta.value,
+					}))
+					.filter(
+						(meta) => !["_associated_post", "_original_id"].includes(meta.key),
+					),
 			};
 
 			const variationOptions = {
