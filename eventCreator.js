@@ -136,7 +136,7 @@ function getClientScript(templates) {
         }
         
         if (["TRAINING","HORIZONTAL_TRAINING","BASIC_SRT"].includes(eventType)) {
-          return \`\${formatDate(date, 'H:i')} • \${formatDate(date, 'l jS F Y')}\`;
+          return \`\${formatDate(date, 'H:i')} : \${formatDate(date, 'l jS F Y')}\`;
         }
         
         return formatDate(date, 'jS F Y');
@@ -153,8 +153,8 @@ function getClientScript(templates) {
       });
 
       // OPEN SOCIAL TAB IMMEDIATELY
-      const socialWindow = window.open(`$baseUrl?$socialParams.toString()`, '_blank');
-
+      const socialWindow = window.open(\`\${baseUrl}\`?\`\${socialParams.toString()}\`, '_blank');     
+      
       // Then process the event creation
       google.script.run
         .withSuccessHandler((result) => {
