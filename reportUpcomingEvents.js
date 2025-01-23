@@ -68,7 +68,7 @@ function readUpcomingEvents(stmt, cell) {
 				type: "color",
 				column: "Trip Leader",
 				color: colors.lightBlue,
-				when: (cell) => cell?.getValue(),
+				when: (cell) => cell?.getValue()?.trim() !== '',
 			},
 			{
 				type: "color",
@@ -118,7 +118,7 @@ function readUpcomingEvents(stmt, cell) {
 			{
 				type: "columnWidth",
 				column: "Experience Requirements",
-				width: 60,
+				width: 30,
 			},
 			{
 				type: "color",
@@ -140,7 +140,7 @@ function readUpcomingEvents(stmt, cell) {
 			{
 				type: "columnWidth",
 				column: "Minimum Gear",
-				width: 50,
+				width: 30,
 			},
 			{
 				type: "color",
