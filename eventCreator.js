@@ -458,6 +458,11 @@ function testCreateNewEvent() {
 		);
 
 		console.log("Result:", result);
+		
+		// Test variation SKUs
+		const testVariations = getProductVariations(result.id);
+		console.log("Variation SKUs:", testVariations.map(v => v.sku));
+		
 		return result;
 	} catch (error) {
 		console.error("Error in createNewEvent:", error);

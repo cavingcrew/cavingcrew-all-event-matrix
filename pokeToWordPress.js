@@ -318,6 +318,21 @@ function sendProductToWordPress(product) {
 		}),
 	);
 
+	// Add SKU validation for variations
+	const variationSkus = new Set();
+	if (product.variations && product.variations.length > 0) {
+		product.variations.forEach((v) => {
+			if (!v.sku || v.sku === '2024-XX-ZZ') { // Explicitly block template SKUs
+				v.sku = `${product.sku}-${Math.random().toString(36).substring(2, 6)}`;
+			}
+			
+			if (variationSkus.has(v.sku)) {
+				throw new Error(`Duplicate variation SKU detected: ${v.sku}`);
+			}
+			variationSkus.add(v.sku);
+		});
+	}
+
 	const encodedAuthInformation = Utilities.base64Encode(
 		`${apiusername}:${apipassword}`,
 	);
