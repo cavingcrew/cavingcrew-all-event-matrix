@@ -58,6 +58,29 @@ const EVENT_TEMPLATES = {
  */
 function getClientScript(templates) {
 	return `
+    // CLIENT-SIDE DATE FORMATTING UTILITIES
+    function getOrdinal(n) {
+      return ([,"st","nd","rd"][(n/10%10^1&&n%10)]||"th");
+    }
+
+    function formatDate(date, formatStr) {
+      return formatStr.replace(/([a-z]+)/gi, (match) => {
+        switch(match.toLowerCase()) {
+          case 'd': return date.getDate().toString().padStart(2, '0');
+          case 'j': return date.getDate();
+          case 's': return getOrdinal(date.getDate());
+          case 'f': return date.toLocaleString('en-US', {month:'long'});
+          case 'm': return (date.getMonth()+1).toString().padStart(2, '0');
+          case 'y': return date.getFullYear().toString().slice(-2);
+          case 'Y': return date.getFullYear();
+          case 'h': return date.getHours().toString().padStart(2, '0');
+          case 'i': return date.getMinutes().toString().padStart(2, '0');
+          case 'l': return date.toLocaleString('en-US', {weekday:'long'});
+          default: return match;
+        }
+      });
+    }
+
     const templates = ${JSON.stringify(templates)};
     
     document.querySelectorAll('input[name="eventType"]').forEach(radio => {
