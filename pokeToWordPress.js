@@ -207,7 +207,7 @@ function sendProductToWordPress(product) {
 	if (product.variations && product.variations.length > 0) {
 		const variationsUrl = `https://www.${apidomain}/wp-json/wc/v3/products/${newProduct.id}/variations`;
 
-		product.variations.forEach((variation) => {
+		for (const variation of product.variations) {
 			const variationPayload = {
 				...variation,
 				sku: variation.sku ? `${newProduct.sku}-${variation.sku}` : "",
@@ -224,7 +224,7 @@ function sendProductToWordPress(product) {
 			};
 
 			UrlFetchApp.fetch(variationsUrl, variationOptions);
-		});
+		}
 	}
 
 	return newProduct.id;
