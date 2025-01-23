@@ -223,6 +223,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 		}
 
 		// Create new product from template
+		const eventDateObj = new Date(eventDate);
 		const newProduct = createDuplicateProduct(templateProduct);
 		const shouldAppendDate = eventType !== "OVERNIGHT";
 		const formattedDisplayDate = Utilities.formatDate(
@@ -237,7 +238,6 @@ function createNewEvent(eventType, eventName, eventDate) {
 		newProduct.slug = slugify(newProduct.name);
 
 		// Format date for WordPress and SKU
-		const eventDateObj = new Date(eventDate);
 		const formattedDate = Utilities.formatDate(
 			eventDateObj,
 			SpreadsheetApp.getActive().getSpreadsheetTimeZone(),
