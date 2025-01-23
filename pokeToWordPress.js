@@ -191,22 +191,29 @@ function createDuplicateProduct(originalProduct) {
 	newProduct.variations = [];
 	if (originalProduct.variations && originalProduct.variations.length > 0) {
 		const originalVariations = getProductVariations(originalProduct.id);
-		newProduct.variations = originalVariations.map((v) => ({
-			...v,
-			manage_stock: v.manage_stock === "true" || v.manage_stock === true,
-			stock_quantity: Number(v.stock_quantity) || 0,
-			id: undefined, // Clear variation ID for new creation
-			date_created: null,
-			date_modified: null,
-			meta_data: v.meta_data.map((meta) => ({
-				key: meta.key,
-				value:
-					meta.key === "manage_stock"
-						? meta.value === "true" || meta.value === true
-						: meta.value,
-				id: undefined,
-			})),
-		}));
+		newProduct.variations = originalVariations.map((v) => {
+			const variationSlug = slugify(v.attributes[0].option)
+				.replace(/-/g, '')
+				.slice(0, 8);
+				
+			return {
+				...v,
+				sku: `${newProduct.sku}-${variationSlug}`, // Inherit parent SKU + variation ID
+				manage_stock: v.manage_stock === "true" || v.manage_stock === true,
+				stock_quantity: Number(v.stock_quantity) || 0,
+				id: undefined, // Clear variation ID for new creation
+				date_created: null,
+				date_modified: null,
+				meta_data: v.meta_data.map((meta) => ({
+					key: meta.key,
+					value:
+						meta.key === "manage_stock"
+							? meta.value === "true" || meta.value === true
+							: meta.value,
+					id: undefined,
+				})),
+			};
+		});
 	}
 
 	return newProduct;
