@@ -10,21 +10,27 @@ function readUpcomingEvents(stmt, cell) {
         e.open_spaces AS "Open Spaces", 
         e.post_status AS "Status",
         CASE 
-          WHEN e.membership_required = 'yes' THEN 'Yes'
-          ELSE 'No'
+          WHEN e.event_non_members_welcome = 'no' THEN 'Yes'
+          ELSE 'No' 
         END AS "Membership Required",
-        COALESCE(
-          e.event_skills_required,
-          e.what_is_the_minimum_skill_required_for_this_trip, 
-          'None specified'
-        ) AS "Minimum Skills",
+        CASE
+          WHEN e.event_must_caved_with_us_before = 'yes' THEN 'Yes'
+          ELSE 'No'
+        END AS "Must Have Caved Before",
+        CASE
+          WHEN COALESCE(e.event_skills_required, e.what_is_the_minimum_skill_required_for_this_trip) NOT IN ('None specified', 'Open to All Abilities')
+            THEN COALESCE(e.event_skills_required, e.what_is_the_minimum_skill_required_for_this_trip)
+          WHEN COALESCE(e.event_prior_experience, 'None specified') != 'None specified'
+            THEN e.event_prior_experience
+          ELSE 'Open to All Abilities'
+        END AS "Experience Requirements",
         e.event_gear_required AS "Minimum Gear",
         CASE 
           WHEN e.event_for_u18s = 'no' THEN 'Yes'
           ELSE 'No'
         END AS "Over 18 Required",
-        COALESCE(e.event_prior_experience, 'None specified') AS "Prior Experience Required",
         e.primary_category AS "Category",
+        e.post_status AS "Status",
         e.product_id AS "ID"
       FROM jtl_vw_events_db e
       LEFT JOIN (
