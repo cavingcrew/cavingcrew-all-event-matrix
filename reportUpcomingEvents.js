@@ -116,6 +116,11 @@ function readUpcomingEvents(stmt, cell) {
 			},
 			// Experience Requirements
 			{
+				type: "columnWidth",
+				column: "Experience Requirements",
+				width: 60
+			},
+			{
 				type: "color",
 				column: "Experience Requirements",
 				search: "caved_before",
@@ -132,6 +137,11 @@ function readUpcomingEvents(stmt, cell) {
 				column: "Experience Requirements",
 			},
 			// Minimum Gear
+			{
+				type: "columnWidth",
+				column: "Minimum Gear",
+				width: 50
+			},
 			{
 				type: "color",
 				column: "Minimum Gear",
