@@ -286,8 +286,8 @@ function formatSocialMediaFooter(startTime, eventType) {
 		const endDate = new Date(date);
 		endDate.setDate(date.getDate() + 2);
 		return (
-			`${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "long" })} ` +
-			`- ${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString("default", { month: "long" })}`
+			`${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "long" })} ${date.getFullYear()} ` +
+			`- ${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString("default", { month: "long" })} ${endDate.getFullYear()}`
 		);
 	}
 
@@ -303,10 +303,10 @@ function formatSocialMediaFooter(startTime, eventType) {
 		})} ${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString(
 			"default",
 			{ month: "long" },
-		)}`;
+		)} ${date.getFullYear()}`;
 	}
 
-	return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "long" })}`;
+	return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString("default", { month: "long" })} ${date.getFullYear()}`;
 }
 
 function getOrdinal(n) {

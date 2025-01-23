@@ -111,15 +111,15 @@ function getClientScript(templates) {
         if (eventType === "OVERNIGHT") {
           const endDate = new Date(date);
           endDate.setDate(date.getDate() + 2);
-          return `$date.getDate()$getOrdinal(date.getDate())$date.toLocaleString('default',{month:'long'})- $endDate.getDate()$getOrdinal(endDate.getDate())$endDate.toLocaleString('default',{month:'long'})`;
+          return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString('default',{month:'long'})} ${date.getFullYear()} - ${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString('default',{month:'long'})} ${endDate.getFullYear()}`;
         }
         
         if (["TRAINING","HORIZONTAL_TRAINING","BASIC_SRT"].includes(eventType)) {
           const time = date.toLocaleTimeString('en-GB',{hour:'numeric',minute:'2-digit'}).replace(/:/g,'.');
-          return `$time• $date.toLocaleString('default',{weekday:'long'})$date.getDate()$getOrdinal(date.getDate())$date.toLocaleString('default',{month:'long'})`;
+          return `${time} • ${date.toLocaleString('default',{weekday:'long'})} ${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString('default',{month:'long'})} ${date.getFullYear()}`;
         }
         
-        return `$date.getDate()$getOrdinal(date.getDate())$date.toLocaleString('default',{month:'long'})`;
+        return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString('default',{month:'long'})} ${date.getFullYear()}`;
       };
 
       const socialParams = new URLSearchParams({
