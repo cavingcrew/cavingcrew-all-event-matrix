@@ -118,7 +118,7 @@ function readUpcomingEvents(stmt, cell) {
 			{
 				type: "columnWidth",
 				column: "Experience Requirements",
-				width: 60
+				width: 60,
 			},
 			{
 				type: "color",
@@ -140,7 +140,7 @@ function readUpcomingEvents(stmt, cell) {
 			{
 				type: "columnWidth",
 				column: "Minimum Gear",
-				width: 50
+				width: 50,
 			},
 			{
 				type: "color",
