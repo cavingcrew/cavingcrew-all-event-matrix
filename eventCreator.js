@@ -228,10 +228,10 @@ function createNewEvent(eventType, eventName, eventDate) {
 		const formattedDisplayDate = Utilities.formatDate(
 			eventDateObj,
 			SpreadsheetApp.getActive().getSpreadsheetTimeZone(),
-			"dd/MM" // Format as 23/04 instead of 23/04/25
+			"dd/MM", // Format as 23/04 instead of 23/04/25
 		);
 
-		newProduct.name = shouldAppendDate 
+		newProduct.name = shouldAppendDate
 			? `${eventName} ${formattedDisplayDate}`
 			: eventName;
 		newProduct.slug = slugify(newProduct.name);
