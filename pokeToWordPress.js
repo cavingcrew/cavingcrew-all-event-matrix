@@ -193,9 +193,9 @@ function createDuplicateProduct(originalProduct) {
 		const originalVariations = getProductVariations(originalProduct.id);
 		newProduct.variations = originalVariations.map((v) => {
 			const variationSlug = slugify(v.attributes[0].option)
-				.replace(/-/g, '')
+				.replace(/-/g, "")
 				.slice(0, 8);
-				
+
 			return {
 				...v,
 				sku: `${newProduct.sku}-${variationSlug}`, // Inherit parent SKU + variation ID
@@ -329,10 +329,11 @@ function sendProductToWordPress(product) {
 	const variationSkus = new Set();
 	if (product.variations && product.variations.length > 0) {
 		product.variations.forEach((v) => {
-			if (!v.sku || v.sku === '2024-XX-ZZ') { // Explicitly block template SKUs
+			if (!v.sku || v.sku === "2024-XX-ZZ") {
+				// Explicitly block template SKUs
 				v.sku = `${product.sku}-${Math.random().toString(36).substring(2, 6)}`;
 			}
-			
+
 			if (variationSkus.has(v.sku)) {
 				throw new Error(`Duplicate variation SKU detected: ${v.sku}`);
 			}
