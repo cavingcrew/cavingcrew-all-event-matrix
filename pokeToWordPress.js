@@ -123,53 +123,54 @@ function pokeNoteToOrder(orderNumber, noteText) {
 }
 
 function createDuplicateProduct(originalProduct) {
-  // Deep clone the product including all metadata
-  const newProduct = JSON.parse(JSON.stringify(originalProduct));
+	// Deep clone the product including all metadata
+	const newProduct = JSON.parse(JSON.stringify(originalProduct));
 
-  // Reset WordPress-specific identifiers
-  newProduct.id = "";
-  newProduct.sku = "";
-  newProduct.status = "draft";
-  newProduct.date_created = null;
-  newProduct.date_modified = null;
+	// Reset WordPress-specific identifiers
+	newProduct.id = "";
+	newProduct.sku = "";
+	newProduct.status = "draft";
+	newProduct.date_created = null;
+	newProduct.date_modified = null;
 
-  // Preserve membership-related meta data
-  const preservedMetaKeys = new Set([
-    '_membership_discount',
-    '_membership_scheme',
-    '_subscription_price',
-    '_subscription_sign_up_fee'
-  ]);
+	// Preserve membership-related meta data
+	const preservedMetaKeys = new Set([
+		"_membership_discount",
+		"_membership_scheme",
+		"_subscription_price",
+		"_subscription_sign_up_fee",
+	]);
 
-  newProduct.meta_data = newProduct.meta_data
-    .filter((meta) => 
-      !['_edit_lock', '_edit_last'].includes(meta.key) ||
-      preservedMetaKeys.has(meta.key)
-    )
-    .map((meta) => ({
-      key: meta.key,
-      value: meta.value,
-      id: undefined // Clear existing meta IDs
-    }));
+	newProduct.meta_data = newProduct.meta_data
+		.filter(
+			(meta) =>
+				!["_edit_lock", "_edit_last"].includes(meta.key) ||
+				preservedMetaKeys.has(meta.key),
+		)
+		.map((meta) => ({
+			key: meta.key,
+			value: meta.value,
+			id: undefined, // Clear existing meta IDs
+		}));
 
-  // Copy variations with all their properties
-  newProduct.variations = [];
-  if (originalProduct.variations && originalProduct.variations.length > 0) {
-    const originalVariations = getProductVariations(originalProduct.id);
-    newProduct.variations = originalVariations.map(v => ({
-      ...v,
-      id: undefined, // Clear variation ID for new creation
-      date_created: null,
-      date_modified: null,
-      meta_data: v.meta_data.map(meta => ({
-        key: meta.key,
-        value: meta.value,
-        id: undefined
-      }))
-    }));
-  }
+	// Copy variations with all their properties
+	newProduct.variations = [];
+	if (originalProduct.variations && originalProduct.variations.length > 0) {
+		const originalVariations = getProductVariations(originalProduct.id);
+		newProduct.variations = originalVariations.map((v) => ({
+			...v,
+			id: undefined, // Clear variation ID for new creation
+			date_created: null,
+			date_modified: null,
+			meta_data: v.meta_data.map((meta) => ({
+				key: meta.key,
+				value: meta.value,
+				id: undefined,
+			})),
+		}));
+	}
 
-  return newProduct;
+	return newProduct;
 }
 
 function slugify(text) {
@@ -182,49 +183,49 @@ function slugify(text) {
 }
 
 function sendProductToWordPress(product) {
-  const encodedAuthInformation = Utilities.base64Encode(
-    `${apiusername}:${apipassword}`
-  );
-  const headers = { Authorization: `Basic ${encodedAuthInformation}` };
-  
-  // First create the base product
-  const productUrl = `https://www.${apidomain}/wp-json/wc/v3/products`;
-  const options = {
-    method: "post",
-    contentType: "application/json",
-    headers: headers,
-    payload: JSON.stringify({
-      ...product,
-      variations: [] // Create product first without variations
-    }),
-  };
-  
-  const response = UrlFetchApp.fetch(productUrl, options);
-  const newProduct = JSON.parse(response.getContentText());
-  
-  // Now create variations for the new product
-  if (product.variations && product.variations.length > 0) {
-    const variationsUrl = `https://www.${apidomain}/wp-json/wc/v3/products/${newProduct.id}/variations`;
-    
-    product.variations.forEach(variation => {
-      const variationPayload = {
-        ...variation,
-        sku: variation.sku ? `${newProduct.sku}-${variation.sku}` : '',
-        meta_data: variation.meta_data.filter(meta => 
-          !['_associated_post', '_original_id'].includes(meta.key)
-        )
-      };
-      
-      const variationOptions = {
-        method: "post",
-        contentType: "application/json",
-        headers: headers,
-        payload: JSON.stringify(variationPayload)
-      };
-      
-      UrlFetchApp.fetch(variationsUrl, variationOptions);
-    });
-  }
-  
-  return newProduct.id;
+	const encodedAuthInformation = Utilities.base64Encode(
+		`${apiusername}:${apipassword}`,
+	);
+	const headers = { Authorization: `Basic ${encodedAuthInformation}` };
+
+	// First create the base product
+	const productUrl = `https://www.${apidomain}/wp-json/wc/v3/products`;
+	const options = {
+		method: "post",
+		contentType: "application/json",
+		headers: headers,
+		payload: JSON.stringify({
+			...product,
+			variations: [], // Create product first without variations
+		}),
+	};
+
+	const response = UrlFetchApp.fetch(productUrl, options);
+	const newProduct = JSON.parse(response.getContentText());
+
+	// Now create variations for the new product
+	if (product.variations && product.variations.length > 0) {
+		const variationsUrl = `https://www.${apidomain}/wp-json/wc/v3/products/${newProduct.id}/variations`;
+
+		product.variations.forEach((variation) => {
+			const variationPayload = {
+				...variation,
+				sku: variation.sku ? `${newProduct.sku}-${variation.sku}` : "",
+				meta_data: variation.meta_data.filter(
+					(meta) => !["_associated_post", "_original_id"].includes(meta.key),
+				),
+			};
+
+			const variationOptions = {
+				method: "post",
+				contentType: "application/json",
+				headers: headers,
+				payload: JSON.stringify(variationPayload),
+			};
+
+			UrlFetchApp.fetch(variationsUrl, variationOptions);
+		});
+	}
+
+	return newProduct.id;
 }
