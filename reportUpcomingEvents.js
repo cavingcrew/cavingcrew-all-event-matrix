@@ -142,18 +142,18 @@ function readUpcomingEvents(stmt, cell) {
 				type: "wrap",
 				column: "Minimum Gear",
 			},
-			// Over 18 Required
+			// Under 18s Trip
 			{
 				type: "color",
-				column: "Over 18 Required",
+				column: "Under 18s Trip",
 				search: "Yes",
-				color: colors.lightRed,
+				color: colors.lightGreen,
 			},
 			{
 				type: "color",
-				column: "Over 18 Required",
+				column: "Under 18s Trip",
 				search: "No",
-				color: colors.lightGreen,
+				color: colors.lightRed,
 			},
 			// Category
 			{
