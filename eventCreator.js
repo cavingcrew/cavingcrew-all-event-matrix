@@ -109,11 +109,11 @@ function getClientScript(templates) {
         if (eventType === "OVERNIGHT") {
           const endDate = new Date(date);
           endDate.setDate(date.getDate() + 2);
-          return `$formatDate(date, 'jS F Y')- $formatDate(endDate, 'jS F Y')`;
+          return \`\${formatDate(date, 'jS F Y')} - \${formatDate(endDate, 'jS F Y')}\`;
         }
         
         if (["TRAINING","HORIZONTAL_TRAINING","BASIC_SRT"].includes(eventType)) {
-          return `$formatDate(date, 'H:i')• $formatDate(date, 'l jS F Y')`;
+          return \`\${formatDate(date, 'H:i')} • \${formatDate(date, 'l jS F Y')}\`;
         }
         
         return formatDate(date, 'jS F Y');
@@ -123,9 +123,9 @@ function getClientScript(templates) {
         Headline: "The Caving Crew",
         SubHeadline: eventName,
         Footer: formatFooter(date, selectedType),
-        HeadlinePosition: 157,
-        SubHeadlinePosition: 314,
-        FooterPosition: 533.8,
+        HeadlinePosition: "157",
+        SubHeadlinePosition: "314", 
+        FooterPosition: "533.8",
         BackgroundImage: "/images/photos/IMG_4470.jpg"
       });
 
@@ -157,20 +157,20 @@ function getClientScript(templates) {
 
 function getEventDialogHtml() {
 	const styles = `
-    body { 
-      font-family: Arial, sans-serif; 
-      padding: 20px; 
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
     }
-    .radio-group { 
+    .radio-group {
       margin: 10px 0;
       padding-left: 0;
     }
     .radio-group input[type="radio"] {
       margin-right: 8px;
     }
-    input[type="text"], 
-    input[type="datetime-local"] { 
-      width: 100%; 
+    input[type="text"],
+    input[type="datetime-local"] {
+      width: 100%;
     }
     #errorMessage {
       display: none;
