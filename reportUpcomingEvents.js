@@ -10,7 +10,7 @@ function readUpcomingEvents(stmt, cell) {
         e.open_spaces AS "Open Spaces", 
         e.post_status AS "Status",
         CASE 
-          WHEN e.event_non_members_welcome = 'no' THEN 'Yes'
+          WHEN e.`event_non-members_welcome` = 'no' THEN 'Yes'
           ELSE 'No' 
         END AS "Membership Required",
         CASE
