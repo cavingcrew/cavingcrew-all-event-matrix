@@ -111,15 +111,15 @@ function getClientScript(templates) {
         if (eventType === "OVERNIGHT") {
           const endDate = new Date(date);
           endDate.setDate(date.getDate() + 2);
-          return `$date.getDate()$getOrdinal(date.getDate())$date.toLocaleString('default',{month:'long'})- $endDate.getDate()$getOrdinal(endDate.getDate())$endDate.toLocaleString('default',{month:'long'})`;
+          return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString('default',{month:'long'})} - ${endDate.getDate()}${getOrdinal(endDate.getDate())} ${endDate.toLocaleString('default',{month:'long'})}`;
         }
         
         if (["TRAINING","HORIZONTAL_TRAINING","BASIC_SRT"].includes(eventType)) {
           const time = date.toLocaleTimeString('en-GB',{hour:'numeric',minute:'2-digit'}).replace(/:/g,'.');
-          return `$time• $date.toLocaleString('default',weekday:'long')$date.getDate()$getOrdinal(date.getDate())$date.toLocaleString('default',month:'long')`;
+          return `${time} • ${date.toLocaleString('default',{weekday:'long'})} ${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString('default',{month:'long'})}`;
         }
         
-        return `$date.getDate()$getOrdinal(date.getDate())$date.toLocaleString('default',{month:'long'})`;
+        return `${date.getDate()}${getOrdinal(date.getDate())} ${date.toLocaleString('default',{month:'long'})}`;
       };
 
       const socialParams = new URLSearchParams({
@@ -160,31 +160,35 @@ function getClientScript(templates) {
 
 function getEventDialogHtml() {
 	const styles = `
-    body { font-family: Arial, sans-serif; padding: 20px; }
+    body { 
+      font-family: Arial, sans-serif; 
+      padding: 20px; 
+    }
     .radio-group { 
-        margin: 10px 0;
-        padding-left: 0;  /* Remove default padding */
+      margin: 10px 0;
+      padding-left: 0;
     }
     .radio-group input[type="radio"] {
-        margin-right: 8px;  /* Space between radio and label */
+      margin-right: 8px;
     }
-    input[type="text"], input[type="datetime-local"] { 
-        width: 100%; 
+    input[type="text"], 
+    input[type="datetime-local"] { 
+      width: 100%; 
     }
     #errorMessage {
-        display: none;
-        color: #dc3545;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #dc3545;
-        border-radius: 4px;
-        background-color: #f8d7da;
+      display: none;
+      color: #dc3545;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #dc3545;
+      border-radius: 4px;
+      background-color: #f8d7da;
     }
     .spinner-border {
-        display: none;
-        width: 1rem;
-        height: 1rem;
-        margin-right: 8px;
+      display: none;
+      width: 1rem;
+      height: 1rem;
+      margin-right: 8px;
     }
   `;
 
