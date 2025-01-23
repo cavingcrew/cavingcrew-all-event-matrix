@@ -7,8 +7,7 @@ function readUpcomingEvents(stmt, cell) {
         COALESCE(e.event_start_date_time, e.event_start_date) AS "Start Date",
         COALESCE(pending_counts.pending_attendees, 0) AS "Signups",
         e.event_trip_leader AS "Trip Leader",
-        e.open_spaces AS "Open Spaces", 
-        e.post_status AS "Status",
+        e.open_spaces AS "Open Spaces",
         CASE 
           WHEN e.event_non_members_welcome = 'no' THEN 'Yes'
           ELSE 'No' 
@@ -26,9 +25,9 @@ function readUpcomingEvents(stmt, cell) {
         END AS "Experience Requirements",
         e.event_gear_required AS "Minimum Gear",
         CASE 
-          WHEN e.event_for_u18s = 'no' THEN 'Yes'
-          ELSE 'No'
-        END AS "Over 18 Required",
+          WHEN e.event_for_u18s = 'no' THEN 'No'
+          ELSE 'Yes'
+        END AS "Under 18s Trip",
         e.primary_category AS "Category",
         e.post_status AS "Status",
         e.product_id AS "ID"
