@@ -269,146 +269,60 @@ function showNewEventDialog() {
  * @returns {Object} - Object containing success status, new post ID if successful, or error message if failed
  */
 function createNewEvent(eventType, eventName, eventDate) {
-	try {
-		const template = EVENT_TEMPLATES[eventType];
-		if (!template) {
-			return { success: false, error: "Invalid event type selected" };
-		}
+  try {
+    const encodedAuth = Utilities.base64Encode(`${apiusername}:${apipassword}`);
+    const apiUrl = `https://www.${apidomain}/wp-json/hybrid-headless/v1/products/create-event`;
+    
+    const payload = {
+      event_type: eventType.toLowerCase(),
+      event_start_date_time: Utilities.formatDate(
+        new Date(eventDate), 
+        SpreadsheetApp.getActive().getSpreadsheetTimeZone(), 
+        "yyyy-MM-dd HH:mm:ss"
+      ),
+      event_name: eventName
+    };
 
-		// Get the template product
-		const templateProduct = getProductById(template.id);
-		if (!templateProduct) {
-			return { success: false, error: "Failed to get template product" };
-		}
+    const options = {
+      method: "post",
+      contentType: "application/json", 
+      headers: { Authorization: `Basic ${encodedAuth}` },
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    };
 
-		// Create new product from template
-		const eventDateObj = new Date(eventDate);
-		const newProduct = createDuplicateProduct(templateProduct);
-		const shouldAppendDate = eventType !== "OVERNIGHT";
-		const formattedDisplayDate = Utilities.formatDate(
-			eventDateObj,
-			SpreadsheetApp.getActive().getSpreadsheetTimeZone(),
-			"dd/MM", // Format as 23/04 instead of 23/04/25
-		);
+    const response = UrlFetchApp.fetch(apiUrl, options);
+    const responseData = JSON.parse(response.getContentText());
 
-		newProduct.name = shouldAppendDate
-			? `${eventName} ${formattedDisplayDate}`
-			: eventName;
-		newProduct.slug = slugify(newProduct.name);
+    if (response.getResponseCode() >= 400) {
+      throw new Error(responseData.message || "API request failed");
+    }
 
-		// Format date for WordPress and SKU
-		const formattedDate = Utilities.formatDate(
-			eventDateObj,
-			SpreadsheetApp.getActive().getSpreadsheetTimeZone(),
-			"yyyy-MM-dd HH:mm:ss",
-		);
+    // Handle calendar event creation
+    try {
+      const calendarEventId = createCalendarEventForProduct(
+        eventName,
+        new Date(eventDate).toISOString(),
+        eventType,
+        responseData.product_id
+      );
+    } catch (calendarError) {
+      console.warn("Calendar event creation failed:", calendarError);
+    }
 
-		// Create SKU in format YYYY-MM-DD-type
-		const skuDate = formatDateISO(eventDateObj);
-		newProduct.sku = `${skuDate}-${eventType}`;
-		console.log(
-			`[DEBUG] Creating product with SKU: ${newProduct.sku}`,
-			`Type: ${eventType}, Date: ${skuDate}, Name: ${newProduct.name}`,
-		);
+    return {
+      success: true,
+      id: responseData.product_id,
+      socialLink: responseData.social_media_link || ""
+    };
 
-		// Check for SKU conflicts
-		const existingProducts = getProductBySKU(newProduct.sku);
-		if (existingProducts.length > 0) {
-			console.error(
-				`[CONFLICT] SKU ${newProduct.sku} already exists:`,
-				existingProducts.map((p) => p.id),
-			);
-			throw new Error(`SKU conflict detected: ${newProduct.sku}`);
-		}
-
-		// Update start date in metadata
-		newProduct.meta_data = newProduct.meta_data.map((meta) => {
-			if (meta.key === "event_start_date_time") {
-				return { ...meta, value: formattedDate };
-			}
-			return meta;
-		});
-
-		// Add new metadata if it doesn't exist
-		if (!newProduct.meta_data.some((m) => m.key === "event_start_date_time")) {
-			newProduct.meta_data.push({
-				key: "event_start_date_time",
-				value: formattedDate,
-			});
-		}
-
-		// Send to WordPress
-		const newPostId = sendProductToWordPress(newProduct);
-
-		if (!newPostId) {
-			return {
-				success: false,
-				error: "Failed to create new event in WordPress",
-			};
-		}
-
-		// Copy membership discounts from template to new product
-		try {
-			copyMembershipDiscounts(template.id, newPostId);
-		} catch (discountError) {
-			console.warn("Failed to copy membership discounts:", discountError);
-		}
-
-		// Create calendar event AFTER successful WordPress creation
-		try {
-			const calendarEventId = createCalendarEventForProduct(
-				eventName,
-				eventDateObj.toISOString(),
-				eventType,
-				newPostId,
-			);
-
-			if (!calendarEventId) {
-				console.warn("Calendar event creation failed - proceeding without");
-			}
-		} catch (calendarError) {
-			console.warn("Calendar event creation failed:", calendarError);
-		}
-
-		// Create social media link
-		const baseUrl = "https://socialmedia-image-creator.pages.dev/";
-		const params = {
-			Headline: "The Caving Crew",
-			SubHeadline: eventName, // Use full event name directly
-			Footer: formatSocialMediaFooter(eventDateObj, eventType),
-			HeadlinePosition: 157,
-			SubHeadlinePosition: 314,
-			FooterPosition: 533.8,
-			BackgroundImage: "/images/photos/IMG_4470.jpg",
-		};
-
-		const socialLink = `${baseUrl}?${Object.entries(params)
-			.map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
-			.join("&")}`;
-
-		// Store link in meta
-		const linkData = {
-			meta_data: [
-				{
-					key: "social_media_link",
-					value: socialLink,
-				},
-			],
-		};
-		pokeToWordPressProducts(linkData, newPostId);
-
-		return {
-			success: true,
-			id: newPostId,
-			socialLink: socialLink, // Add this to response
-		};
-	} catch (error) {
-		console.error("Error creating event:", error);
-		return {
-			success: false,
-			error: error.message || "An unexpected error occurred",
-		};
-	}
+  } catch (error) {
+    console.error("Error creating event:", error);
+    return {
+      success: false,
+      error: error.message || "API request failed"
+    };
+  }
 }
 
 /**
@@ -441,32 +355,25 @@ function getOrdinal(n) {
 }
 
 function testCreateNewEvent() {
-	// Test data that matches what would come from the form
-	const testData = {
-		eventType: "OVERNIGHT", // One of the valid EVENT_TEMPLATES keys
-		eventName: "Test Weekend Trip",
-		eventDate: "2024-11-01T19:00", // Format from datetime-local input
-	};
+  const testData = {
+    eventType: "OVERNIGHT",
+    eventName: "Test Weekend Trip",
+    eventDate: "2024-11-01T19:00"
+  };
 
-	console.log("Starting test with data:", testData);
-
-	try {
-		const result = createNewEvent(
-			testData.eventType,
-			testData.eventName,
-			testData.eventDate,
-		);
-
-		console.log("Result:", result);
-		
-		// Test variation SKUs
-		const testVariations = getProductVariations(result.id);
-		console.log("Variation SKUs:", testVariations.map(v => v.sku));
-		
-		return result;
-	} catch (error) {
-		console.error("Error in createNewEvent:", error);
-		console.error("Error stack:", error.stack);
-		throw error; // Re-throw to see in Apps Script logs
-	}
+  console.log("Starting API test with data:", testData);
+  
+  try {
+    const result = createNewEvent(
+      testData.eventType,
+      testData.eventName,
+      testData.eventDate
+    );
+    
+    console.log("API Response:", result);
+    return result;
+  } catch (error) {
+    console.error("Error in createNewEvent:", error);
+    throw error;
+  }
 }
