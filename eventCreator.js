@@ -309,7 +309,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 			url: apiUrl,
 			method: "POST",
 			headers: {
-				Authorization: `Basic [REDACTED]`,
+				Authorization: "Basic [REDACTED]",
 				"Content-Type": "application/json",
 			},
 			payload: payload,
