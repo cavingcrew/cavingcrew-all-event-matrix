@@ -270,7 +270,15 @@ function showNewEventDialog() {
  */
 function createNewEvent(eventType, eventName, eventDate) {
 	try {
-		const encodedAuth = Utilities.base64Encode(`${apiusername}:${apipassword}`);
+		const scriptProperties = PropertiesService.getScriptProperties();
+		const apiUser = scriptProperties.getProperty('cred_API_USER');
+		const apiPass = scriptProperties.getProperty('cred_API_PASSWORD');
+
+		if (!apiUser || !apiPass) {
+			throw new Error('Missing API credentials in script properties');
+		}
+
+		const encodedAuth = Utilities.base64Encode(`${apiUser}:${apiPass}`);
 		const apiUrl = `https://www.${apidomain}/wp-json/hybrid-headless/v1/products/create-event`;
 
 		const payload = {
