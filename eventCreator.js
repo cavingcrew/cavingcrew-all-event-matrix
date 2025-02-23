@@ -271,11 +271,11 @@ function showNewEventDialog() {
 function createNewEvent(eventType, eventName, eventDate) {
 	try {
 		const scriptProperties = PropertiesService.getScriptProperties();
-		const apiUser = scriptProperties.getProperty('cred_API_USER');
-		const apiPass = scriptProperties.getProperty('cred_API_PASSWORD');
+		const apiUser = scriptProperties.getProperty("cred_API_USER");
+		const apiPass = scriptProperties.getProperty("cred_API_PASSWORD");
 
 		if (!apiUser || !apiPass) {
-			throw new Error('Missing API credentials in script properties');
+			throw new Error("Missing API credentials in script properties");
 		}
 
 		const encodedAuth = Utilities.base64Encode(`${apiUser}:${apiPass}`);
@@ -328,17 +328,17 @@ function createNewEvent(eventType, eventName, eventDate) {
 			message: error.message,
 			stack: error.stack,
 			responseCode: response?.getResponseCode(),
-			responseText: response?.getContentText()
+			responseText: response?.getContentText(),
 		});
-		
+
 		return {
 			success: false,
 			error: "Authentication failed. Check:",
 			details: [
 				"1. Credentials spreadsheet has valid API keys",
 				"2. Nightly credential refresh is running",
-				"3. User has 'manage_woocommerce' permissions"
-			]
+				"3. User has 'manage_woocommerce' permissions",
+			],
 		};
 	}
 }
@@ -352,11 +352,11 @@ function getOrdinal(n) {
 function testCreateNewEvent() {
 	// Validate credentials first
 	const scriptProperties = PropertiesService.getScriptProperties();
-	if (!scriptProperties.getProperty('cred_API_USER')) {
-		throw new Error('API_USER credential not found in properties');
+	if (!scriptProperties.getProperty("cred_API_USER")) {
+		throw new Error("API_USER credential not found in properties");
 	}
-	if (!scriptProperties.getProperty('cred_API_PASSWORD')) {
-		throw new Error('API_PASSWORD credential not found in properties');
+	if (!scriptProperties.getProperty("cred_API_PASSWORD")) {
+		throw new Error("API_PASSWORD credential not found in properties");
 	}
 
 	const testData = {
