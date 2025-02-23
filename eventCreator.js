@@ -269,73 +269,78 @@ function showNewEventDialog() {
  * @returns {Object} - Object containing success status, new post ID if successful, or error message if failed
  */
 function createNewEvent(eventType, eventName, eventDate) {
-  let response = null; // Define response outside try block
-  
-  try {
-    // Debug 1: Verify credentials exist as globals
-    console.log("[DEBUG] Global credentials check:", {
-      apiusername: typeof apiusername,
-      apipassword: typeof apipassword,
-      apidomain: typeof apidomain
-    });
+	let response = null; // Define response outside try block
 
-    // Debug 2: Validate credentials
-    if (!apiusername || !apipassword) {
-      throw new Error("API credentials not loaded - run refreshCredentials()");
-    }
+	try {
+		// Debug 1: Verify credentials exist as globals
+		console.log("[DEBUG] Global credentials check:", {
+			apiusername: typeof apiusername,
+			apipassword: typeof apipassword,
+			apidomain: typeof apidomain,
+		});
 
-    const encodedAuth = Utilities.base64Encode(`${apiusername}:${apipassword}`);
-    const apiUrl = `https://www.${apidomain}/wp-json/hybrid-headless/v1/products/create-event`;
+		// Debug 2: Validate credentials
+		if (!apiusername || !apipassword) {
+			throw new Error("API credentials not loaded - run refreshCredentials()");
+		}
 
-    // Debug 3: Verify date formatting
-    const formattedDate = Utilities.formatDate(
-      new Date(eventDate),
-      SpreadsheetApp.getActive().getSpreadsheetTimeZone(),
-      "yyyy-MM-dd HH:mm:ss"
-    );
-    console.log("[DEBUG] Date conversion:", {input: eventDate, output: formattedDate});
+		const encodedAuth = Utilities.base64Encode(`${apiusername}:${apipassword}`);
+		const apiUrl = `https://www.${apidomain}/wp-json/hybrid-headless/v1/products/create-event`;
 
-    const payload = {
-      event_type: eventType.toLowerCase(),
-      event_start_date_time: formattedDate,
-      event_name: eventName
-    };
+		// Debug 3: Verify date formatting
+		const formattedDate = Utilities.formatDate(
+			new Date(eventDate),
+			SpreadsheetApp.getActive().getSpreadsheetTimeZone(),
+			"yyyy-MM-dd HH:mm:ss",
+		);
+		console.log("[DEBUG] Date conversion:", {
+			input: eventDate,
+			output: formattedDate,
+		});
 
-    // Debug 4: Log full request details
-    console.log("[DEBUG] API Request:", {
-      url: apiUrl,
-      method: "POST",
-      headers: {
-        Authorization: `Basic [REDACTED]`,
-        "Content-Type": "application/json"
-      },
-      payload: payload
-    });
+		const payload = {
+			event_type: eventType.toLowerCase(),
+			event_start_date_time: formattedDate,
+			event_name: eventName,
+		};
 
-    const options = {
-      method: "post",
-      contentType: "application/json",
-      headers: { 
-        Authorization: `Basic ${encodedAuth}` 
-      },
-      payload: JSON.stringify(payload),
-      muteHttpExceptions: true
-    };
+		// Debug 4: Log full request details
+		console.log("[DEBUG] API Request:", {
+			url: apiUrl,
+			method: "POST",
+			headers: {
+				Authorization: `Basic [REDACTED]`,
+				"Content-Type": "application/json",
+			},
+			payload: payload,
+		});
 
-    response = UrlFetchApp.fetch(apiUrl, options);
-    const responseBody = response.getContentText();
-    const responseCode = response.getResponseCode();
-    
-    console.log("[DEBUG] API Response:", {
-      code: responseCode,
-      body: responseBody
-    });
+		const options = {
+			method: "post",
+			contentType: "application/json",
+			headers: {
+				Authorization: `Basic ${encodedAuth}`,
+			},
+			payload: JSON.stringify(payload),
+			muteHttpExceptions: true,
+		};
 
-    const responseData = JSON.parse(responseBody);
+		response = UrlFetchApp.fetch(apiUrl, options);
+		const responseBody = response.getContentText();
+		const responseCode = response.getResponseCode();
 
-    if (responseCode >= 400) {
-      throw new Error(responseData.message || `API returned ${responseCode} status`);
-    }
+		console.log("[DEBUG] API Response:", {
+			code: responseCode,
+			body: responseBody,
+		});
+
+		const responseData = JSON.parse(responseBody);
+
+		if (responseCode >= 400) {
+			throw new Error(
+				responseData.message || `API returned ${responseCode} status`,
+			);
+		}
 
 		// Handle calendar event creation
 		try {
@@ -355,30 +360,30 @@ function createNewEvent(eventType, eventName, eventDate) {
 			socialLink: responseData.social_media_link || "",
 		};
 	} catch (error) {
-    console.error("[ERROR DETAILS]", {
-      message: error.message,
-      stack: error.stack,
-      responseCode: response?.getResponseCode(),
-      responseBody: response?.getContentText(),
-      credentials: {
-        username: apiusername ? "*** EXISTS ***" : "MISSING",
-        password: apipassword ? "*** EXISTS ***" : "MISSING",
-        domain: apidomain
-      }
-    });
+		console.error("[ERROR DETAILS]", {
+			message: error.message,
+			stack: error.stack,
+			responseCode: response?.getResponseCode(),
+			responseBody: response?.getContentText(),
+			credentials: {
+				username: apiusername ? "*** EXISTS ***" : "MISSING",
+				password: apipassword ? "*** EXISTS ***" : "MISSING",
+				domain: apidomain,
+			},
+		});
 
-    return {
-      success: false,
-      error: "Event creation failed. Details:",
-      debugInfo: {
-        error: error.message,
-        step: "API Request",
-        credentialsLoaded: !!apiusername && !!apipassword,
-        apiDomain: apidomain,
-        responseStatus: response?.getResponseCode() || "No response",
-        responseBody: response?.getContentText() || "N/A"
-      }
-    };
+		return {
+			success: false,
+			error: "Event creation failed. Details:",
+			debugInfo: {
+				error: error.message,
+				step: "API Request",
+				credentialsLoaded: !!apiusername && !!apipassword,
+				apiDomain: apidomain,
+				responseStatus: response?.getResponseCode() || "No response",
+				responseBody: response?.getContentText() || "N/A",
+			},
+		};
 	}
 }
 
@@ -421,30 +426,30 @@ function testCreateNewEvent() {
 	}
 }
 function testCredentialLoading() {
-  try {
-    console.log("Current credentials:", {
-      apiusername: apiusername ? "*** EXISTS ***" : "MISSING",
-      apipassword: apipassword ? "*** EXISTS ***" : "MISSING",
-      apidomain: apidomain || "MISSING"
-    });
-    
-    if (!apiusername || !apipassword) {
-      console.log("Refreshing credentials...");
-      refreshCredentials();
-      console.log("New credentials:", {
-        apiusername: apiusername ? "*** EXISTS ***" : "STILL MISSING",
-        apipassword: apipassword ? "*** EXISTS ***" : "STILL MISSING"
-      });
-    }
-    
-    return {
-      success: !!apiusername && !!apipassword,
-      apidomain: apidomain
-    };
-  } catch (error) {
-    return {
-      success: false,
-      error: error.message
-    };
-  }
+	try {
+		console.log("Current credentials:", {
+			apiusername: apiusername ? "*** EXISTS ***" : "MISSING",
+			apipassword: apipassword ? "*** EXISTS ***" : "MISSING",
+			apidomain: apidomain || "MISSING",
+		});
+
+		if (!apiusername || !apipassword) {
+			console.log("Refreshing credentials...");
+			refreshCredentials();
+			console.log("New credentials:", {
+				apiusername: apiusername ? "*** EXISTS ***" : "STILL MISSING",
+				apipassword: apipassword ? "*** EXISTS ***" : "STILL MISSING",
+			});
+		}
+
+		return {
+			success: !!apiusername && !!apipassword,
+			apidomain: apidomain,
+		};
+	} catch (error) {
+		return {
+			success: false,
+			error: error.message,
+		};
+	}
 }
