@@ -269,42 +269,73 @@ function showNewEventDialog() {
  * @returns {Object} - Object containing success status, new post ID if successful, or error message if failed
  */
 function createNewEvent(eventType, eventName, eventDate) {
-	try {
-		const scriptProperties = PropertiesService.getScriptProperties();
-		const apiUser = scriptProperties.getProperty("cred_API_USER");
-		const apiPass = scriptProperties.getProperty("cred_API_PASSWORD");
+  let response = null; // Define response outside try block
+  
+  try {
+    // Debug 1: Verify credentials exist as globals
+    console.log("[DEBUG] Global credentials check:", {
+      apiusername: typeof apiusername,
+      apipassword: typeof apipassword,
+      apidomain: typeof apidomain
+    });
 
-		if (!apiUser || !apiPass) {
-			throw new Error("Missing API credentials in script properties");
-		}
+    // Debug 2: Validate credentials
+    if (!apiusername || !apipassword) {
+      throw new Error("API credentials not loaded - run refreshCredentials()");
+    }
 
-		const encodedAuth = Utilities.base64Encode(`${apiUser}:${apiPass}`);
-		const apiUrl = `https://www.${apidomain}/wp-json/hybrid-headless/v1/products/create-event`;
+    const encodedAuth = Utilities.base64Encode(`${apiusername}:${apipassword}`);
+    const apiUrl = `https://www.${apidomain}/wp-json/hybrid-headless/v1/products/create-event`;
 
-		const payload = {
-			event_type: eventType.toLowerCase(),
-			event_start_date_time: Utilities.formatDate(
-				new Date(eventDate),
-				SpreadsheetApp.getActive().getSpreadsheetTimeZone(),
-				"yyyy-MM-dd HH:mm:ss",
-			),
-			event_name: eventName,
-		};
+    // Debug 3: Verify date formatting
+    const formattedDate = Utilities.formatDate(
+      new Date(eventDate),
+      SpreadsheetApp.getActive().getSpreadsheetTimeZone(),
+      "yyyy-MM-dd HH:mm:ss"
+    );
+    console.log("[DEBUG] Date conversion:", {input: eventDate, output: formattedDate});
 
-		const options = {
-			method: "post",
-			contentType: "application/json",
-			headers: { Authorization: `Basic ${encodedAuth}` },
-			payload: JSON.stringify(payload),
-			muteHttpExceptions: true,
-		};
+    const payload = {
+      event_type: eventType.toLowerCase(),
+      event_start_date_time: formattedDate,
+      event_name: eventName
+    };
 
-		const response = UrlFetchApp.fetch(apiUrl, options);
-		const responseData = JSON.parse(response.getContentText());
+    // Debug 4: Log full request details
+    console.log("[DEBUG] API Request:", {
+      url: apiUrl,
+      method: "POST",
+      headers: {
+        Authorization: `Basic [REDACTED]`,
+        "Content-Type": "application/json"
+      },
+      payload: payload
+    });
 
-		if (response.getResponseCode() >= 400) {
-			throw new Error(responseData.message || "API request failed");
-		}
+    const options = {
+      method: "post",
+      contentType: "application/json",
+      headers: { 
+        Authorization: `Basic ${encodedAuth}` 
+      },
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    };
+
+    response = UrlFetchApp.fetch(apiUrl, options);
+    const responseBody = response.getContentText();
+    const responseCode = response.getResponseCode();
+    
+    console.log("[DEBUG] API Response:", {
+      code: responseCode,
+      body: responseBody
+    });
+
+    const responseData = JSON.parse(responseBody);
+
+    if (responseCode >= 400) {
+      throw new Error(responseData.message || `API returned ${responseCode} status`);
+    }
 
 		// Handle calendar event creation
 		try {
@@ -324,22 +355,30 @@ function createNewEvent(eventType, eventName, eventDate) {
 			socialLink: responseData.social_media_link || "",
 		};
 	} catch (error) {
-		console.error("Full error details:", {
-			message: error.message,
-			stack: error.stack,
-			responseCode: response?.getResponseCode(),
-			responseText: response?.getContentText(),
-		});
+    console.error("[ERROR DETAILS]", {
+      message: error.message,
+      stack: error.stack,
+      responseCode: response?.getResponseCode(),
+      responseBody: response?.getContentText(),
+      credentials: {
+        username: apiusername ? "*** EXISTS ***" : "MISSING",
+        password: apipassword ? "*** EXISTS ***" : "MISSING",
+        domain: apidomain
+      }
+    });
 
-		return {
-			success: false,
-			error: "Authentication failed. Check:",
-			details: [
-				"1. Credentials spreadsheet has valid API keys",
-				"2. Nightly credential refresh is running",
-				"3. User has 'manage_woocommerce' permissions",
-			],
-		};
+    return {
+      success: false,
+      error: "Event creation failed. Details:",
+      debugInfo: {
+        error: error.message,
+        step: "API Request",
+        credentialsLoaded: !!apiusername && !!apipassword,
+        apiDomain: apidomain,
+        responseStatus: response?.getResponseCode() || "No response",
+        responseBody: response?.getContentText() || "N/A"
+      }
+    };
 	}
 }
 
@@ -380,4 +419,32 @@ function testCreateNewEvent() {
 		console.error("Error in createNewEvent:", error);
 		throw error;
 	}
+}
+function testCredentialLoading() {
+  try {
+    console.log("Current credentials:", {
+      apiusername: apiusername ? "*** EXISTS ***" : "MISSING",
+      apipassword: apipassword ? "*** EXISTS ***" : "MISSING",
+      apidomain: apidomain || "MISSING"
+    });
+    
+    if (!apiusername || !apipassword) {
+      console.log("Refreshing credentials...");
+      refreshCredentials();
+      console.log("New credentials:", {
+        apiusername: apiusername ? "*** EXISTS ***" : "STILL MISSING",
+        apipassword: apipassword ? "*** EXISTS ***" : "STILL MISSING"
+      });
+    }
+    
+    return {
+      success: !!apiusername && !!apipassword,
+      apidomain: apidomain
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message
+    };
+  }
 }
