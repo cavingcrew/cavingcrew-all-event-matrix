@@ -316,10 +316,21 @@ function createNewEvent(eventType, eventName, eventDate) {
 			socialLink: responseData.social_media_link || "",
 		};
 	} catch (error) {
-		console.error("Error creating event:", error);
+		console.error("Full error details:", {
+			message: error.message,
+			stack: error.stack,
+			responseCode: response?.getResponseCode(),
+			responseText: response?.getContentText()
+		});
+		
 		return {
 			success: false,
-			error: error.message || "API request failed",
+			error: "Authentication failed. Check:",
+			details: [
+				"1. Credentials spreadsheet has valid API keys",
+				"2. Nightly credential refresh is running",
+				"3. User has 'manage_woocommerce' permissions"
+			]
 		};
 	}
 }
@@ -331,6 +342,15 @@ function getOrdinal(n) {
 }
 
 function testCreateNewEvent() {
+	// Validate credentials first
+	const scriptProperties = PropertiesService.getScriptProperties();
+	if (!scriptProperties.getProperty('cred_API_USER')) {
+		throw new Error('API_USER credential not found in properties');
+	}
+	if (!scriptProperties.getProperty('cred_API_PASSWORD')) {
+		throw new Error('API_PASSWORD credential not found in properties');
+	}
+
 	const testData = {
 		eventType: "OVERNIGHT",
 		eventName: "Test Weekend Trip",
