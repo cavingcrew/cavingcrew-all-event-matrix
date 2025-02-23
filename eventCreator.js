@@ -269,60 +269,59 @@ function showNewEventDialog() {
  * @returns {Object} - Object containing success status, new post ID if successful, or error message if failed
  */
 function createNewEvent(eventType, eventName, eventDate) {
-  try {
-    const encodedAuth = Utilities.base64Encode(`${apiusername}:${apipassword}`);
-    const apiUrl = `https://www.${apidomain}/wp-json/hybrid-headless/v1/products/create-event`;
-    
-    const payload = {
-      event_type: eventType.toLowerCase(),
-      event_start_date_time: Utilities.formatDate(
-        new Date(eventDate), 
-        SpreadsheetApp.getActive().getSpreadsheetTimeZone(), 
-        "yyyy-MM-dd HH:mm:ss"
-      ),
-      event_name: eventName
-    };
+	try {
+		const encodedAuth = Utilities.base64Encode(`${apiusername}:${apipassword}`);
+		const apiUrl = `https://www.${apidomain}/wp-json/hybrid-headless/v1/products/create-event`;
 
-    const options = {
-      method: "post",
-      contentType: "application/json", 
-      headers: { Authorization: `Basic ${encodedAuth}` },
-      payload: JSON.stringify(payload),
-      muteHttpExceptions: true
-    };
+		const payload = {
+			event_type: eventType.toLowerCase(),
+			event_start_date_time: Utilities.formatDate(
+				new Date(eventDate),
+				SpreadsheetApp.getActive().getSpreadsheetTimeZone(),
+				"yyyy-MM-dd HH:mm:ss",
+			),
+			event_name: eventName,
+		};
 
-    const response = UrlFetchApp.fetch(apiUrl, options);
-    const responseData = JSON.parse(response.getContentText());
+		const options = {
+			method: "post",
+			contentType: "application/json",
+			headers: { Authorization: `Basic ${encodedAuth}` },
+			payload: JSON.stringify(payload),
+			muteHttpExceptions: true,
+		};
 
-    if (response.getResponseCode() >= 400) {
-      throw new Error(responseData.message || "API request failed");
-    }
+		const response = UrlFetchApp.fetch(apiUrl, options);
+		const responseData = JSON.parse(response.getContentText());
 
-    // Handle calendar event creation
-    try {
-      const calendarEventId = createCalendarEventForProduct(
-        eventName,
-        new Date(eventDate).toISOString(),
-        eventType,
-        responseData.product_id
-      );
-    } catch (calendarError) {
-      console.warn("Calendar event creation failed:", calendarError);
-    }
+		if (response.getResponseCode() >= 400) {
+			throw new Error(responseData.message || "API request failed");
+		}
 
-    return {
-      success: true,
-      id: responseData.product_id,
-      socialLink: responseData.social_media_link || ""
-    };
+		// Handle calendar event creation
+		try {
+			const calendarEventId = createCalendarEventForProduct(
+				eventName,
+				new Date(eventDate).toISOString(),
+				eventType,
+				responseData.product_id,
+			);
+		} catch (calendarError) {
+			console.warn("Calendar event creation failed:", calendarError);
+		}
 
-  } catch (error) {
-    console.error("Error creating event:", error);
-    return {
-      success: false,
-      error: error.message || "API request failed"
-    };
-  }
+		return {
+			success: true,
+			id: responseData.product_id,
+			socialLink: responseData.social_media_link || "",
+		};
+	} catch (error) {
+		console.error("Error creating event:", error);
+		return {
+			success: false,
+			error: error.message || "API request failed",
+		};
+	}
 }
 
 function getOrdinal(n) {
@@ -332,25 +331,25 @@ function getOrdinal(n) {
 }
 
 function testCreateNewEvent() {
-  const testData = {
-    eventType: "OVERNIGHT",
-    eventName: "Test Weekend Trip",
-    eventDate: "2024-11-01T19:00"
-  };
+	const testData = {
+		eventType: "OVERNIGHT",
+		eventName: "Test Weekend Trip",
+		eventDate: "2024-11-01T19:00",
+	};
 
-  console.log("Starting API test with data:", testData);
-  
-  try {
-    const result = createNewEvent(
-      testData.eventType,
-      testData.eventName,
-      testData.eventDate
-    );
-    
-    console.log("API Response:", result);
-    return result;
-  } catch (error) {
-    console.error("Error in createNewEvent:", error);
-    throw error;
-  }
+	console.log("Starting API test with data:", testData);
+
+	try {
+		const result = createNewEvent(
+			testData.eventType,
+			testData.eventName,
+			testData.eventDate,
+		);
+
+		console.log("API Response:", result);
+		return result;
+	} catch (error) {
+		console.error("Error in createNewEvent:", error);
+		throw error;
+	}
 }
