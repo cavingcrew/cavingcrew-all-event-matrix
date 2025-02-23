@@ -325,29 +325,6 @@ function createNewEvent(eventType, eventName, eventDate) {
   }
 }
 
-/**
- * Formats a date in the ISO 8601 format (YYYY-MM-DD).
- *
- * @param {Date} date - The date to format.
- * @returns {string} - The formatted date.
- */
-function formatDateISO(date) {
-	return date.toISOString().split("T")[0];
-}
-
-/**
- * Formats a date in the format "MM/DD/YY".
- *
- * @param {Date} date - The date to format.
- * @returns {string} - The formatted date.
- */
-function formatDate(date) {
-	const day = ("0" + date.getDate()).slice(-2);
-	const month = ("0" + (date.getMonth() + 1)).slice(-2);
-	const year = date.getFullYear().toString().slice(-2);
-	return `${month}/${day}/${year}`;
-}
-
 function getOrdinal(n) {
 	const s = ["th", "st", "nd", "rd"];
 	const v = n % 100;
