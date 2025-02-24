@@ -272,20 +272,16 @@ function createNewEvent(eventType, eventName, eventDate) {
 	let response = null; // Define response outside try block
 
 	try {
-		// Debug 1: Verify credentials exist as globals
-		console.log("[DEBUG] Global credentials check:", {
-			apiusername: typeof apiusername,
-			apipassword: typeof apipassword,
-			apidomain: typeof apidomain,
-		});
+		const scriptProperties = PropertiesService.getScriptProperties();
+		const apiusername = scriptProperties.getProperty("cred_apiusername");
+		const apipassword = scriptProperties.getProperty("cred_apipassword");
 
-		// Debug 2: Validate credentials
 		if (!apiusername || !apipassword) {
 			throw new Error("API credentials not loaded - run refreshCredentials()");
 		}
 
 		const encodedAuth = Utilities.base64Encode(`${apiusername}:${apipassword}`);
-		const apiUrl = `https://www.${apidomain}/wp-json/hybrid-headless/v1/products/create-event`;
+		const apiUrl = `https://www.${scriptProperties.getProperty("cred_apidomain")}/wp-json/hybrid-headless/v1/products/create-event`;
 
 		// Debug 3: Verify date formatting
 		const formattedDate = Utilities.formatDate(
@@ -427,6 +423,11 @@ function testCreateNewEvent() {
 }
 function testCredentialLoading() {
 	try {
+		const scriptProperties = PropertiesService.getScriptProperties();
+		const apiusername = scriptProperties.getProperty("cred_apiusername");
+		const apipassword = scriptProperties.getProperty("cred_apipassword");
+		const apidomain = scriptProperties.getProperty("cred_apidomain");
+
 		console.log("Current credentials:", {
 			apiusername: apiusername ? "*** EXISTS ***" : "MISSING",
 			apipassword: apipassword ? "*** EXISTS ***" : "MISSING",
@@ -436,9 +437,14 @@ function testCredentialLoading() {
 		if (!apiusername || !apipassword) {
 			console.log("Refreshing credentials...");
 			refreshCredentials();
+			
+			// Check again after refresh
+			const newUsername = scriptProperties.getProperty("cred_apiusername");
+			const newPassword = scriptProperties.getProperty("cred_apipassword");
+			
 			console.log("New credentials:", {
-				apiusername: apiusername ? "*** EXISTS ***" : "STILL MISSING",
-				apipassword: apipassword ? "*** EXISTS ***" : "STILL MISSING",
+				apiusername: newUsername ? "*** EXISTS ***" : "STILL MISSING",
+				apipassword: newPassword ? "*** EXISTS ***" : "STILL MISSING",
 			});
 		}
 
