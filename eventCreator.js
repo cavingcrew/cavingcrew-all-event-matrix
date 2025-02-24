@@ -277,10 +277,14 @@ function createNewEvent(eventType, eventName, eventDate) {
 		const consumerSecret = scriptProperties.getProperty("cred_consumer_secret");
 
 		if (!consumerKey || !consumerSecret) {
-			throw new Error("WooCommerce credentials not loaded - run refreshCredentials()");
+			throw new Error(
+				"WooCommerce credentials not loaded - run refreshCredentials()",
+			);
 		}
 
-		const encodedAuth = Utilities.base64Encode(`${consumerKey}:${consumerSecret}`);
+		const encodedAuth = Utilities.base64Encode(
+			`${consumerKey}:${consumerSecret}`,
+		);
 		const apiUrl = `https://www.${scriptProperties.getProperty("cred_apidomain")}/wp-json/wc-hybrid-headless/v1/products/create-event`;
 
 		// Debug 3: Verify date formatting
