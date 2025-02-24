@@ -9,13 +9,6 @@ const EVENT_TEMPLATES = {
 		namePlaceholder: "e.g. 'October Peak District Caving Weekend'",
 		dateQuestion: "When does the trip start?",
 	},
-	TRAINING: {
-		id: 123,
-		label: "Generic Training Event",
-		nameInstructions: "What's the name of this training event?",
-		namePlaceholder: "e.g. 'General Caving Training Session'",
-		dateQuestion: "When is the training session?",
-	},
 	HORIZONTAL_TRAINING: {
 		id: 12759,
 		label: "Horizontal Training Event",
@@ -273,8 +266,8 @@ function createNewEvent(eventType, eventName, eventDate) {
 
 	try {
 		const scriptProperties = PropertiesService.getScriptProperties();
-		const consumerKey = scriptProperties.getProperty("cred_consumer_key");
-		const consumerSecret = scriptProperties.getProperty("cred_consumer_secret");
+		const consumerKey = apiusername
+		const consumerSecret = apipassword
 
 		if (!consumerKey || !consumerSecret) {
 			throw new Error(
@@ -394,19 +387,12 @@ function getOrdinal(n) {
 }
 
 function testCreateNewEvent() {
-	// Validate credentials first
-	const scriptProperties = PropertiesService.getScriptProperties();
-	if (!scriptProperties.getProperty("cred_API_USER")) {
-		throw new Error("API_USER credential not found in properties");
-	}
-	if (!scriptProperties.getProperty("cred_API_PASSWORD")) {
-		throw new Error("API_PASSWORD credential not found in properties");
-	}
+
 
 	const testData = {
-		eventType: "OVERNIGHT",
-		eventName: "Test Weekend Trip",
-		eventDate: "2024-11-01T19:00",
+		eventType: "giggletrip",
+		eventName: "Test GiggleTrip",
+		eventDate: "2024-12-01T19:00",
 	};
 
 	console.log("Starting API test with data:", testData);
