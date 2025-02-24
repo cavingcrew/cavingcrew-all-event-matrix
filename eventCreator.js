@@ -266,9 +266,9 @@ function createNewEvent(eventType, eventName, eventDate) {
 
 	try {
 		const scriptProperties = PropertiesService.getScriptProperties();
-		const consumerKey = scriptProperties.getProperty('cred_consumer_key');
-		const consumerSecret = scriptProperties.getProperty('cred_consumer_secret');
-		const apidomain = scriptProperties.getProperty('cred_apidomain');
+		const consumerKey = scriptProperties.getProperty("cred_consumer_key");
+		const consumerSecret = scriptProperties.getProperty("cred_consumer_secret");
+		const apidomain = scriptProperties.getProperty("cred_apidomain");
 
 		if (!consumerKey || !consumerSecret) {
 			throw new Error(
@@ -388,8 +388,6 @@ function getOrdinal(n) {
 }
 
 function testCreateNewEvent() {
-
-
 	const testData = {
 		eventType: "giggletrip",
 		eventName: "Test GiggleTrip",
