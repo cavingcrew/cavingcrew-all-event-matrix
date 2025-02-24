@@ -266,8 +266,9 @@ function createNewEvent(eventType, eventName, eventDate) {
 
 	try {
 		const scriptProperties = PropertiesService.getScriptProperties();
-		const consumerKey = apiusername
-		const consumerSecret = apipassword
+		const consumerKey = scriptProperties.getProperty('cred_consumer_key');
+		const consumerSecret = scriptProperties.getProperty('cred_consumer_secret');
+		const apidomain = scriptProperties.getProperty('cred_apidomain');
 
 		if (!consumerKey || !consumerSecret) {
 			throw new Error(
@@ -278,7 +279,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 		const encodedAuth = Utilities.base64Encode(
 			`${consumerKey}:${consumerSecret}`,
 		);
-		const apiUrl = `https://www.${scriptProperties.getProperty("cred_apidomain")}/wp-json/wc-hybrid-headless/v1/products/create-event`;
+		const apiUrl = `https://www.${apidomain}/wp-json/wc-hybrid-headless/v1/products/create-event`;
 
 		// Debug 3: Verify date formatting
 		const formattedDate = Utilities.formatDate(
@@ -361,7 +362,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 			credentials: {
 				consumerKey: consumerKey ? "*** EXISTS ***" : "MISSING",
 				consumerSecret: consumerSecret ? "*** EXISTS ***" : "MISSING",
-				domain: apidomain,
+				domain: apidomain || "MISSING",
 			},
 		});
 
