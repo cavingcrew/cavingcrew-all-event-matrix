@@ -437,11 +437,11 @@ function testCredentialLoading() {
 		if (!apiusername || !apipassword) {
 			console.log("Refreshing credentials...");
 			refreshCredentials();
-			
+
 			// Check again after refresh
 			const newUsername = scriptProperties.getProperty("cred_apiusername");
 			const newPassword = scriptProperties.getProperty("cred_apipassword");
-			
+
 			console.log("New credentials:", {
 				apiusername: newUsername ? "*** EXISTS ***" : "STILL MISSING",
 				apipassword: newPassword ? "*** EXISTS ***" : "STILL MISSING",
