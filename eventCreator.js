@@ -269,9 +269,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 		const consumerSecret = apipassword; // From CommonFunctions.js
 
 		if (!consumerKey || !consumerSecret) {
-			throw new Error(
-				"API credentials not loaded - run refreshCredentials()",
-			);
+			throw new Error("API credentials not loaded - run refreshCredentials()");
 		}
 
 		const encodedAuth = Utilities.base64Encode(
@@ -358,7 +356,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 			responseCode: response?.getResponseCode(),
 			responseBody: response?.getContentText(),
 			credentials: {
-				consumerKey: apiusername ? "*** EXISTS ***" : "MISSING", 
+				consumerKey: apiusername ? "*** EXISTS ***" : "MISSING",
 				consumerSecret: apipassword ? "*** EXISTS ***" : "MISSING",
 				domain: apidomain || "MISSING",
 			},
