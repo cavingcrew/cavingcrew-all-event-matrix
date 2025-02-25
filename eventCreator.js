@@ -265,14 +265,12 @@ function createNewEvent(eventType, eventName, eventDate) {
 	let response = null; // Define response outside try block
 
 	try {
-		const scriptProperties = PropertiesService.getScriptProperties();
-		const consumerKey = scriptProperties.getProperty("cred_consumer_key");
-		const consumerSecret = scriptProperties.getProperty("cred_consumer_secret");
-		const apidomain = scriptProperties.getProperty("cred_apidomain");
+		const consumerKey = apiusername; // From CommonFunctions.js
+		const consumerSecret = apipassword; // From CommonFunctions.js
 
 		if (!consumerKey || !consumerSecret) {
 			throw new Error(
-				"WooCommerce credentials not loaded - run refreshCredentials()",
+				"API credentials not loaded - run refreshCredentials()",
 			);
 		}
 
@@ -360,8 +358,8 @@ function createNewEvent(eventType, eventName, eventDate) {
 			responseCode: response?.getResponseCode(),
 			responseBody: response?.getContentText(),
 			credentials: {
-				consumerKey: consumerKey ? "*** EXISTS ***" : "MISSING",
-				consumerSecret: consumerSecret ? "*** EXISTS ***" : "MISSING",
+				consumerKey: apiusername ? "*** EXISTS ***" : "MISSING", 
+				consumerSecret: apipassword ? "*** EXISTS ***" : "MISSING",
 				domain: apidomain || "MISSING",
 			},
 		});
@@ -408,43 +406,5 @@ function testCreateNewEvent() {
 	} catch (error) {
 		console.error("Error in createNewEvent:", error);
 		throw error;
-	}
-}
-function testCredentialLoading() {
-	try {
-		const scriptProperties = PropertiesService.getScriptProperties();
-		const consumerKey = scriptProperties.getProperty("cred_consumer_key");
-		const consumerSecret = scriptProperties.getProperty("cred_consumer_secret");
-		const apidomain = scriptProperties.getProperty("cred_apidomain");
-
-		console.log("Current credentials:", {
-			consumerKey: consumerKey ? "*** EXISTS ***" : "MISSING",
-			consumerSecret: consumerSecret ? "*** EXISTS ***" : "MISSING",
-			apidomain: apidomain || "MISSING",
-		});
-
-		if (!consumerKey || !consumerSecret) {
-			console.log("Refreshing credentials...");
-			refreshCredentials();
-
-			// Check again after refresh
-			const newKey = scriptProperties.getProperty("cred_consumer_key");
-			const newSecret = scriptProperties.getProperty("cred_consumer_secret");
-
-			console.log("New credentials:", {
-				consumerKey: newKey ? "*** EXISTS ***" : "STILL MISSING",
-				consumerSecret: newSecret ? "*** EXISTS ***" : "STILL MISSING",
-			});
-		}
-
-		return {
-			success: !!apiusername && !!apipassword,
-			apidomain: apidomain,
-		};
-	} catch (error) {
-		return {
-			success: false,
-			error: error.message,
-		};
 	}
 }
