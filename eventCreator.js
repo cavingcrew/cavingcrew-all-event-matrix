@@ -70,9 +70,9 @@ function getClientScript(templates) {
           case 'i': return date.getMinutes().toString().padStart(2, '0');
           case 'l': return date.toLocaleString('en-US', {weekday:'long'});
           // Add special handling for jS format
-          case 'jS': 
+          case 'js': 
             const day = date.getDate();
-            return `$day$getOrdinal(day)`;
+            return `${day}${getOrdinal(day)}`;
           default: return match;
         }
       });
