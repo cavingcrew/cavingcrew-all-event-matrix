@@ -72,7 +72,7 @@ function getClientScript(templates) {
           // Add special handling for jS format
           case 'js': 
             const day = date.getDate();
-            return `$day$getOrdinal(day)`;
+            return `${day}${getOrdinal(day)}`;
           default: return match;
         }
       });
