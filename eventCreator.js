@@ -268,6 +268,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 		const consumerKey = apiusername; // From CommonFunctions.js
 		const consumerSecret = apipassword; // From CommonFunctions.js
 
+		h
 		if (!consumerKey || !consumerSecret) {
 			throw new Error("API credentials not loaded - run refreshCredentials()");
 		}
