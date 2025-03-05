@@ -37,7 +37,7 @@ const EVENT_TEMPLATES = {
 		namePlaceholder: "e.g. 'Mystery Tuesday Evening Trip'",
 		dateQuestion: "When is this trip?",
 	},
-	GIGGLE: {
+	GIGGLETRIP: {
 		id: 11579,
 		label: "Bagshawe Beginner GiggleTrip",
 		nameInstructions: "What's the name of this GiggleTrip?",
@@ -116,7 +116,9 @@ function getClientScript(templates) {
       // Set loading state
       setLoading(true);
 
-      const selectedType = document.querySelector('input[name="eventType"]:checked').value;
+      const selectedType = document.querySelector('input[name="eventType"]:checked').value === 'giggle' 
+        ? 'giggletrip' 
+        : document.querySelector('input[name="eventType"]:checked').value;
       const eventName = document.getElementById('eventName').value;
       const eventDate = document.getElementById('eventDate').value;
 
@@ -293,10 +295,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 		});
 
 		const payload = {
-			event_type:
-				eventType.toLowerCase() === "giggle"
-					? "giggletrip"
-					: eventType.toLowerCase(),
+			event_type: eventType.toLowerCase() === 'giggle' ? 'giggletrip' : eventType.toLowerCase(),
 			event_start_date_time: formattedDate,
 			event_name: eventName,
 		};
@@ -392,7 +391,7 @@ function getOrdinal(n) {
 
 function testCreateNewEvent() {
 	const testData = {
-		eventType: "giggletrip",
+		eventType: "GIGGLETRIP",
 		eventName: "Test GiggleTrip",
 		eventDate: "2024-12-01T19:00",
 	};
