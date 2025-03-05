@@ -328,6 +328,9 @@ function formatDate(date, formatStr) {
 				return String(date.getMinutes()).padStart(2, "0");
 			case "l":
 				return date.toLocaleString("en-US", { weekday: "long" });
+			case "js":
+				const day = date.getDate();
+				return day.toString() + getOrdinal(day);
 			default:
 				return match;
 		}
