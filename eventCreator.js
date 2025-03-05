@@ -293,7 +293,7 @@ function createNewEvent(eventType, eventName, eventDate) {
 		});
 
 		const payload = {
-			event_type: eventType.toLowerCase(),
+			event_type: eventType.toLowerCase() === 'giggle' ? 'giggletrip' : eventType.toLowerCase(),
 			event_start_date_time: formattedDate,
 			event_name: eventName,
 		};
